@@ -9,8 +9,8 @@
       "world": "Darkmoor",
       "author": "Ratul",
       "format": "expertmode",
-      "clients": "== 4",
-      "description": "Black Lagoon **Hierophant of Destruction** 4-player sigil farmer (multi-client).\nRun with **all clients together** and **p1 directly on top of the sigil**.\np1 is the hitter and last in combat. Handles enter, fight, and exit; buys and\nuses potions, and grabs wisps if they are present.\nRelies on `tp closestmob` — if you are not within range, add a teleport inside the `combat` block.",
+      "clients": "> 1",
+      "description": "Black Lagoon **Hierophant of Destruction** 2+ player sigil farmer (multi-client).\nRun with **all clients together** and **p1 directly on top of the sigil**.\np1 is the hitter and last in combat. Handles enter, fight, and exit; buys and\nuses potions, and grabs wisps if they are present.\nRelies on `tp closestmob` — if you are not within range, add a teleport inside the `combat` block.",
       "path": "bots/Darkmoor/DM_Z04_BlackLagoon/Hierophant_of_Destruction_MultiClient.txt"
     },
     {

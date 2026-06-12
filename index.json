@@ -1,11 +1,13 @@
 {
   "generated_by": "scripts/registry.py",
-  "count": 2,
+  "count": 3,
   "worlds": [
-    "Darkmoor"
+    "Darkmoor",
+    "WizardCity"
   ],
   "zones": {
-    "Darkmoor/DM_Z04_BlackLagoon": 2
+    "Darkmoor/DM_Z04_BlackLagoon": 2,
+    "WizardCity/WC_Streets/WC_OldeTown": 1
   },
   "bots": [
     {
@@ -14,7 +16,7 @@
       "world": "Darkmoor",
       "author": "Ratul",
       "format": "expertmode",
-      "clients": "== 4",
+      "clients": "> 1",
       "path": "bots/Darkmoor/DM_Z04_BlackLagoon/Hierophant_of_Destruction_MultiClient.txt"
     },
     {
@@ -25,6 +27,15 @@
       "format": "expertmode",
       "clients": "== 1",
       "path": "bots/Darkmoor/DM_Z04_BlackLagoon/Hierophant_of_Destruction_SingleClient.txt"
+    },
+    {
+      "name": "Foulgaze",
+      "zone": "WizardCity/WC_Streets/WC_OldeTown",
+      "world": "WizardCity",
+      "author": "medicinals",
+      "format": "bot",
+      "clients": "== 1",
+      "path": "bots/WizardCity/WC_Streets/WC_OldeTown/Foulgaze.txt"
     }
   ]
 }

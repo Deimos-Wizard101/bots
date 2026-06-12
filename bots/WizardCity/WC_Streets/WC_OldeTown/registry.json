@@ -1,0 +1,17 @@
+{
+  "zone": "WizardCity/WC_Streets/WC_OldeTown",
+  "world": "WizardCity",
+  "count": 1,
+  "bots": [
+    {
+      "name": "Foulgaze",
+      "zone": "WizardCity/WC_Streets/WC_OldeTown",
+      "world": "WizardCity",
+      "author": "medicinals",
+      "format": "bot",
+      "clients": "== 1",
+      "description": "Teleports to Sapphyra's Tower and farms the sigil.",
+      "path": "bots/WizardCity/WC_Streets/WC_OldeTown/Foulgaze.txt"
+    }
+  ]
+}
