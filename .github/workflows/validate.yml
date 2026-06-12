@@ -1,0 +1,22 @@
+name: Validate bots
+
+# Gate: a bot cannot be merged/published unless it declares a valid @zone
+# header that matches its folder location and the registry is up to date.
+on:
+  pull_request:
+    paths:
+      - "bots/**"
+      - "zones.json"
+      - "scripts/**"
+      - ".github/workflows/validate.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate bot headers and zone paths
+        run: python scripts/registry.py validate

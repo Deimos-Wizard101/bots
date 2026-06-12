@@ -1,0 +1,30 @@
+{
+  "generated_by": "scripts/registry.py",
+  "count": 2,
+  "worlds": [
+    "Darkmoor"
+  ],
+  "zones": {
+    "Darkmoor/DM_Z04_BlackLagoon": 2
+  },
+  "bots": [
+    {
+      "name": "Hierophant of Destruction (Multi-Client)",
+      "zone": "Darkmoor/DM_Z04_BlackLagoon",
+      "world": "Darkmoor",
+      "author": "Ratul",
+      "format": "expertmode",
+      "clients": "== 4",
+      "path": "bots/Darkmoor/DM_Z04_BlackLagoon/Hierophant_of_Destruction_MultiClient.txt"
+    },
+    {
+      "name": "Hierophant of Destruction (Single-Client)",
+      "zone": "Darkmoor/DM_Z04_BlackLagoon",
+      "world": "Darkmoor",
+      "author": "Ratul",
+      "format": "expertmode",
+      "clients": "== 1",
+      "path": "bots/Darkmoor/DM_Z04_BlackLagoon/Hierophant_of_Destruction_SingleClient.txt"
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+###deimos_expertmode
+# @name: Hierophant of Destruction (Multi-Client)
+# @zone: Darkmoor/DM_Z04_BlackLagoon
+# @author: Ratul
+# @format: expertmode
+# @clients: > 1
+# @description: Black Lagoon **Hierophant of Destruction** 2+ player sigil farmer (multi-client).
+# Run with **all clients together** and **p1 directly on top of the sigil**.
+# p1 is the hitter and last in combat. Handles enter, fight, and exit; buys and
+# uses potions, and grabs wisps if they are present.
+# Relies on `tp closestmob` — if you are not within range, add a teleport inside the `combat` block.
+
+block load {
+    times 100 {
+        if any loading {
+            break
+        } else {
+            sleep 0.1
+        }
+    }
+    while any loading {
+        sleep 0.1
+    }
+    while not windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
+        cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
+        sleep 0.1
+    }
+    cursorwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+}
+
+block recall_marker {
+    while any windowvisible ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton', 'txtRecallTimer'] {
+        sleep 1
+    }
+    times 3 {
+        clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton']
+    }
+}
+
+block remove_marker {
+    sleep 1
+    cursorwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton']
+    sleep 0.5
+    while any windowtext ['ToolTipContainer', 'ToolTipText'] contains "teleport to" {
+        any clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+        sleep 1
+        any cursorwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton']
+        sleep 3
+    }
+    sleep 0.1
+}
+
+block buypotions_ifneeded {
+    if any potioncount 0 {
+        call remove_marker
+        if any potioncountabove 0 {
+            any clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+            sleep 0.1
+        }
+        buypotions ifneeded
+        sleep 3
+        waitforfree
+    }
+}
+
+block sigil {
+    while p1 inrange "Teleport Semi Circle 4 Player Generic" {
+        usepotion 40 5
+        sleep 0.1
+        call buypotions_ifneeded
+        minustp XYZ(0, 0, 800)
+        sleep 1
+        plustp XYZ(0, 0, 800)
+        sendkey A, 0.1
+        times 5 {
+            if p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground']  {
+                break
+            } else {
+                sleep 1
+            }
+        }
+        times 5 {
+            sendkey X
+            sleep 1
+        }
+        call load
+    }
+}
+
+block fallback {
+    while not sameplace {
+        sleep 2
+        call recall_marker
+        call load
+    }
+}
+
+block exit {
+    while not inrange "Teleport Semi Circle 4 Player Generic" {
+        sleep 2
+        call recall_marker
+        call load
+    }
+}
+
+block combat {
+    if sameplace {
+        if not inrange "Teleport Semi Circle 4 Player Generic" {
+            usepotion 40 5
+            sleep 0.1
+            times 10 {
+                if incombat {
+                    break
+                } else {
+                    # add the teleport in range of mob here if it is needed gamers
+                    except p1 tp closestmob
+                    sleep 0.7
+                    p1 tp closestmob
+                    times 2 {
+                        if incombat {
+                            break
+                        } else {
+                            sleep 1
+                        }
+                    }
+                }
+            }
+            if incombat {
+                waitforcombat completion
+                sleep 1
+            }
+            if any inrange "bonus" {
+                tp XYZ(-5.666, 1457.147, 371.009)
+                sleep 2
+                tp XYZ(-4.820, 1467.486, 371.009)
+                sleep 2
+                tp XYZ(-266.765, 1649.380, 371.009)
+                sleep 2
+            }
+            call exit
+        }
+    }
+}
+
+# Bot
+# One time setup
+if samezone {
+    except p1 tp p1
+    sleep 1
+}
+if not sameplace {
+    print please put all clients in the same realm and zone, make sure p1 is atop the sigil.
+    kill
+}
+call remove_marker
+sleep 1
+while any windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+    any clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+    sleep 2
+}
+# Main loop
+loop {
+    call sigil
+    call fallback
+    call combat
+}

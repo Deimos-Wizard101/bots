@@ -1,0 +1,44 @@
+name: Build registry
+
+# On every push to main, re-validate and regenerate the registry so a newly
+# published bot auto-populates registry.json / REGISTRY.md. The workflow
+# commits the regenerated files back to the repo.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "bots/**"
+      - "zones.json"
+      - "scripts/**"
+      - ".github/workflows/registry.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-registry
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate before publishing
+        run: python scripts/registry.py validate
+      - name: Build registry
+        run: python scripts/registry.py build
+      - name: Commit registry if changed
+        run: |
+          git add -A index.json REGISTRY.md bots
+          if [[ -n "$(git status --porcelain --cached)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: regenerate bot registry [skip ci]"
+            git push
+          else
+            echo "Registry already up to date."
+          fi
