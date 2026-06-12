@@ -1,0 +1,29 @@
+# @name: Foulgaze
+# @zone: WizardCity/WC_Streets/WC_OldeTown
+# @author: medicinals
+# @format: bot
+# @clients: == 1
+# @description: Teleports to Sapphyra's Tower and farms the sigil.
+
+# teleport to dungeon sigil
+mass tp XYZ(-9677.087890625, -5201.8330078125, -2167.284423828125)
+sleep 1
+# pres X to enter sigil
+sleep 1
+mass sendkey X, 0.3
+mass sendkey X, 0.3
+# wait for zone change to dungeon
+mass waitforzonechange completion
+sleep 1
+#walk all clients to  the mob
+mass tp XYZ(470.28436279296875, -393.1438293457031, 0.007324219215661287)
+sleep 1.0
+# wait for combat to finish
+mass waitforcombat completion
+sleep 1.5
+# walk all clients to the door
+mass tp XYZ(36.91896057128906, -1209.098388671875, 1.620269775390625)
+sleep 1
+# wait for you to leave
+mass waitforzonechange completion
+sleep 2
