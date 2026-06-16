@@ -1,7 +1,7 @@
 {
   "zone": "WizardCity/WC_Streets/WC_OldeTown",
   "world": "WizardCity",
-  "count": 1,
+  "count": 2,
   "bots": [
     {
       "name": "Foulgaze",
@@ -12,6 +12,16 @@
       "clients": "== 1",
       "description": "Teleports to Sapphyra's Tower and farms the sigil.",
       "path": "bots/WizardCity/WC_Streets/WC_OldeTown/Foulgaze.txt"
+    },
+    {
+      "name": "PublishTest1",
+      "zone": "WizardCity/WC_Streets/WC_OldeTown",
+      "world": "WizardCity",
+      "author": "Slackaduts",
+      "format": "bot",
+      "clients": "==1",
+      "description": "# PublishTest1\nThis is a test of the Deimos bot registry system.",
+      "path": "bots/WizardCity/WC_Streets/WC_OldeTown/PublishTest1.txt"
     }
   ]
 }

@@ -1,13 +1,13 @@
 {
   "generated_by": "scripts/registry.py",
-  "count": 3,
+  "count": 4,
   "worlds": [
     "Darkmoor",
     "WizardCity"
   ],
   "zones": {
     "Darkmoor/DM_Z04_BlackLagoon": 2,
-    "WizardCity/WC_Streets/WC_OldeTown": 1
+    "WizardCity/WC_Streets/WC_OldeTown": 2
   },
   "bots": [
     {
@@ -36,6 +36,15 @@
       "format": "bot",
       "clients": "== 1",
       "path": "bots/WizardCity/WC_Streets/WC_OldeTown/Foulgaze.txt"
+    },
+    {
+      "name": "PublishTest1",
+      "zone": "WizardCity/WC_Streets/WC_OldeTown",
+      "world": "WizardCity",
+      "author": "Slackaduts",
+      "format": "bot",
+      "clients": "==1",
+      "path": "bots/WizardCity/WC_Streets/WC_OldeTown/PublishTest1.txt"
     }
   ]
 }
