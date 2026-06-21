@@ -1,13 +1,14 @@
 {
   "generated_by": "scripts/registry.py",
-  "count": 4,
+  "count": 5,
   "worlds": [
     "Darkmoor",
     "WizardCity"
   ],
   "zones": {
     "Darkmoor/DM_Z04_BlackLagoon": 2,
-    "WizardCity/WC_Streets/WC_OldeTown": 2
+    "WizardCity/WC_Streets/WC_OldeTown": 2,
+    "WizardCity/WC_Streets/WC_Triton": 1
   },
   "bots": [
     {
@@ -45,6 +46,15 @@
       "format": "bot",
       "clients": "==1",
       "path": "bots/WizardCity/WC_Streets/WC_OldeTown/PublishTest1.txt"
+    },
+    {
+      "name": "Harvest Lord Test",
+      "zone": "WizardCity/WC_Streets/WC_Triton",
+      "world": "WizardCity",
+      "author": "Slackaduts",
+      "format": "bot",
+      "clients": ">1",
+      "path": "bots/WizardCity/WC_Streets/WC_Triton/Harvest_Lord_Test.txt"
     }
   ]
 }

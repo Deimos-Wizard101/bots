@@ -1,0 +1,17 @@
+{
+  "zone": "WizardCity/WC_Streets/WC_Triton",
+  "world": "WizardCity",
+  "count": 1,
+  "bots": [
+    {
+      "name": "Harvest Lord Test",
+      "zone": "WizardCity/WC_Streets/WC_Triton",
+      "world": "WizardCity",
+      "author": "Slackaduts",
+      "format": "bot",
+      "clients": ">1",
+      "description": "Test bot for Hivemind",
+      "path": "bots/WizardCity/WC_Streets/WC_Triton/Harvest_Lord_Test.txt"
+    }
+  ]
+}
