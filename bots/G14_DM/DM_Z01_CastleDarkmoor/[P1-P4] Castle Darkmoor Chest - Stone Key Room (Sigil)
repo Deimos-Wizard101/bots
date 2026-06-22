@@ -187,14 +187,15 @@ if p1:p2:p3:p4 incombat {
 }
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+                                                                 sleep .4
                                                                  p1 tp XYZ(-222.020, 3322.083, 1.894)
-                                                                 sleep .3
+                                                                 sleep .4
                                                                  p2 tp XYZ(-222.020, 3322.083, 1.894)
-                                                                 sleep .3
+                                                                 sleep .4
                                                                  p3 tp XYZ(-222.020, 3322.083, 1.894)
-                                                                 sleep .3
+                                                                 sleep .4
                                                                  p4 tp XYZ(-222.020, 3322.083, 1.894)
-                                                                 sleep .3
+                                                                 sleep .4
 }
 
 
@@ -218,13 +219,13 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
                                                                     p1 tp XYZ(-567.848, -268.262, 400.199)
-                                                                    sleep .3
+                                                                    sleep .4
                                                                     p2 tp XYZ(-666.251, -287.082, 400.199)
-                                                                    sleep .3
+                                                                    sleep .4
                                                                     p3 tp XYZ(-666.251, -287.082, 400.199)
-                                                                    sleep .3
+                                                                    sleep .4
                                                                     p4 tp XYZ(-666.251, -287.082, 400.199)
-                                                                    sleep .3
+                                                                    sleep .4
 }
 
 
