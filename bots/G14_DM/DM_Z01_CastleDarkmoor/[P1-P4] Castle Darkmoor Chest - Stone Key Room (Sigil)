@@ -137,7 +137,7 @@ until p1 hasxyz XYZ(19.906, -2120.380, 33.972) {
 
 #FIGHT
 until p1:p2:p3:p4 incombat {
-                             p1:p2:p3:p4 entitytp HowlingChaney
+                             p1:p2:p3:p4 entitytp Werewolf
 }
 
 if p1:p2:p3:p4 incombat {
@@ -218,7 +218,8 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 }
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
-                                                                    p1 tp XYZ(-567.848, -268.262, 400.199)
+                                                                    sleep .4
+                                                                    p1 tp XYZ(-179.568, 563.623, 260.403)
                                                                     sleep .4
                                                                     p2 tp XYZ(-666.251, -287.082, 400.199)
                                                                     sleep .4
