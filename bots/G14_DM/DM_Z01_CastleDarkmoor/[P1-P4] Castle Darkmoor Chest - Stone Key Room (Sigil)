@@ -1,9 +1,9 @@
 ###deimos_expertmode
 #COMBAT & DIALOGUE (ENABLED).
 #P1 USES KEY.
-#SUPPORTS UP TO P4. DORMS EQUIPPED. START IN CASTLE DARKMOOR. CTRL+F "EXCEPT" FOR A GEM (EXPERT ONLY).
+#SUPPORTS UP TO P4. DORMS EQUIPPED. START IN CASTLE DARKMOOR. SIGIL GROUP. CTRL+F "EXCEPT" (EXPERT ONLY).
 
-setvar ONE-TURN-STORM-STRAT = False # <-------------------------------
+setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
 ########################################################################
 #SETVAR SET TO "False" (NO-PLAYSTYLE). "True" (BEST-STORM-PLAYSTYLE):
@@ -152,7 +152,7 @@ if p1:p2:p3:p4 incombat {
 times 5 {
  if any manabelow 25% OR any healthbelow 80% {
                                                sameany entitytp health
-                                               sleep .25
+                                               sleep .1
                                                sameany entitytp mana
  } else {
           exitloop
@@ -162,16 +162,17 @@ times 5 {
 
 
 #ARMORY
-until p1:p2:p3:p4 hasxyz XYZ(4.521, 4034.142, 506.143) {
-                                                         p1 tp XYZ(4.521, 4034.142, 506.143)
-                                                         sleep .25
-                                                         p2 tp XYZ(4.521, 4034.142, 506.143)
-                                                         p3 tp XYZ(4.521, 4034.142, 506.143)
-                                                         p4 tp XYZ(4.521, 4034.142, 506.143)
+if ONE-TURN-STORM-STRAT = True {
+loadplaystyle `
+"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Bunyip[Epic] | any<damage>[epic] @ enemy
+`
 }
 
 until p1:p2:p3:p4 inzone G14_DM/DM_Z03_Armory {
-                                                sleep .01
+                                                p1 tp XYZ(4.521, 4034.142, 506.143)
+                                                p2 tp XYZ(4.521, 4034.142, 506.143)
+                                                p3 tp XYZ(4.521, 4034.142, 506.143)
+                                                p4 tp XYZ(4.521, 4034.142, 506.143)
 }
 
 
@@ -179,12 +180,6 @@ until p1:p2:p3:p4 inzone G14_DM/DM_Z03_Armory {
 
 
 #FIGHT1
-if ONE-TURN-STORM-STRAT = True {
-loadplaystyle `
-"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Bunyip[Epic] | any<damage>[epic] @ enemy
-`
-}
-
 until p1:p2:p3:p4 incombat {
                              p1:p2:p3:p4 entitytp SirBlackwater
 }
@@ -193,16 +188,11 @@ if p1:p2:p3:p4 incombat {
                           p1:p2:p3:p4 waitforcombat completion
 }
 
-until p1:p2:p3:p4 hasxyz XYZ(-20.125, 3366.245, 1.894) {
-                                                         p1 tp XYZ(-20.125, 3366.245, 1.894)
-                                                         sleep .25
-                                                         p2 tp XYZ(-20.125, 3366.245, 1.894)
-                                                         p3 tp XYZ(-20.125, 3366.245, 1.894)
-                                                         p4 tp XYZ(-20.125, 3366.245, 1.894)
-}
-
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
-                                                                 sleep .01
+                                                                 p1 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                 p2 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                 p3 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                 p4 tp XYZ(-20.125, 3366.245, 1.894)
 }
 
 
@@ -245,7 +235,7 @@ until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 loop {
  if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
                                                                       sameany sendkey X, .05
-                                                                      sleep 2.5
+                                                                      sleep 1.5
 
  } else {
           sleep 1
@@ -265,13 +255,15 @@ until not any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 p1:p2:p3:p4 buypotions ifneeded
 p1:p2:p3:p4 waitforfree
 
-if any healthbelow 60% {
+if any healthbelow 67% {
   sameany usepotion
 }
 
-if any manabelow 10% {
+if any manabelow 25% {
   sameany usepotion
 }
+
+
 
 
 
@@ -283,6 +275,7 @@ if ALL_EXCEPT_AMULET = True {
                             call sell
  }
 }
+
 
 
 
