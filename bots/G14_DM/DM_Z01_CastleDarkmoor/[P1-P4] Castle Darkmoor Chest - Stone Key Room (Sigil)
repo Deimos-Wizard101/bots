@@ -136,10 +136,6 @@ until p1 hasxyz XYZ(19.906, -2120.380, 33.972) {
 
 
 #FIGHT
-until any has_dialogue {
-                         sleep .01
-}
-
 until p1:p2:p3:p4 incombat {
                              p1:p2:p3:p4 entitytp HowlingChaney
 }
@@ -190,13 +186,15 @@ if p1:p2:p3:p4 incombat {
                           p1:p2:p3:p4 waitforcombat completion
 }
 
-while not p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
- times 2 {
-                                                                     p1 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                     p2 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                     p3 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                     p4 tp XYZ(-20.125, 3366.245, 1.894)
- }
+until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+                                                                 p1 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep .3
+                                                                 p2 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep .3
+                                                                 p3 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep .3
+                                                                 p4 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep .3
 }
 
 
@@ -220,8 +218,13 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
                                                                     p1 tp XYZ(-567.848, -268.262, 400.199)
-                                                                    p1:p2:p3:p4 tp XYZ(-665.394, -297.237, 400.199)
-                                                                    p1:p2:p3:p4 waitforfree
+                                                                    sleep .3
+                                                                    p2 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep .3
+                                                                    p3 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep .3
+                                                                    p4 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep .3
 }
 
 
