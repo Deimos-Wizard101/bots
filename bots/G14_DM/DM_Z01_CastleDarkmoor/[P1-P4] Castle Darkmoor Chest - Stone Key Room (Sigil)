@@ -1,0 +1,302 @@
+###deimos_expertmode
+#COMBAT & DIALOGUE (ENABLED).
+#P1 USES KEY.
+#SUPPORTS UP TO P4. DORMS EQUIPPED. START IN CASTLE DARKMOOR. CTRL+F "EXCEPT" FOR A GEM (EXPERT ONLY).
+
+setvar ONE-TURN-STORM-STRAT = False # <-------------------------------
+
+########################################################################
+#SETVAR SET TO "False" (NO-PLAYSTYLE). "True" (BEST-STORM-PLAYSTYLE):
+
+#WHEN SET TO "True" SETUP THESE DECKS:
+#####DECKS#####
+#Support1 (Should): [Mass Feint].
+##Support2 (Should): [Feint, Potent Trap].
+###Support3 (Should): [Storm weave-blade, Sharpened].
+####P4 (STORM HITTER ~275D, 55P~ - Must): [(x2) Epic, Tempest, Bunyip].
+########################################################################
+
+
+
+
+
+block sell {
+#Open Bag
+p1:p2:p3:p4 waitforfree
+p1:p2:p3:p4 sendkey B, .1
+
+
+
+#QUICKSELL BUTTON
+p1:p2:p3:p4 waitforpath ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+p1:p2:p3:p4 clickwindow ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+
+
+
+#ALL
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_All']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_All']
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+
+
+#AMULET
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_Amulet']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_Amulet']
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+
+
+#CLICK SELL
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'sellAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'sellAction']
+
+#CONFIRM SELL
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'QuickSellConfirmationWindow', 'SellButton']
+
+#CROWNS CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+#PET CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+#MAX GOLD CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+
+
+
+#CLOSE BAG
+p1:p2:p3:p4 waitforpath ['WorldView', 'windowHUD', 'btnSpellbook']
+p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+
+p1:p2:p3:p4 waitforfree
+
+}
+
+
+
+
+
+block x {
+times 10 {
+           p1:p2:p3:p4 sendkey X, .1
+}
+
+ sleep 2
+ p1:p2:p3:p4 sendkey X
+ p1:p2:p3:p4 sendkey X, .1
+}
+
+
+
+
+
+block sigil {
+
+#SIGIL
+until p1:p2:p3:p4 hasxyz XYZ(95.714, 20.346, -1.188) {
+                                                       p1:p2:p3:p4 tp XYZ(95.714, 20.346, -1.188)
+}
+
+until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                                sleep .01
+}
+
+p1:p2:p3:p4 sendkey X
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+call x
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+until p1:p2:p3:p4 inzone G14_DM/DM_Z02_MainHall {
+                                                  sleep .01
+}
+
+
+
+
+
+#MAINHALL
+##DIALOGUE
+if ONE-TURN-STORM-STRAT = True {
+loadplaystyle `
+"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Tempest[Epic] | any<damage>[epic] @ enemy
+`
+}
+
+until p1 hasxyz XYZ(19.906, -2120.380, 33.972) {
+                                                 p1 tp XYZ(19.906, -2120.380, 33.972)
+}
+
+
+
+#FIGHT
+until any has_dialogue {
+                         sleep .01
+}
+
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 entitytp HowlingChaney
+}
+
+if p1:p2:p3:p4 incombat {
+                          p1:p2:p3:p4 waitforcombat completion
+}
+
+
+
+#WISP
+times 5 {
+ if any manabelow 25% OR any healthbelow 80% {
+                                               sameany entitytp health
+                                               sleep .25
+                                               sameany entitytp mana
+ } else {
+          exitloop
+ }
+}
+
+
+
+#ARMORY
+until p1:p2:p3:p4 hasxyz XYZ(4.521, 4034.142, 506.143) {
+                                                         p1 tp XYZ(4.521, 4034.142, 506.143)
+                                                         sleep .25
+                                                         p2 tp XYZ(4.521, 4034.142, 506.143)
+                                                         p3 tp XYZ(4.521, 4034.142, 506.143)
+                                                         p4 tp XYZ(4.521, 4034.142, 506.143)
+}
+
+until p1:p2:p3:p4 inzone G14_DM/DM_Z03_Armory {
+                                                sleep .01
+}
+
+
+
+
+
+#FIGHT1
+if ONE-TURN-STORM-STRAT = True {
+loadplaystyle `
+"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Bunyip[Epic] | any<damage>[epic] @ enemy
+`
+}
+
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 entitytp SirBlackwater
+}
+
+if p1:p2:p3:p4 incombat {
+                          p1:p2:p3:p4 waitforcombat completion
+}
+
+until p1:p2:p3:p4 hasxyz XYZ(-20.125, 3366.245, 1.894) {
+                                                         p1 tp XYZ(-20.125, 3366.245, 1.894)
+                                                         sleep .25
+                                                         p2 tp XYZ(-20.125, 3366.245, 1.894)
+                                                         p3 tp XYZ(-20.125, 3366.245, 1.894)
+                                                         p4 tp XYZ(-20.125, 3366.245, 1.894)
+}
+
+until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+                                                                 sleep .01
+}
+
+
+
+
+
+#STAIRCASE
+##SKELETON KEY DOOR
+until p1 hasxyz XYZ(-668.904, -283.773, 400.199) {
+                                                   p1 tp XYZ(-668.904, -283.773, 400.199)
+}
+
+p1 waitforpath ['WorldView', 'NPCRangeWin', 'imgBackground']
+
+until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                           p1 sendkey X, .1
+                                                                           sleep .01
+}
+
+until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
+                                                                    p1:p2:p3:p4 tp XYZ(-567.848, -268.262, 400.199)
+                                                                    sleep .01
+                                                                    p1:p2:p3:p4 tp XYZ(-665.394, -297.237, 400.199)
+                                                                    p1:p2:p3:p4 waitforfree
+}
+
+
+
+
+
+#CHEST
+until p1:p2:p3:p4 hasxyz XYZ(8.615, -266.154, 45.239) {
+                                                        p1:p2:p3:p4 tp XYZ(8.615, -266.154, 45.239)
+}
+
+until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                                sleep .01
+}
+
+loop {
+ if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                      sameany sendkey X, .05
+                                                                      sleep 2.5
+
+ } else {
+          sleep 1
+          exitloop
+ }
+}
+
+until not any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                            p1:p2:p3:p4 sendkey X, .05
+}
+
+
+
+
+
+#POTIONS
+p1:p2:p3:p4 buypotions ifneeded
+p1:p2:p3:p4 waitforfree
+
+if any healthbelow 60% {
+  sameany usepotion
+}
+
+if any manabelow 10% {
+  sameany usepotion
+}
+
+
+
+#QUICKSELL ALL_EXCEPT_AMULET
+setvar ALL_EXCEPT_AMULET = False
+
+if ALL_EXCEPT_AMULET = True {
+ if any bagcountabove 85% {
+                            call sell
+ }
+}
+
+
+
+
+#RETURN TO CASTLE DARKMOOR
+until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+                                                        p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+}
+
+
+
+
+
+#####START HERE#####
+call sigil
