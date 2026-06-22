@@ -221,6 +221,8 @@ until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
                                                                     sleep .4
                                                                     p1 tp XYZ(-179.568, 563.623, 260.403)
                                                                     sleep .4
+                                                                    p1 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep .4
                                                                     p2 tp XYZ(-666.251, -287.082, 400.199)
                                                                     sleep .4
                                                                     p3 tp XYZ(-666.251, -287.082, 400.199)
