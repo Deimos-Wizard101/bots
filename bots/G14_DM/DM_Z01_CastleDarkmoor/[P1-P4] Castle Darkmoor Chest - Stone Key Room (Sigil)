@@ -120,13 +120,15 @@ until p1:p2:p3:p4 inzone G14_DM/DM_Z02_MainHall {
 
 
 #MAINHALL
-##DIALOGUE
 if ONE-TURN-STORM-STRAT = True {
 loadplaystyle `
 "Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Tempest[Epic] | any<damage>[epic] @ enemy
 `
 }
 
+
+
+##DIALOGUE
 until p1 hasxyz XYZ(19.906, -2120.380, 33.972) {
                                                  p1 tp XYZ(19.906, -2120.380, 33.972)
 }
@@ -188,11 +190,13 @@ if p1:p2:p3:p4 incombat {
                           p1:p2:p3:p4 waitforcombat completion
 }
 
-until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
-                                                                 p1 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                 p2 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                 p3 tp XYZ(-20.125, 3366.245, 1.894)
-                                                                 p4 tp XYZ(-20.125, 3366.245, 1.894)
+while not p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+ times 2 {
+                                                                     p1 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                     p2 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                     p3 tp XYZ(-20.125, 3366.245, 1.894)
+                                                                     p4 tp XYZ(-20.125, 3366.245, 1.894)
+ }
 }
 
 
@@ -205,7 +209,9 @@ until p1 hasxyz XYZ(-668.904, -283.773, 400.199) {
                                                    p1 tp XYZ(-668.904, -283.773, 400.199)
 }
 
-p1 waitforpath ['WorldView', 'NPCRangeWin', 'imgBackground']
+until p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       sleep .01
+}
 
 until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
                                                                            p1 sendkey X, .1
@@ -213,8 +219,7 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 }
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
-                                                                    p1:p2:p3:p4 tp XYZ(-567.848, -268.262, 400.199)
-                                                                    sleep .01
+                                                                    p1 tp XYZ(-567.848, -268.262, 400.199)
                                                                     p1:p2:p3:p4 tp XYZ(-665.394, -297.237, 400.199)
                                                                     p1:p2:p3:p4 waitforfree
 }
