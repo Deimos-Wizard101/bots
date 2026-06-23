@@ -411,9 +411,10 @@ times 300 {
 
 loop {
  if p1:p2:p3:p4 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
-   p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']   
- } elif p1:p2:p3:p4 inzone WizardCity/WC_Hub {
-                                               exitloop
+     p1p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+      p1p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']   
+ } elif p1p1:p2:p3:p4 inzone WizardCity/WC_Hub {
+                                                 exitloop
  }
 }
 
@@ -424,4 +425,6 @@ loop {
 
 
 #####START HERE#####
-call pop
+loop {
+       call pop
+}
