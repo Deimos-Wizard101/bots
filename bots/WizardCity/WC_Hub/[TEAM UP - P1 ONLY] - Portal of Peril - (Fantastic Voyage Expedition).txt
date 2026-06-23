@@ -318,6 +318,17 @@ until p1 hasxyz XYZ(-7745.694, -168.140, -0.742) {
 
 
 
+#WISP
+times 2 {
+ if p1 healthbelow 90% {
+                         p1 entitytp health
+ } else {
+          exitloop
+ }
+}
+
+
+
 #BOSS DEWEY
 if BOSS_PLAYSTYLE = True {
 loadplaystyle `
