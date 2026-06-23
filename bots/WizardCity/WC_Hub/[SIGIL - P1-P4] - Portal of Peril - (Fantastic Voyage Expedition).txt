@@ -259,6 +259,10 @@ times 300 {
 
 
 #TO BEACH
+until any tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
+                                                                            sleep .01
+}
+
 until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
                                                                            p1:p2:p3:p4 tp XYZ(-11.133, 2364.246, 316.630)
 }
@@ -343,8 +347,8 @@ until p1 hasxyz XYZ(-7745.694, -168.140, -0.742) {
 
 
 #WISP
-times 2 {
- if any healthbelow 90% {
+times 10 {
+ if any healthbelow 95% {
                           sameany entitytp health
  } else {
           exitloop
