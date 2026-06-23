@@ -20,25 +20,6 @@ setvar BOSS_PLAYSTYLE = False
 
 block potion {
 
-#GO TO COMMONS
-until p1:p2:p3:p4 inzone WizardCity/WC_Hub {
-                                             until p1:p2:p3:p4 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
-                                                                                                                      p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
-                                                                                                                    }
-
-until p1:p2:p3:p4 inzone WizardCity/WC_Ravenwood {
-                                                   p1:p2:p3:p4 tp XYZ(-203.839, 4.139, 0.000)
-                                                 }
-
-until p1:p2:p3:p4 inzone WizardCity/WC_Hub {
-                                             p1:p2:p3:p4 tp XYZ(14.533, -2207.150, -156.894)
-                                           }
-}
-
-
-
-
-
 #POTION
 if any healthbelow 80% OR any manabelow 25% {
                                               sameany usepotion
@@ -69,6 +50,20 @@ p1:p2:p3:p4 clickwindow ['WorldView', 'main', 'exit']
 
 }
 
+}
+
+
+
+
+
+block x {
+ times 10 {
+           p1:p2:p3:p4 sendkey X, .1
+          }
+
+ sleep 2
+ p1:p2:p3:p4 sendkey X
+ p1:p2:p3:p4 sendkey X, .1
 }
 
 
@@ -131,6 +126,19 @@ until p1:p2:p3:p4 hasxyz XYZ(-5601.666, -325.692, 234.260) {
 
 #CLAIM CREDIT & TEAM-UP
 call credit
+
+
+
+
+
+until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                                sleep .01
+}
+
+p1:p2:p3:p4 sendkey X
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+call x
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
 
 
 
