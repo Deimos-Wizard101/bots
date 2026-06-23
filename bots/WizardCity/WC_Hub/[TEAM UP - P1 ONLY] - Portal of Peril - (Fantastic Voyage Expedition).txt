@@ -20,25 +20,6 @@ setvar BOSS_PLAYSTYLE = False
 
 block potion {
 
-#GO TO COMMONS
-until p1 inzone WizardCity/WC_Hub {
-                                    until p1 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
-                                                                                                     p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
-                                                                                                  }
-
-until p1 inzone WizardCity/WC_Ravenwood {
-                                          p1 tp XYZ(-203.839, 4.139, 0.000)
-                                        }
-
-until p1 inzone WizardCity/WC_Hub {
-                                    p1 tp XYZ(14.533, -2207.150, -156.894)
-                                  }
-}
-
-
-
-
-
 #POTION
 if p1 healthbelow 80% OR p1 manabelow 25% {
                                             p1 usepotion
@@ -80,7 +61,6 @@ until p1 windowvisible ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirma
  p1 waitforpath ['WorldView', 'NPCRangeWin', 'imgBackground']
   if p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'MonthlyGauntletClaimCreditsButton'] {
     p1 clickwindow ['WorldView', 'NPCRangeWin', 'imgBackground', 'MonthlyGauntletClaimCreditsButton']
-
   } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
         p1 clickwindow ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton']
   } 
