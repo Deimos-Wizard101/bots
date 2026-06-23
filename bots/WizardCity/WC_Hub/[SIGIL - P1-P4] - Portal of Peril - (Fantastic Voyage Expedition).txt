@@ -172,8 +172,8 @@ times 300 {
 
 
 ##DIALOGUE1
-until any tracking_goal "INSPECT THE NOISE IN KALYPSO DECK" {
-                                                              sleep .01
+until any tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
+                                                                     sleep .01
 }
 
 
@@ -221,8 +221,8 @@ until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z01_KalypsoEngineRoom
 
 
 #RECALIBRATE NAVIGATIONAL GYRCOCONTROL
-until p1:p2:p3:p4 hasxyz XYZ(241.422, 566.728, 0.000) {
-                                                        p1:p2:p3:p4 tp XYZ(241.422, 566.728, 0.000)
+until p1:p2:p3:p4 hasxyz XYZ(482.103, 148.345, 0.000) {
+                                                        p1:p2:p3:p4 tp XYZ(482.103, 148.345, 0.000)
 }
 
 times 300 {
