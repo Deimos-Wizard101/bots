@@ -197,8 +197,8 @@ until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z01_KalypsoEngineRoom {
 
 
 #RECALIBRATE NAVIGATIONAL GYRCOCONTROL
-until p1 hasxyz XYZ(351.918, 683.031, 0.000) {
-                                               p1 tp XYZ(351.918, 683.031, 0.000)
+until p1 hasxyz XYZ(241.422, 566.728, 0.000) {
+                                               p1 tp XYZ(241.422, 566.728, 0.000)
 }
 
 times 300 {
@@ -216,8 +216,8 @@ times 300 {
 
 
 #POWER DOWN ENGINE
-until p1 hasxyz XYZ(291.375, -1257.363, 0.001) {
-                                                 p1 tp XYZ(291.375, -1257.363, 0.001)
+until p1 hasxyz XYZ(16.274, -1261.453, 0.001) {
+                                                p1 tp XYZ(16.274, -1261.453, 0.001)
 }
 
 times 300 {
@@ -244,8 +244,8 @@ until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
 
 
 #TALK1 TO CAPTAIN JOCK COOSTO
-until p1 hasxyz XYZ(1190.294, -810.787, -486.466) {
-                                                    p1 tp XYZ(1190.294, -810.787, -486.466)
+until p1 hasxyz XYZ(985.204, -806.734, -429.583) {
+                                                   p1 tp XYZ(985.204, -806.734, -429.583)
 }
 
 times 300 {
@@ -346,8 +346,8 @@ until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z05_DataBeach_02 {
 
 
 #DIALOGUE4
-until p1 hasxyz XYZ(309.572, -736.922, -491.241) {
-                                                   p1 tp XYZ(309.572, -736.922, -491.241)
+until p1 hasxyz XYZ(537.293, -736.346, -469.062) {
+                                                   p1 tp XYZ(537.293, -736.346, -469.062)
 }
 
 times 300 {
