@@ -387,7 +387,8 @@ times 300 {
 
 loop {
  if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
-   p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']   
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+      p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']   
  } elif p1 inzone WizardCity/WC_Hub {
                                       exitloop
  }
@@ -400,4 +401,6 @@ loop {
 
 
 #####START HERE#####
-call pop
+loop {
+       call pop
+}
