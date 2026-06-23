@@ -148,8 +148,8 @@ times 300 {
 
 
 ##DIALOGUE1
-until p1 tracking_goal "INSPECT THE NOISE IN KALYPSO DECK" {
-                                                             sleep .01
+until any tracking_goal "INSPECT THE NOISE IN KALYPSO DECK" {
+                                                              sleep .01
 }
 
 
@@ -264,6 +264,10 @@ times 300 {
 
 #RESEARCH MICRO FISH
 ##TO CAVERN
+until any tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
+                                                                sleep .01
+}
+
 until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z04_DataCavern {
                                                                    p1 tp XYZ(306.801, -678.067, -491.263)
 }
@@ -299,7 +303,8 @@ until p1 hasxyz XYZ(-3187.061, 3819.194, 902.987) {
 #FIGHT2
 if not p1 incombat {
  until p1 incombat {
-                    p1 tp XYZ(-4462.383, 3876.188, 908.999)
+                     p1 tp XYZ(-3187.061, 3819.194, 902.987)
+                     p1 tp XYZ(-4462.383, 3876.188, 908.999)
                    }
 p1 waitforcombat completion
 }
@@ -322,7 +327,8 @@ loadplaystyle `
 
 if not p1 incombat {
  until p1 incombat {
-                    p1 tp XYZ(-9944.286, 828.208, -0.000)
+                     p1 tp XYZ(-9944.286, 828.208, -0.000)
+                     p1 tp XYZ(-7745.694, -168.140, -0.742)
                    }
 p1 waitforcombat completion
 }
