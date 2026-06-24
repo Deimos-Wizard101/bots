@@ -1,7 +1,7 @@
 ###deimos_expertmode
 #COMBAT & DIALOGUE (ENABLED).
 #P1 USES KEY.
-#SUPPORTS UP TO P4. DORMS EQUIPPED. START IN CASTLE DARKMOOR. SIGIL GROUP. CTRL+F "EXCEPT" (EXPERT ONLY).
+#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "USE_POTION" & "EXCEPT".
 
 setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
@@ -15,6 +15,134 @@ setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 ###Support3 (Should): [Storm weave-blade, Sharpened].
 ####P4 (STORM HITTER ~275D, 55P~ - Must): [(x2) Epic, Tempest, Bunyip].
 ########################################################################
+
+
+
+
+
+setvar USE_POTION = False
+
+
+
+
+
+block potion {
+
+#USE POTION
+if any healthbelow 80% OR any manabelow 25% {
+                                              sameany usepotion
+                                              sleep 1
+}
+
+
+
+#REFILL
+if any potioncountbelow 1 {
+
+
+
+
+
+#GO TO COMMONS
+ until sameany inzone WizardCity/WC_Hub {
+                                          until sameany inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                               sameany clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                             }
+
+ until sameany inzone WizardCity/WC_Ravenwood {
+                                                sameany tp XYZ(-203.839, 4.139, 0.000)
+                                              }
+
+ until sameany inzone WizardCity/WC_Hub {
+                                          sameany tp XYZ(14.533, -2207.150, -156.894)
+                                        }
+ }
+
+
+
+
+#HILDA BREWER
+until sameany hasxyz XYZ(-4530.453, 561.836, 229.000) {
+                                                        sameany tp XYZ(-4530.453, 561.836, 229.000)
+                                                      }
+
+until sameany windowvisible ['WorldView', 'main', 'fillallpotions'] {
+                                                                      sameany sendkey X, .05
+                                                                    }
+
+
+
+#REFILL ALL POTIONS
+sameany clickwindow ['WorldView', 'main', 'fillallpotions']
+
+#BUY
+sameany clickwindow ['WorldView', 'main', 'buyAction']
+
+#CLOSE
+sameany clickwindow ['WorldView', 'main', 'exit']
+
+
+
+
+
+#BACK TO CASTLE DARKMOOR
+until sameany inzone WizardCity/WC_NightSide {
+                                               sameany tp XYZ(2660.240, 4988.099, 2.512)
+                                             }
+
+ until sameany inzone G14_DM/DM_Z01_CastleDarkmoor {
+  #ZONE PROTOCOL
+  while p1 inzone WizardCity/WC_NightSide {
+                                            p1 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p2 inzone WizardCity/WC_NightSide {
+                                         p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                         sleep 1
+  }
+  while p3 inzone WizardCity/WC_NightSide {
+                                         p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                         sleep 1
+  }
+  while p4 inzone WizardCity/WC_NightSide {
+                                            p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+ }
+}
+
+}
+
+
+
+
+
+block go {
+
+#GO TO CASTLE DARKMOOR
+until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+                                                        until p1:p2:p3:p4 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                                                 p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                                               }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_Ravenwood {
+                                                    p1:p2:p3:p4 tp XYZ(-203.839, 4.139, 0.000)
+                                                  }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_Hub {
+                                              p1:p2:p3:p4 tp XYZ(14.533, -2207.150, -156.894)
+                                            }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_NightSide {
+                                                    p1:p2:p3:p4 tp XYZ(2660.240, 4988.099, 2.512)
+                                                  }
+
+ until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+                                                         p1:p2:p3:p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                                       }
+ }
+
+}
 
 
 
@@ -96,6 +224,18 @@ times 10 {
 
 
 block sigil {
+
+#BEST 
+if USE_POTION = True {
+                       call potion
+}
+
+#AREA
+call go
+
+
+
+
 
 #SIGIL
 until p1:p2:p3:p4 hasxyz XYZ(95.714, 20.346, -1.188) {
@@ -188,6 +328,7 @@ if p1:p2:p3:p4 incombat {
 
 #I H-A-T-E STAIRCASES P-E-R-I-O-D!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+                                                                 #ZONE PROTOCOL
                                                                  sleep 1
                                                                  p1 tp XYZ(-222.020, 3322.083, 1.894)
                                                                  sleep 1
@@ -196,6 +337,7 @@ until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
                                                                  p3 tp XYZ(-222.020, 3322.083, 1.894)
                                                                  sleep 1
                                                                  p4 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep 1
 }
 
 
@@ -218,6 +360,7 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
 }
 
 until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
+                                                                    #ZONE PROTOCOL
                                                                     sleep 1
                                                                     p1 tp XYZ(438.335, -495.474, 613.954)
                                                                     sleep 1
@@ -257,22 +400,6 @@ loop {
 
 until not any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
                                                                             p1:p2:p3:p4 sendkey X, .05
-}
-
-
-
-
-
-#POTIONS
-p1:p2:p3:p4 buypotions ifneeded
-p1:p2:p3:p4 waitforfree
-
-if any healthbelow 67% {
-  sameany usepotion
-}
-
-if any manabelow 25% {
-  sameany usepotion
 }
 
 
