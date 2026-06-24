@@ -1,7 +1,7 @@
 ###deimos_expertmode
 #COMBAT & DIALOGUE (ENABLED).
 #P1 USES KEY.
-#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "USE_POTION" & "EXCEPT".
+#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "EXCEPT".
 
 setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
@@ -20,7 +20,7 @@ setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
 
 
-setvar USE_POTION = False
+setvar BEST_USE_REFILL_POTIONS = False
 
 
 
@@ -97,12 +97,12 @@ until sameany inzone WizardCity/WC_NightSide {
                                             sleep 1
   }
   while p2 inzone WizardCity/WC_NightSide {
-                                         p2 tp XYZ(-2380.693, -591.582, -0.006)
-                                         sleep 1
+                                            p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
   }
   while p3 inzone WizardCity/WC_NightSide {
-                                         p3 tp XYZ(-2380.693, -591.582, -0.006)
-                                         sleep 1
+                                            p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
   }
   while p4 inzone WizardCity/WC_NightSide {
                                             p4 tp XYZ(-2380.693, -591.582, -0.006)
@@ -225,10 +225,12 @@ times 10 {
 
 block sigil {
 
-#BEST 
-if USE_POTION = True {
-                       call potion
+#ACTIVE POTION HERE
+if BEST_USE_REFILL_POTIONS = True {
+                                    call potion
 }
+
+
 
 #AREA
 call go
