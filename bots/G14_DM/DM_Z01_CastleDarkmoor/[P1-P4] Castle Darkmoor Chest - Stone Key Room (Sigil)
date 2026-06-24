@@ -138,7 +138,14 @@ until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
                                                   }
 
  until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
-                                                         p1:p2:p3:p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                                         sleep 1
+                                                         p1 tp XYZ(-2380.693, -591.582, -0.006)
+                                                         sleep 1
+                                                         p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                                         sleep 1
+                                                         p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                                         sleep 1
+                                                         p4 tp XYZ(-2380.693, -591.582, -0.006)
                                                        }
  }
 
