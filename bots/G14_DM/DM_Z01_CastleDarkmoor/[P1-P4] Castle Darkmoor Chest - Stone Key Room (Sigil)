@@ -93,18 +93,22 @@ until sameany inzone WizardCity/WC_NightSide {
  until sameany inzone G14_DM/DM_Z01_CastleDarkmoor {
   #ZONE PROTOCOL
   while p1 inzone WizardCity/WC_NightSide {
+                                            sleep 1
                                             p1 tp XYZ(-2380.693, -591.582, -0.006)
                                             sleep 1
   }
   while p2 inzone WizardCity/WC_NightSide {
+                                            sleep 1
                                             p2 tp XYZ(-2380.693, -591.582, -0.006)
                                             sleep 1
   }
   while p3 inzone WizardCity/WC_NightSide {
+                                            sleep 1
                                             p3 tp XYZ(-2380.693, -591.582, -0.006)
                                             sleep 1
   }
   while p4 inzone WizardCity/WC_NightSide {
+                                            sleep 1
                                             p4 tp XYZ(-2380.693, -591.582, -0.006)
                                             sleep 1
   }
@@ -138,16 +142,29 @@ until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
                                                   }
 
  until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
-                                                         sleep 1
-                                                         p1 tp XYZ(-2380.693, -591.582, -0.006)
-                                                         sleep 1
-                                                         p2 tp XYZ(-2380.693, -591.582, -0.006)
-                                                         sleep 1
-                                                         p3 tp XYZ(-2380.693, -591.582, -0.006)
-                                                         sleep 1
-                                                         p4 tp XYZ(-2380.693, -591.582, -0.006)
-                                                       }
+  #ZONE PROTOCOL
+  while p1 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p1 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p2 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p3 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p4 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
  }
+}
 
 }
 
