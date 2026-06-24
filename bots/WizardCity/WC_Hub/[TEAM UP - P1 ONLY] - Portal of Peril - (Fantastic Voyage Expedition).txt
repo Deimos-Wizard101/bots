@@ -21,7 +21,7 @@ setvar BOSS_PLAYSTYLE = False
 block potion {
 
 #POTION
-if p1 healthbelow 80% OR p1 manabelow 25% {
+if p1 healthbelow 85% OR p1 manabelow 25% {
                                             p1 usepotion
                                             sleep 1
 }
@@ -29,15 +29,15 @@ if p1 healthbelow 80% OR p1 manabelow 25% {
 
 
 #HILDA BREWER
-until p1 potioncountabove 0 {
+until not p1 potioncountbelow 1 {
 
-until p1 hasxyz XYZ(-4530.453, 561.836, 229.000) {
-                                                   p1 tp XYZ(-4530.453, 561.836, 229.000)
-                                                 }
+ until p1 hasxyz XYZ(-4530.453, 561.836, 229.000) {
+                                                    p1 tp XYZ(-4530.453, 561.836, 229.000)
+                                                  }
 
-until p1 windowvisible ['WorldView', 'main', 'fillallpotions'] {
-                                                                 p1 sendkey X, .05
-                                                               }
+ until p1 windowvisible ['WorldView', 'main', 'fillallpotions'] {
+                                                                  p1 sendkey X, .05
+                                                                }
 
 #REFILL ALL POTIONS
 p1 clickwindow ['WorldView', 'main', 'fillallpotions']
@@ -323,7 +323,7 @@ until p1 hasxyz XYZ(-7745.694, -168.140, -0.742) {
 
 
 #WISP
-times 10 {
+times 4 {
  if p1 healthbelow 99% {
                          p1 entitytp health
                          sleep .1
@@ -403,8 +403,8 @@ times 300 {
 
 loop {
  if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
-     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
-      p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']   
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+      p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
  } elif p1 inzone WizardCity/WC_Hub {
                                       exitloop
  }
