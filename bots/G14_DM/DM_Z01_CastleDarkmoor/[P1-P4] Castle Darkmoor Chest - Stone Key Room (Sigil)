@@ -1,12 +1,12 @@
 ###deimos_expertmode
 #COMBAT & DIALOGUE (ENABLED).
 #P1 USES KEY.
-#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "EXCEPT".
+#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "BEST" & "EXCEPT".
 
 setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
 ########################################################################
-#SETVAR SET TO "False" (NO-PLAYSTYLE). "True" (BEST-STORM-PLAYSTYLE):
+#SETVAR SET TO "False" (NO-PLAYSTYLE). "True" (STORM-PLAYSTYLE):
 
 #WHEN SET TO "True" SETUP THESE DECKS:
 #####DECKS#####
@@ -20,7 +20,7 @@ setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
 
 
-setvar BEST_USE_REFILL_POTIONS = False
+setvar BEST_USE_REFILL_POTIONS = True
 
 
 
