@@ -22,9 +22,6 @@ block potion {
 
 #POTION
 if p1 healthbelow 85% OR p1 manabelow 25% {
- until p1 windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
-        p1 cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
- }
                                             p1 usepotion
                                             sleep 1
 }
@@ -104,6 +101,11 @@ until p1 inzone WizardCity/WC_Hub {
 
 
 #POTION CHECK
+##PREVENTS SKIPPING POTION
+until p1 windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
+       p1 cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
+}
+
 call potion
 
 
