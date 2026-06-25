@@ -22,6 +22,9 @@ block potion {
 
 #POTION
 if p1 healthbelow 85% OR p1 manabelow 25% {
+ until p1 windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
+        p1 cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
+ }
                                             p1 usepotion
                                             sleep 1
 }
@@ -148,8 +151,8 @@ times 300 {
 
 
 ##DIALOGUE1
-until any tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
-                                                                     sleep .01
+until p1 tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
+                                                                    sleep .01
 }
 
 
@@ -235,7 +238,7 @@ times 300 {
 
 
 #TO BEACH
-until any tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
+until p1 tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
                                                                            sleep .01
 }
 
@@ -268,8 +271,8 @@ times 300 {
 
 #RESEARCH MICRO FISH
 ##TO CAVERN
-until any tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
-                                                                sleep .01
+until p1 tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
+                                                               sleep .01
 }
 
 until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z04_DataCavern {
