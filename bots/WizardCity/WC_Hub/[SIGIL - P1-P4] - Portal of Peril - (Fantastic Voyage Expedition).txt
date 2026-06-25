@@ -208,13 +208,11 @@ loadplaystyle `
 `
 }
 
-if not p1:p2:p3:p4 incombat {
- until p1:p2:p3:p4 incombat {
-                              p1:p2:p3:p4 tp XYZ(-258.749, 1884.518, 0.183)
-                              p1:p2:p3:p4 tp XYZ(383.175, 1937.181, 0.183)
-                            }
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 tp XYZ(-258.749, 1884.518, 0.183)
+                             p1:p2:p3:p4 tp XYZ(383.175, 1937.181, 0.183)
+                           }
 p1:p2:p3:p4 waitforcombat completion
-}
 
 
 
@@ -319,12 +317,10 @@ until p1 hasxyz XYZ(-47.504, -1661.786, -0.039) {
 
 
 #FIGHT1
-if not p1:p2:p3:p4 incombat {
- until p1:p2:p3:p4 incombat {
-                              p1:p2:p3:p4 tp XYZ(59.999, -360.000, -0.039)
-                            }
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 tp XYZ(59.999, -360.000, -0.039)
+                           }
 p1:p2:p3:p4 waitforcombat completion
-}
 
 
 
@@ -336,13 +332,11 @@ until p1 hasxyz XYZ(-3187.061, 3819.194, 902.987) {
 
 
 #FIGHT2
-if not p1:p2:p3:p4 incombat {
- until p1:p2:p3:p4 incombat {
-                              p1:p2:p3:p4 tp XYZ(-3187.061, 3819.194, 902.987)
-                              p1:p2:p3:p4 tp XYZ(-4462.383, 3876.188, 908.999)
-                            }
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 tp XYZ(-3187.061, 3819.194, 902.987)
+                             p1:p2:p3:p4 tp XYZ(-4462.383, 3876.188, 908.999)
+                           }
 p1:p2:p3:p4 waitforcombat completion
-}
 
 
 
@@ -371,13 +365,11 @@ loadplaystyle `
 `
 }
 
-if not p1:p2:p3:p4 incombat {
- until p1:p2:p3:p4 incombat {
-                              p1:p2:p3:p4 tp XYZ(-9944.286, 828.208, -0.000)
-                              p1:p2:p3:p4 tp XYZ(-7745.694, -168.140, -0.742)
-                            }
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 tp XYZ(-9944.286, 828.208, -0.000)
+                             p1:p2:p3:p4 tp XYZ(-7745.694, -168.140, -0.742)
+                           }
 p1:p2:p3:p4 waitforcombat completion
-}
 
 
 
