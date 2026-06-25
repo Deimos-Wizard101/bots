@@ -179,8 +179,8 @@ times 300 {
 
 
 ##DIALOGUE1
-until any tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
-                                                                     sleep .01
+until p1:p2:p3:p4 tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
+                                                                             sleep .01
 }
 
 
@@ -266,8 +266,8 @@ times 300 {
 
 
 #TO BEACH
-until any tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
-                                                                            sleep .01
+until p1:p2:p3:p4 tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
+                                                                                    sleep .01
 }
 
 until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
@@ -299,8 +299,8 @@ times 300 {
 
 #RESEARCH MICRO FISH
 ##TO CAVERN
-until any tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
-                                                                sleep .01
+until p1:p2:p3:p4 tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
+                                                                        sleep .01
 }
 
 until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z04_DataCavern {
