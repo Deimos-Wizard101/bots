@@ -22,6 +22,9 @@ block potion {
 
 #POTION
 if any healthbelow 80% OR any manabelow 25% {
+ until sameany windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
+        sameany cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
+ }
                                               sameany usepotion
                                               sleep 1
 }
@@ -430,8 +433,8 @@ loop {
  if p1:p2:p3:p4 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
      p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
       p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']   
- } elif p1p1:p2:p3:p4 inzone WizardCity/WC_Hub {
-                                                 exitloop
+ } elif p1:p2:p3:p4 inzone WizardCity/WC_Hub {
+                                               exitloop
  }
 }
 
