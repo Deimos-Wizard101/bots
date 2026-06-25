@@ -1,0 +1,420 @@
+###deimos_expertmode
+#DIALOGUE & COMBAT (ENABLED).
+#SUPPORTS P1 ONLY.
+#UTILIZES TEAM-UP.
+#START ANYWHERE.
+#DORMS EQUIPPED.
+#ALLOW ENDORSEMENTS (NO)!
+#(Suggestion) USE SIGIL GROUP FOR SLOT PREFERENCE.
+#(Expert Only) CTRL+F "True" FOR PLAYSTYLES.
+
+
+
+
+
+setvar PLAYSTYLE = False
+setvar BOSS_PLAYSTYLE = False
+
+
+
+
+
+block potion {
+
+#POTION
+if p1 healthbelow 85% OR p1 manabelow 25% {
+                                            p1 usepotion
+                                            sleep 1
+}
+
+
+
+#HILDA BREWER
+until not p1 potioncountbelow 1 {
+
+ until p1 hasxyz XYZ(-4530.453, 561.836, 229.000) {
+                                                    p1 tp XYZ(-4530.453, 561.836, 229.000)
+                                                  }
+
+ until p1 windowvisible ['WorldView', 'main', 'fillallpotions'] {
+                                                                  p1 sendkey X, .05
+                                                                }
+
+#REFILL ALL POTIONS
+p1 clickwindow ['WorldView', 'main', 'fillallpotions']
+
+#BUY
+p1 clickwindow ['WorldView', 'main', 'buyAction']
+
+#CLOSE
+p1 clickwindow ['WorldView', 'main', 'exit']
+
+}
+
+}
+
+
+
+
+
+block credit {
+until p1 windowvisible ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirmationBackground', 'TeamUpButton'] {
+ p1 waitforpath ['WorldView', 'NPCRangeWin', 'imgBackground']
+  if p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'MonthlyGauntletClaimCreditsButton'] {
+    p1 clickwindow ['WorldView', 'NPCRangeWin', 'imgBackground', 'MonthlyGauntletClaimCreditsButton']
+  } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
+        p1 clickwindow ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton']
+  } 
+}
+
+until not p1 windowvisible ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirmationBackground', 'TeamUpButton'] {
+ if p1 windowvisible ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirmationBackground', 'TeamUpButton'] {
+   p1 clickwindow ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirmationBackground', 'TeamSize4CheckBox']
+  p1 clickwindow ['WorldView', 'TeamUpConfirmationWindow', 'TeamUpConfirmationBackground', 'TeamUpButton']
+ }
+}
+
+}
+
+
+
+
+
+block pop {
+
+#GO TO COMMONS
+until p1 inzone WizardCity/WC_Hub {
+                                    until p1 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                     p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                  }
+
+until p1 inzone WizardCity/WC_Ravenwood {
+                                          p1 tp XYZ(-203.839, 4.139, 0.000)
+                                        }
+
+until p1 inzone WizardCity/WC_Hub {
+                                    p1 tp XYZ(14.533, -2207.150, -156.894)
+                                  }
+}
+
+
+
+
+
+#POTION CHECK
+##PREVENTS SKIPPING POTION
+until p1 windowtext ['ToolTipContainer', 'ToolTipText'] "right-click on a phrase to add to/remove from favorites" {
+       p1 cursorwindow ['WorldView', 'windowQuickChat', 'btnRadialQuickChat']
+}
+
+call potion
+
+
+
+#SIGIL
+until p1 hasxyz XYZ(-5601.666, -325.692, 234.260) {
+                                                    p1 tp XYZ(-5601.666, -325.692, 234.260)
+
+}
+
+
+
+#CLAIM CREDIT & TEAM-UP
+call credit
+
+
+
+
+
+#TO FANTASTIC VOYAGE EXPEDITION (DUNGEON)
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z01_KalypsoEngineRoom {
+                                                                          sleep .01
+}
+
+
+
+#DIALOGUE ENTRANCE
+##TALK TO CAPTAIN JOCK COOSTO
+until p1 hasxyz XYZ(-7.097, 1458.186, 0.002) {
+                                               p1 tp XYZ(-7.097, 1458.186, 0.002)
+}
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+##DIALOGUE1
+until p1 tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
+                                                                    sleep .01
+}
+
+
+
+#TO DECK
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z02_KalypsoDeck {
+                                                                    p1 tp XYZ(-11.133, 2364.246, 316.630)
+}
+
+
+
+
+
+#DIALOGUE2
+until p1 hasxyz XYZ(427.740, 746.977, 0.183) {
+                                               p1 tp XYZ(427.740, 746.977, 0.183)
+}
+
+
+
+#FIGHT
+if PLAYSTYLE = True {
+loadplaystyle `
+###ADD YOUR OWN###
+`
+}
+
+until p1 incombat {
+                    p1 tp XYZ(-258.749, 1884.518, 0.183)
+                    p1 tp XYZ(383.175, 1937.181, 0.183)
+}
+p1 waitforcombat completion
+
+
+
+#TO ENGINE ROOM
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z01_KalypsoEngineRoom {
+                                                                          p1 tp XYZ(0.428, -1100.798, -149.836)
+}
+
+
+
+
+
+#RECALIBRATE NAVIGATIONAL GYRCOCONTROL
+until p1 hasxyz XYZ(482.103, 148.345, 0.000) {
+                                               p1 tp XYZ(482.103, 148.345, 0.000)
+}
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+#POWER DOWN ENGINE
+until p1 hasxyz XYZ(16.274, -1261.453, 0.001) {
+                                                p1 tp XYZ(16.274, -1261.453, 0.001)
+}
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+#TO BEACH
+until p1 tracking_goal "TALK TO CAPTAIN JOCK COOSTO IN DATA ATOLL BEACH" {
+                                                                           sleep .01
+}
+
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
+                                                                  p1 tp XYZ(-11.133, 2364.246, 316.630)
+}
+
+
+
+
+
+#TALK1 TO CAPTAIN JOCK COOSTO
+until p1 hasxyz XYZ(985.204, -806.734, -429.583) {
+                                                   p1 tp XYZ(985.204, -806.734, -429.583)
+}
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+#RESEARCH MICRO FISH
+##TO CAVERN
+until p1 tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
+                                                               sleep .01
+}
+
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z04_DataCavern {
+                                                                   p1 tp XYZ(306.801, -678.067, -491.263)
+}
+
+
+
+
+
+#DIALOGUE3
+until p1 hasxyz XYZ(-47.504, -1661.786, -0.039) {
+                                                  p1 tp XYZ(-47.504, -1661.786, -0.039)
+}
+
+
+
+#FIGHT1
+until p1 incombat {
+                    p1 tp XYZ(59.999, -360.000, -0.039)
+                  }
+p1 waitforcombat completion
+
+
+
+#VENTURE FORTH
+until p1 hasxyz XYZ(-3187.061, 3819.194, 902.987) {
+                                                    p1 tp XYZ(-3187.061, 3819.194, 902.987)
+}
+
+
+
+#FIGHT2
+until p1 incombat {
+                    p1 tp XYZ(-3187.061, 3819.194, 902.987)
+                    p1 tp XYZ(-4462.383, 3876.188, 908.999)
+                  }
+p1 waitforcombat completion
+
+
+
+#CONTINUE INVESTIGATING
+until p1 hasxyz XYZ(-7745.694, -168.140, -0.742) {
+                                                   p1 tp XYZ(-7745.694, -168.140, -0.742)
+}
+
+
+
+#WISP
+times 4 {
+ if p1 healthbelow 99% {
+                         p1 entitytp health
+                         sleep .1
+ } else {
+          exitloop
+ }
+}
+
+
+
+#BOSS DEWEY
+if BOSS_PLAYSTYLE = True {
+loadplaystyle `
+###ADD YOUR OWN###
+`
+}
+
+until p1 incombat {
+                    p1 tp XYZ(-9944.286, 828.208, -0.000)
+                    p1 tp XYZ(-7745.694, -168.140, -0.742)
+                  }
+p1 waitforcombat completion
+
+
+
+#TALK2 TO CAPTAIN JOCK COOSTO
+##TO BEACH1
+until p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z05_DataBeach_02 {
+                                                                     p1 tp XYZ(-9854.244, -2693.855, 460.019)
+}
+
+
+
+
+
+#DIALOGUE4
+until p1 hasxyz XYZ(537.293, -736.346, -469.062) {
+                                                   p1 tp XYZ(537.293, -736.346, -469.062)
+}
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+#EXIT BACK TO THE COMMONS (BOAT)
+until p1 hasxyz XYZ(863.928, -850.785, -411.711) {
+                                                   p1 tp XYZ(863.928, -850.785, -411.711)
+}
+
+
+
+times 300 {
+ if not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                         sleep .01
+
+ } elif p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+    until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                               p1 sendkey X, .01
+                                                                             }
+   exitloop
+ }
+}
+
+
+
+loop {
+ if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+      p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+ } elif p1 inzone WizardCity/WC_Hub {
+                                      exitloop
+ }
+}
+
+}
+
+
+
+
+
+#####START HERE#####
+loop {
+       call pop
+}
