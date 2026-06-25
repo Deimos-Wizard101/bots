@@ -1,7 +1,14 @@
 ###deimos_expertmode
 #COMBAT & DIALOGUE (ENABLED).
+#SUPPORTS UP TO P4.
+#START ANYWEHRE.
 #P1 USES KEY.
-#SUPPORTS UP TO P4. START ANYWEHRE. DORMS EQUIPPED. SIGIL GROUP. (Expert) CTRL+F "BEST" & "EXCEPT".
+#DORMS EQUIPPED.
+#SIGIL GROUP.
+#ALLOW ENDORSEMENTS (NO)!
+#(Expert) CTRL+F "BEST" & "EXCEPT".
+
+
 
 setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
 
@@ -457,4 +464,6 @@ until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
 
 
 #####START HERE#####
-call sigil
+loop {
+       call sigil
+}
