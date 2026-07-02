@@ -1,0 +1,174 @@
+###deimos_expertmode 
+
+block playstyle {
+    loadplaystyle `
+### p1
+amulet | feint @ boss
+### p2
+bunyips[epic] | any<aoe>[epic] 
+### p3
+feint[potent trap] @ boss  
+### p4
+feint[potent trap] @ boss | amulet | any<blade>[sharp] @ ally(2)
+    `
+}
+# =========================
+# WAIT FOR FREE
+# =========================
+block waitforfree {
+    times 3000 {
+        if any loading {
+            break
+        } else {
+            sleep 0.1
+        }
+    }
+    while any loading {
+        sleep 0.1
+    }
+    while not windowvisible ['WorldView', 'windowQuickChat', 'btnRadialQuickChat'] {
+        sleep 0.1
+    }
+    sleep 0.5
+}
+# =========================
+# RECALL
+# =========================
+block recall {
+    while any windowvisible ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton', 'txtGoHomeTimer'] {
+        sleep 1
+    }
+    times 3 {
+        clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+    }
+    call waitforfree
+}
+# =========================
+# AQUILA / SIGIL
+# =========================
+block sigil {
+    if any inzone Aquila/AQ_Z00_Hub {
+        if any manabelow 20% {
+            sameany tp XYZ(8076.120, 5664.401, -1293.089)
+            sleep 0.5
+            times 3 {
+                sameany entitytp mana
+                sleep 0.5
+            }
+        }
+        if any manaabove 10% {
+            sameany minustp XYZ(0, 0, 800)
+            sleep 1 
+            sameany tp XYZ(7843.568, 12878.834, -1659.605)
+            times 50 {
+                if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
+                    break 
+                } else {
+                    sleep 1 
+                }
+            }
+            times 3 {
+                sendkey X, .1
+            }
+            call waitforfree
+        }
+    }
+}
+# =========================
+# SAME PLACE CHECK
+# =========================
+block check {
+    times 100 {
+        if sameplace {
+            break
+        } else {
+            sleep 0.1
+        }
+    }
+    if not sameplace {
+        sameany minustp XYZ(0, 0, 800)
+        sleep 1 
+        call recall
+    }
+}
+# =========================
+# SCALE P1 / 
+# =========================
+block exceptscale {
+    if inrange "scaling" {
+        p1 tp XYZ(-2414.450, 8415.614, 1291.705)
+    }
+    times 50 {
+        if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+            break
+        } else {
+            sleep 0.1 
+        }
+    }
+    if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] { 
+        print p1 needs elixir 
+        p1 sendkey X 
+        times 20 {
+            if p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton'] {
+                break
+            } else {
+                sleep 0.1
+            }
+        }
+        p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
+        sleep 2
+    }
+}
+# =========================
+# INSIDE TARTARUS
+# =========================
+block tartarus {
+    if any inzone Aquila/AQ_Z03_Tartarus  {
+        if not sameany healthabove 80% {
+            if sameany inrange "health" {
+                times 2 {
+                    sameany entitytp health
+                }
+               
+            }
+        }
+        p1 tp XYZ(2684.797, 6205.419, 1763.638)
+        call waitforfree
+        p2:p3:p4 tp XYZ(2684.797, 6205.419, 1763.638)
+        call waitforfree
+    }
+}
+# =========================
+# FIGHT
+# =========================
+block fight { 
+    if inzone Aquila/Interiors/AQ_Z03_CavOfNyx {
+        entitytp "AQ-Immortal-Kronus"
+        times 1000 {
+            if incombat {
+                break
+            } else {
+                sleep 0.01
+            }
+        }
+        if incombat {
+            call playstyle
+            waitforcombat completion
+            waitforfree
+        }
+        if not incombat {
+            call recall
+        }
+    }
+}
+
+# ===============================================================================#
+#                                   BOT SETUP                                    #
+# ===============================================================================#
+call sigil
+call check
+while not p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
+    call exceptscale
+}
+call tartarus
+call fight
