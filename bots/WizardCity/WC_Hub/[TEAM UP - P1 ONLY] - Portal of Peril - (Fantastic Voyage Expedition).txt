@@ -1,4 +1,11 @@
 ###deimos_expertmode
+# @name: [TEAM UP - P1 ONLY] - Portal of Peril - (Fantastic Voyage Expedition)
+# @zone: WizardCity/WC_Hub
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: == 1
+# @description: Full bot for PoP: Fantastic Voyage Expedition: Team-Up.
+
 #DIALOGUE & COMBAT (ENABLED).
 #SUPPORTS P1 ONLY.
 #UTILIZES TEAM-UP.
