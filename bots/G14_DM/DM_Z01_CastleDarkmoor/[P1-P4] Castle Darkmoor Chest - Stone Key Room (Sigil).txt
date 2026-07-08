@@ -1,0 +1,476 @@
+###deimos_expertmode
+# @name: [P1-P4] Castle Darkmoor Chest - Stone Key Room (Sigil)
+# @zone: G14_DM/DM_Z01_CastleDarkmoor
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: <= 4
+# @description: Full bot for Castle Darkmoor Locked Chest.
+
+#COMBAT & DIALOGUE (ENABLED).
+#SUPPORTS UP TO P4.
+#START ANYWEHRE.
+#P1 USES KEY.
+#DORMS EQUIPPED.
+#SIGIL GROUP.
+#ALLOW ENDORSEMENTS (NO)!
+#(Expert) CTRL+F "BEST" & "EXCEPT".
+
+
+
+setvar ONE-TURN-STORM-STRAT = False # <---------------------------------
+
+########################################################################
+#SETVAR SET TO "False" (NO-PLAYSTYLE). "True" (STORM-PLAYSTYLE):
+
+#WHEN SET TO "True" SETUP THESE DECKS:
+#####DECKS#####
+#Support1 (Should): [Mass Feint].
+##Support2 (Should): [Feint, Potent Trap].
+###Support3 (Should): [Storm weave-blade, Sharpened].
+####P4 (STORM HITTER ~275D, 55P~ - Must): [(x2) Epic, Tempest, Bunyip].
+########################################################################
+
+
+
+
+
+setvar BEST_USE_REFILL_POTIONS = True
+
+
+
+
+
+block potion {
+
+#USE POTION
+if any healthbelow 80% OR any manabelow 25% {
+                                              sameany usepotion
+                                              sleep 1
+}
+
+
+
+#REFILL
+if any potioncountbelow 1 {
+
+
+
+
+
+#GO TO COMMONS
+ until sameany inzone WizardCity/WC_Hub {
+                                          until sameany inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                               sameany clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                             }
+
+ until sameany inzone WizardCity/WC_Ravenwood {
+                                                sameany tp XYZ(-203.839, 4.139, 0.000)
+                                              }
+
+ until sameany inzone WizardCity/WC_Hub {
+                                          sameany tp XYZ(14.533, -2207.150, -156.894)
+                                        }
+ }
+
+
+
+
+#HILDA BREWER
+until sameany hasxyz XYZ(-4530.453, 561.836, 229.000) {
+                                                        sameany tp XYZ(-4530.453, 561.836, 229.000)
+                                                      }
+
+until sameany windowvisible ['WorldView', 'main', 'fillallpotions'] {
+                                                                      sameany sendkey X, .05
+                                                                    }
+
+
+
+#REFILL ALL POTIONS
+sameany clickwindow ['WorldView', 'main', 'fillallpotions']
+
+#BUY
+sameany clickwindow ['WorldView', 'main', 'buyAction']
+
+#CLOSE
+sameany clickwindow ['WorldView', 'main', 'exit']
+
+
+
+
+
+#BACK TO CASTLE DARKMOOR
+until sameany inzone WizardCity/WC_NightSide {
+                                               sameany tp XYZ(2660.240, 4988.099, 2.512)
+                                             }
+
+ until sameany inzone G14_DM/DM_Z01_CastleDarkmoor {
+  #ZONE PROTOCOL
+  while p1 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p1 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p2 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p3 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p4 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+ }
+}
+
+}
+
+
+
+
+
+block go {
+
+#GO TO CASTLE DARKMOOR
+until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+                                                        until p1:p2:p3:p4 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                                                 p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                                               }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_Ravenwood {
+                                                    p1:p2:p3:p4 tp XYZ(-203.839, 4.139, 0.000)
+                                                  }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_Hub {
+                                              p1:p2:p3:p4 tp XYZ(14.533, -2207.150, -156.894)
+                                            }
+
+ until p1:p2:p3:p4 inzone WizardCity/WC_NightSide {
+                                                    p1:p2:p3:p4 tp XYZ(2660.240, 4988.099, 2.512)
+                                                  }
+
+ until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+  #ZONE PROTOCOL
+  while p1 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p1 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p2 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p2 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p3 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p3 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+  while p4 inzone WizardCity/WC_NightSide {
+                                            sleep 1
+                                            p4 tp XYZ(-2380.693, -591.582, -0.006)
+                                            sleep 1
+  }
+ }
+}
+
+}
+
+
+
+
+
+block sell {
+#Open Bag
+p1:p2:p3:p4 waitforfree
+p1:p2:p3:p4 sendkey B, .1
+
+
+
+#QUICKSELL BUTTON
+p1:p2:p3:p4 waitforpath ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+p1:p2:p3:p4 clickwindow ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+
+
+
+#ALL
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_All']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_All']
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+
+
+#AMULET
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_Amulet']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'BackpackStuff', 'ShopCategory_Amulet']
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+
+
+#CLICK SELL
+p1:p2:p3:p4 waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'sellAction']
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'sellAction']
+
+#CONFIRM SELL
+p1:p2:p3:p4 clickwindow ['WorldView', 'shopGUI', 'QuickSellConfirmationWindow', 'SellButton']
+
+#CROWNS CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+#PET CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+#MAX GOLD CONFIRM
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+
+
+
+#CLOSE BAG
+p1:p2:p3:p4 waitforpath ['WorldView', 'windowHUD', 'btnSpellbook']
+p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+
+p1:p2:p3:p4 waitforfree
+
+}
+
+
+
+
+
+block x {
+times 10 {
+           p1:p2:p3:p4 sendkey X, .1
+}
+
+ sleep 2
+ p1:p2:p3:p4 sendkey X
+ p1:p2:p3:p4 sendkey X, .1
+}
+
+
+
+
+
+block sigil {
+
+#ACTIVE POTION HERE
+if BEST_USE_REFILL_POTIONS = True {
+                                    call potion
+}
+
+
+
+#AREA
+call go
+
+
+
+
+
+#SIGIL
+until p1:p2:p3:p4 hasxyz XYZ(95.714, 20.346, -1.188) {
+                                                       p1:p2:p3:p4 tp XYZ(95.714, 20.346, -1.188)
+}
+
+until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                                sleep .01
+}
+
+p1:p2:p3:p4 sendkey X
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+call x
+p1:p2:p3:p4 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+until p1:p2:p3:p4 inzone G14_DM/DM_Z02_MainHall {
+                                                  sleep .01
+}
+
+
+
+
+
+#MAINHALL
+if ONE-TURN-STORM-STRAT = True {
+loadplaystyle `
+"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Tempest[Epic] | any<damage>[epic] @ enemy
+`
+}
+
+
+
+##DIALOGUE
+until p1 hasxyz XYZ(19.906, -2120.380, 33.972) {
+                                                 p1 tp XYZ(19.906, -2120.380, 33.972)
+}
+
+
+
+#FIGHT
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 entitytp Werewolf
+}
+
+if p1:p2:p3:p4 incombat {
+                          p1:p2:p3:p4 waitforcombat completion
+}
+
+
+
+#WISP
+times 5 {
+ if any manabelow 25% OR any healthbelow 80% {
+                                               sameany entitytp health
+                                               sleep .1
+                                               sameany entitytp mana
+ } else {
+          exitloop
+ }
+}
+
+
+
+#ARMORY
+if ONE-TURN-STORM-STRAT = True {
+loadplaystyle `
+"Feint Mass - Amulet" | "Feint"["Potent Trap"] @ boss | any<blade>[sharp] @ ally(2) | Bunyip[Epic] | any<damage>[epic] @ enemy
+`
+}
+
+until p1:p2:p3:p4 inzone G14_DM/DM_Z03_Armory {
+                                                p1 tp XYZ(4.521, 4034.142, 506.143)
+                                                p2 tp XYZ(4.521, 4034.142, 506.143)
+                                                p3 tp XYZ(4.521, 4034.142, 506.143)
+                                                p4 tp XYZ(4.521, 4034.142, 506.143)
+}
+
+
+
+
+
+#FIGHT1
+until p1:p2:p3:p4 incombat {
+                             p1:p2:p3:p4 entitytp SirBlackwater
+}
+
+if p1:p2:p3:p4 incombat {
+                          p1:p2:p3:p4 waitforcombat completion
+}
+
+#I H-A-T-E STAIRCASES P-E-R-I-O-D!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I01_Staircase {
+                                                                 #ZONE PROTOCOL
+                                                                 sleep 1
+                                                                 p1 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep 1
+                                                                 p2 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep 1
+                                                                 p3 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep 1
+                                                                 p4 tp XYZ(-222.020, 3322.083, 1.894)
+                                                                 sleep 1
+}
+
+
+
+
+
+#STAIRCASE
+##SKELETON KEY DOOR
+until p1 hasxyz XYZ(-668.904, -283.773, 400.199) {
+                                                   p1 tp XYZ(-668.904, -283.773, 400.199)
+}
+
+until p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       sleep .01
+}
+
+until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                           p1 sendkey X, .1
+                                                                           sleep .01
+}
+
+until p1:p2:p3:p4 inzone G14_DM/Interiors/DM_Z04_I02_SkeletonKey3 {
+                                                                    #ZONE PROTOCOL
+                                                                    sleep 1
+                                                                    p1 tp XYZ(438.335, -495.474, 613.954)
+                                                                    sleep 1
+                                                                    p1 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep 1
+                                                                    p2 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep 1
+                                                                    p3 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep 1
+                                                                    p4 tp XYZ(-666.251, -287.082, 400.199)
+                                                                    sleep 1
+}
+
+
+
+
+
+#CHEST
+until p1:p2:p3:p4 hasxyz XYZ(8.615, -266.154, 45.239) {
+                                                        p1:p2:p3:p4 tp XYZ(8.615, -266.154, 45.239)
+}
+
+until p1:p2:p3:p4 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                                sleep .01
+}
+
+loop {
+ if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                      sameany sendkey X, .05
+                                                                      sleep 1.5
+
+ } else {
+          sleep 1
+          exitloop
+ }
+}
+
+until not any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                            p1:p2:p3:p4 sendkey X, .05
+}
+
+
+
+
+
+#QUICKSELL ALL_EXCEPT_AMULET
+setvar ALL_EXCEPT_AMULET = False
+
+if ALL_EXCEPT_AMULET = True {
+ if any bagcountabove 85% {
+                            call sell
+ }
+}
+
+
+
+
+
+#RETURN TO CASTLE DARKMOOR
+until p1:p2:p3:p4 inzone G14_DM/DM_Z01_CastleDarkmoor {
+                                                        p1:p2:p3:p4 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+}
+
+
+
+
+
+#####START HERE#####
+loop {
+       call sigil
+}
