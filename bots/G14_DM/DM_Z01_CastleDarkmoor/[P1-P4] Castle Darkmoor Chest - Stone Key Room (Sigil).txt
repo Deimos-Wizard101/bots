@@ -1,4 +1,11 @@
 ###deimos_expertmode
+# @name: [P1-P4] Castle Darkmoor Chest - Stone Key Room (Sigil)
+# @zone: G14_DM/DM_Z01_CastleDarkmoor
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: <= 4
+# @description: Full bot for Castle Darkmoor Locked Chest.
+
 #COMBAT & DIALOGUE (ENABLED).
 #SUPPORTS UP TO P4.
 #START ANYWEHRE.
