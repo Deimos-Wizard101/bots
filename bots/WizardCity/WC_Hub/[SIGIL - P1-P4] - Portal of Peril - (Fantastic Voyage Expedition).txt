@@ -1,4 +1,11 @@
 ###deimos_expertmode
+# @name: [SIGIL - P1-P4] - Portal of Peril - (Fantastic Voyage Expedition)
+# @zone: WizardCity/WC_Hub
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: <= 4
+# @description: Full bot for PoP: Fantastic Voyage Expedition: Sigils.
+
 #DIALOGUE & COMBAT (ENABLED).
 #SUPPORTS UP TO P4.
 #UTILIZES SIGILS.
@@ -188,7 +195,10 @@ until p1:p2:p3:p4 tracking_goal "INSPECT THE NOISE IN KAYLPSO ENGINE ROOM" {
 
 #TO DECK
 until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z02_KalypsoDeck {
-                                                                             p1:p2:p3:p4 tp XYZ(-11.133, 2364.246, 316.630)
+                                                                             p1 tp XYZ(-11.133, 2364.246, 316.630)
+                                                                             p2 tp XYZ(-11.133, 2364.246, 316.630)
+                                                                             p3 tp XYZ(-11.133, 2364.246, 316.630)
+                                                                             p4 tp XYZ(-11.133, 2364.246, 316.630)
 }
 
 
@@ -303,7 +313,19 @@ until p1:p2:p3:p4 tracking_goal "RESEARCH MICRO FISH IN DATA CAVERNS" {
 }
 
 until p1:p2:p3:p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z04_DataCavern {
-                                                                            p1:p2:p3:p4 tp XYZ(306.801, -678.067, -491.263)
+ #GHOST REALM
+ while p1 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
+                                                                   p1 tp XYZ(306.801, -678.067, -491.263)
+ }
+ while p2 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
+                                                                   p2 tp XYZ(306.801, -678.067, -491.263)
+ }
+ while p3 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
+                                                                   p3 tp XYZ(306.801, -678.067, -491.263)
+ }
+ while p4 inzone MonthlyEvents/ME_Fantastic_Voyage/Z03_DataBeach {
+                                                                   p4 tp XYZ(306.801, -678.067, -491.263)
+ }
 }
 
 
