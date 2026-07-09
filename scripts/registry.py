@@ -24,6 +24,7 @@ Usage:
     python scripts/registry.py build           # (re)generate all artifacts
     python scripts/registry.py build --check   # build, then fail if files drift
 """
+
 from __future__ import annotations
 
 import argparse
@@ -167,9 +168,36 @@ def collect_bots() -> list[Bot]:
     return [parse_bot(p) for p in sorted(BOTS_DIR.rglob("*.txt"))]
 
 
-def cmd_validate() -> int:
+def resolve_bot_files(raw_paths: list[str]) -> tuple[list[Path], list[str]]:
+    """Turn CLI/file-list path strings into absolute bot paths under bots/.
+
+    Returns (paths, warnings). Non-existent, non-.txt, or outside-bots/ entries
+    are skipped with a warning rather than failing; a PR may list a file that
+    was renamed away, and only real bot introductions should gate.
+    """
+    paths: list[Path] = []
+    warnings: list[str] = []
+    for raw in raw_paths:
+        raw = raw.strip()
+        if not raw:
+            continue
+        p = Path(raw)
+        if not p.is_absolute():
+            p = REPO_ROOT / p
+        p = p.resolve()
+        if p.suffix != ".txt" or BOTS_DIR not in p.parents:
+            warnings.append(f"skipping '{raw}': not a .txt file under bots/")
+            continue
+        if not p.exists():
+            warnings.append(f"skipping '{raw}': file does not exist")
+            continue
+        paths.append(p)
+    return paths, warnings
+
+
+def cmd_validate(only: list[Path] | None = None) -> int:
     valid_zones = load_valid_zones()
-    bots = collect_bots()
+    bots = [parse_bot(p) for p in only] if only is not None else collect_bots()
     failed = 0
     for bot in bots:
         validate_bot(bot, valid_zones)
@@ -283,12 +311,37 @@ def cmd_build(check: bool) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Validate bots and build the registry.")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("validate", help="validate all bots (CI gate)")
+    v = sub.add_parser("validate", help="validate bots (CI gate)")
+    v.add_argument(
+        "--files",
+        nargs="*",
+        default=[],
+        metavar="PATH",
+        help="validate only these bot files (default: every bot in the repo)",
+    )
+    v.add_argument(
+        "--files-from",
+        metavar="PATH",
+        help="read a newline-delimited list of bot files to validate",
+    )
     b = sub.add_parser("build", help="write registry.json + REGISTRY.md")
-    b.add_argument("--check", action="store_true", help="fail if generated files would change")
+    b.add_argument(
+        "--check", action="store_true", help="fail if generated files would change"
+    )
     args = ap.parse_args()
 
     if args.cmd == "validate":
+        raw = list(args.files)
+        if args.files_from:
+            raw += Path(args.files_from).read_text(encoding="utf-8").splitlines()
+        if raw:
+            only, warnings = resolve_bot_files(raw)
+            for w in warnings:
+                print(w)
+            if not only:
+                print("No bot files to validate.")
+                return 0
+            return cmd_validate(only)
         return cmd_validate()
     if args.cmd == "build":
         return cmd_build(args.check)

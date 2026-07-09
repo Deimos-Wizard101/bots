@@ -7,7 +7,7 @@
 # @description: Black Lagoon **Hierophant of Destruction** sigil farmer (single-client).
 # Run with **p1 directly on top of the sigil**. Handles enter, fight, and exit;
 # buys and uses potions, and grabs wisps if they are present.
-# Relies on `tp closestmob` — if you are not within range, add a teleport inside the `combat` block.
+# Relies on `tp closestmob`; if you are not within range, add a teleport inside the `combat` block.
 
 block load {
     times 100 {

@@ -1,22 +1,88 @@
 name: Validate bots
 
-# Gate: a bot cannot be merged/published unless it declares a valid @zone
-# header that matches its folder location and the registry is up to date.
+# Gate for bot introductions. On every PR, find the bot .txt files the PR newly
+# adds under bots/ and validate their registry metadata. If any added bot is
+# missing required headers (@name/@zone/@author/@format), declares a zone that
+# doesn't exist or doesn't match its folder, etc., the PR is commented on and
+# auto-closed. PRs that add no new bots are not gated here (main re-reconciles
+# the registry on merge).
+#
+# Uses pull_request_target so the auto-close works on PRs from forks (those get
+# a read-only token under the plain pull_request trigger). SECURITY: this runs
+# the base branch's trusted registry.py and only checks out the PR's added *.txt
+# DATA files; never the PR's scripts or workflow; and bot files are parsed as
+# text, never executed. Do not add steps that run code from the PR head.
 on:
-  pull_request:
-    paths:
-      - "bots/**"
-      - "zones.json"
-      - "scripts/**"
-      - ".github/workflows/validate.yml"
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      # Base ref (trusted): gives us registry.py, zones.json, and base history.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Validate bot headers and zone paths
-        run: python scripts/registry.py validate
+
+      - name: Collect bot files this PR adds
+        id: added
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          git fetch --no-tags --depth=1 origin \
+            "pull/${{ github.event.pull_request.number }}/head"
+          head="$(git rev-parse FETCH_HEAD)"
+          git diff --name-only --diff-filter=A "$base" "$head" -- '*.txt' \
+            | grep -E '^bots/' > added_bots.txt || true
+          if [ -s added_bots.txt ]; then
+            echo "has_new=true" >> "$GITHUB_OUTPUT"
+            echo "New bot files in this PR:"; cat added_bots.txt
+            # Bring ONLY these .txt data files into the tree (never PR scripts).
+            xargs -a added_bots.txt -d '\n' git checkout "$head" --
+          else
+            echo "has_new=false" >> "$GITHUB_OUTPUT"
+            echo "This PR adds no new bot files; nothing to gate."
+          fi
+
+      - name: Validate added bots
+        if: steps.added.outputs.has_new == 'true'
+        id: validate
+        continue-on-error: true
+        run: |
+          python scripts/registry.py validate --files-from added_bots.txt \
+            | tee validate.out
+
+      - name: Reject and close PR on invalid submission
+        if: steps.added.outputs.has_new == 'true' && steps.validate.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "## ❌ Bot submission rejected"
+            echo
+            echo "This PR adds one or more bots that are missing some required"
+            echo "info, so it was closed automatically."
+            echo
+            echo "The easiest way to submit a bot is the **Publish Bot** button in"
+            echo "Deimos. It fills in everything for you and opens the PR correctly,"
+            echo "so you don't have to edit any files by hand. Use it and you should"
+            echo "be good to go."
+            echo
+            echo "<details><summary>Details (for the curious)</summary>"
+            echo
+            echo '```'
+            cat validate.out
+            echo '```'
+            echo
+            echo "</details>"
+          } > comment.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+          gh pr close "${{ github.event.pull_request.number }}"
+          exit 1

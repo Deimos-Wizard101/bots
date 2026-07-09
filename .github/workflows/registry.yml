@@ -3,7 +3,7 @@ name: Build registry
 # On every push to main, re-validate and fully reconcile the registry against
 # the whole repo: added bots are populated, deleted bots are removed, and empty
 # zones' registry.json files are pruned. `build` is a full rebuild (not
-# incremental), so any push triggers a complete re-check — no paths filter.
+# incremental), so any push triggers a complete re-check; no paths filter.
 on:
   push:
     branches: [main]
