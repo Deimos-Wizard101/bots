@@ -75,7 +75,7 @@ jobs:
             echo "so you don't have to edit any files by hand. Use it and you should"
             echo "be good to go."
             echo
-            echo "<details><summary>Details (for the curious)</summary>"
+            echo "<details><summary>Details</summary>"
             echo
             echo '```'
             cat validate.out
