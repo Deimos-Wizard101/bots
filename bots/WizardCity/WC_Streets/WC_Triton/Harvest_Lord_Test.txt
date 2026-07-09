@@ -1,0 +1,29 @@
+# @name: Harvest Lord Test
+# @zone: WizardCity/WC_Streets/WC_Triton
+# @author: Slackaduts
+# @format: bot
+# @clients: >1
+# @description: Test bot for Hivemind
+
+# teleport to dungeon sigil
+mass tp XYZ(-36975.953, -7164.576, 44.513)
+sleep 1
+# pres X to enter sigil
+sleep 1
+mass sendkey X, 0.3
+mass sendkey X, 0.3
+# wait for zone change to dungeon
+mass waitforzonechange completion
+sleep 1
+#walk all clients to  the mob
+mass tp XYZ(-12.455, -1105.835, 1.816)
+sleep 1.0
+# wait for combat to finish
+mass waitforcombat completion
+sleep 1.5
+# walk all clients to the door
+mass tp XYZ(-16.8797664642334, -1241.03515625, 131.62686157226562)
+sleep 1
+# wait for you to leave
+mass waitforzonechange completion
+sleep 2

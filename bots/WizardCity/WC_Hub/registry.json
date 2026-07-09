@@ -1,0 +1,27 @@
+{
+  "zone": "WizardCity/WC_Hub",
+  "world": "WizardCity",
+  "count": 2,
+  "bots": [
+    {
+      "name": "[SIGIL - P1-P4] - Portal of Peril - (Fantastic Voyage Expedition)",
+      "zone": "WizardCity/WC_Hub",
+      "world": "WizardCity",
+      "author": "Discord: homeyo / Github: zerosenses",
+      "format": "expertmode",
+      "clients": "<= 4",
+      "description": "Full bot for PoP: Fantastic Voyage Expedition: Sigils.",
+      "path": "bots/WizardCity/WC_Hub/[SIGIL - P1-P4] - Portal of Peril - (Fantastic Voyage Expedition).txt"
+    },
+    {
+      "name": "[TEAM UP - P1 ONLY] - Portal of Peril - (Fantastic Voyage Expedition)",
+      "zone": "WizardCity/WC_Hub",
+      "world": "WizardCity",
+      "author": "Discord: homeyo / Github: zerosenses",
+      "format": "expertmode",
+      "clients": "== 1",
+      "description": "Full bot for PoP: Fantastic Voyage Expedition: Team-Up.",
+      "path": "bots/WizardCity/WC_Hub/[TEAM UP - P1 ONLY] - Portal of Peril - (Fantastic Voyage Expedition).txt"
+    }
+  ]
+}
