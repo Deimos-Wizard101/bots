@@ -115,6 +115,11 @@ if p1 potioncountbelow 1 {
 
 
 
+
+
+
+
+
 block scale {
 #GO TO CELESTIA BASE CAMP
 until p1 inzone Celestia/CL_Hub {
@@ -130,13 +135,13 @@ until p1 hasxyz XYZ(-5.229, 15373.599, -1049.699) {
                                                     p1 tp XYZ(-5.229, 15373.599, -1049.699)
 }
 
-until p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
-                                                                                       sleep .01
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "trial of the spheres" {
+                                                                                                                    sleep .01
 }
 
-while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
-                                                                                       p1 sendkey X, .05
-                                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
 }
 
 until p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/StarRoom {
@@ -191,10 +196,6 @@ until not p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'opt
            p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
 }
 
-until p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
-                                                                                         sleep .01
-}
-
 
 
 
@@ -205,6 +206,11 @@ until p1 inzone Celestia/CL_Hub {
 }
 
 }
+
+
+
+
+
 
 
 
@@ -225,13 +231,13 @@ until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
                                                     p1 tp XYZ(729.654, 11130.721, -899.699)
 }
 
-until p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
-                                                                                       sleep .01
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "the chancel" {
+                                                                                                           sleep .01
 }
 
-while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
-                                                                                       p1 sendkey X, .05
-                                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
 }
 
 until p1 inzone Celestia/CL_Z11_Temple_Of_The_Sun {
