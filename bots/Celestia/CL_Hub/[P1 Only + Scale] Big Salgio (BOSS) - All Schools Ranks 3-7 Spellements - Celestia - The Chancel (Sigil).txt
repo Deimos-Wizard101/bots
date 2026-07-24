@@ -16,6 +16,7 @@
 
 #SET "SCALE" TO "False" TO NOT USE THE SCALES OF KNOWLEDGE.
 #(Slower) SET "POTIONS" TO "False". SAVES & DOES NOT RUN OUT OF GOLD. 
+#WHEN POTIONS IS SET TO "True"; AND GOLD FALLS BELOW 10%, TRIGGERS A FALLBACK TO NATURAL HEALING (AS IF SET TO "False").
 
 
 
@@ -286,21 +287,32 @@ loop {
 
 
  if POTIONS = True {
-                     call potion
+  if p1 goldabove 10% {
+                        call potion
+  } else {
+   until not p1 healthbelow 80% {
+                                  sleep .01
+   }
+
+   until not p1 manabelow 25% {
+                                p1 entitytp mana
+                                p1 tp XYZ(6.602, 9372.546, -1099.699)
+   }
+  }
  }
 
 
 
-if POTIONS = False {
- until not p1 healthbelow 80% {
+ if POTIONS = False {
+  until not p1 healthbelow 80% {
                                  sleep .01
- }
+  }
 
- until not p1 manabelow 25% {
-                              p1 entitytp mana
-                              p1 tp XYZ(6.602, 9372.546, -1099.699)
+  until not p1 manabelow 25% {
+                               p1 entitytp mana
+                               p1 tp XYZ(6.602, 9372.546, -1099.699)
+  }
  }
-}
 
 
 
