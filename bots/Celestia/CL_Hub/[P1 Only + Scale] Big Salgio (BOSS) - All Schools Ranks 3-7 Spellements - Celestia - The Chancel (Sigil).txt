@@ -13,7 +13,9 @@
 #ALLOW ENDORSEMENTS (NO).
 #DISABLE ANTI-AFK (DEIMOS SETTING).
 #START WITHOUT ANY ELIXIRS ACTIVE; OR ONLY THE ELIXIR-LV-60 ACTIVE.
+
 #SET "SCALE" TO "False" TO NOT USE THE SCALES OF KNOWLEDGE.
+#(Slower) SET "POTIONS" TO "False". SAVES & DOES NOT RUN OUT OF GOLD. 
 
 
 
@@ -29,9 +31,10 @@ setvar POTIONS = True
 block potion {
 
 #USE POTION
-if p1 healthbelow 80% OR p1 manabelow 25% {
-                                            p1 usepotion
-                                            sleep 1
+if p1 potioncountabove 0 {
+ until not p1 healthbelow 80% AND not p1 manabelow 25% {
+            p1 clickwindow ['WorldView', 'windowHUD', 'btnPotions']
+ }
 }
 
 
@@ -121,7 +124,7 @@ if p1 potioncountbelow 1 {
 
 
 block scale {
-#GO TO CELESTIA BASE CAMP
+#GO TO BASE CAMP
 until p1 inzone Celestia/CL_Hub {
                                   p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
 }
@@ -196,15 +199,6 @@ until not p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'opt
            p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
 }
 
-
-
-
-
-#BACK TO BASE CAMP
-until p1 inzone Celestia/CL_Hub {
-                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
-}
-
 }
 
 
@@ -217,7 +211,7 @@ until p1 inzone Celestia/CL_Hub {
 
 
 block dungeon {
-#GO TO CELESTIA BASE CAMP
+#GO TO BASE CAMP
 until p1 inzone Celestia/CL_Hub {
                                   p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
 }
@@ -259,29 +253,69 @@ p1 waitforcombat completion
 
 
 #BACK TO BASE CAMP
-until p1 inzone Celestia/CL_Hub {
-                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+until p1 hasxyz XYZ(-37.308, -8946.305, 795.801) {
+                                                   p1 tp XYZ(-37.308, -8946.305, 795.801)
+}
+
+loop {
+ if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+ } elif p1 inzone Celestia/CL_Hub {
+                                    exitloop
+ }
 }
 
 }
+
+
+
+
+
 
 
 
 
 
 #####START HERE#####
-if POTIONS = True {
-                    call potion
-}
+loop {
 
-if SCALE = False {
-                   call dungeon
-}
-
-if SCALE = True {
- if p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
-                                                                                       call dungeon
- } else {
-          call scale
+ until p1 inzone Celestia/CL_Hub {
+                                   p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
  }
+
+
+
+ if POTIONS = True {
+                     call potion
+ }
+
+
+
+if POTIONS = False {
+ until not p1 healthbelow 80% {
+                                 sleep .01
+ }
+
+ until not p1 manabelow 25% {
+                              p1 entitytp mana
+                              p1 tp XYZ(6.602, 9372.546, -1099.699)
+ }
+}
+
+
+
+ if SCALE = False {
+                    call dungeon
+ }
+
+
+
+ if SCALE = True {
+  if p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
+                                                                                        call dungeon
+  } else {
+           call scale
+  }
+ }
+
 }
