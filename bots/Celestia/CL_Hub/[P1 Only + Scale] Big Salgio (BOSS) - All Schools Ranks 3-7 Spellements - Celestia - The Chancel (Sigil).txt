@@ -15,15 +15,15 @@
 #START WITHOUT ANY ELIXIRS ACTIVE; OR ONLY THE ELIXIR-LV-60 ACTIVE.
 
 #SET "SCALE" TO "False" TO NOT USE THE SCALES OF KNOWLEDGE.
-#(Slower) SET "POTIONS" TO "False". SAVES & DOES NOT RUN OUT OF GOLD. 
-#WHEN POTIONS IS SET TO "True"; AND GOLD FALLS BELOW 10%, TRIGGERS A FALLBACK TO NATURAL HEALING (AS IF SET TO "False").
+#SET "POTIONS" TO "False" TO SAVE GOLD. 
+#WHEN POTIONS IS SET TO "True", AND GOLD FALLS BELOW 10%; TRIGGERS A FALLBACK TO NATURAL HEALING (AS IF SET TO "False").
 
 
 
 
 
 setvar SCALE = True
-setvar POTIONS = True
+setvar POTIONS = False
 
 
 
@@ -290,6 +290,32 @@ loop {
   if p1 goldabove 10% {
                         call potion
   } else {
+
+   if p1 healthbelow 76% {
+
+    until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
+                                                          p1 tp XYZ(-4401.264, 12444.917, -971.776)
+    }
+
+    until p1 inzone Celestia/CL_Z01_Survey_Camp {
+                                                  sleep .01
+    }
+
+    until p1 healthabove 99% {
+                               p1 entitytp health
+                               p1 tp XYZ(-82.320, 6.649, 0.091)
+                               p1 entitytp health
+                               p1 tp XYZ(3793.981, -3623.860, 0.000)
+                               p1 entitytp health
+                               p1 tp XYZ(4014.772, 3433.716, 0.000)
+                               p1 entitytp health
+    }
+
+    until p1 inzone Celestia/CL_Hub {
+                                      p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+    }
+  }
+
    until not p1 healthbelow 80% {
                                   sleep .01
    }
@@ -304,6 +330,31 @@ loop {
 
 
  if POTIONS = False {
+  if p1 healthbelow 76% {
+
+   until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
+                                                         p1 tp XYZ(-4401.264, 12444.917, -971.776)
+   }
+
+   until p1 inzone Celestia/CL_Z01_Survey_Camp {
+                                                 sleep .01
+   }
+
+   until p1 healthabove 99% {
+                              p1 entitytp health
+                              p1 tp XYZ(-82.320, 6.649, 0.091)
+                              p1 entitytp health
+                              p1 tp XYZ(3793.981, -3623.860, 0.000)
+                              p1 entitytp health
+                              p1 tp XYZ(4014.772, 3433.716, 0.000)
+                              p1 entitytp health
+   }
+
+   until p1 inzone Celestia/CL_Hub {
+                                     p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+   }
+  }
+
   until not p1 healthbelow 80% {
                                  sleep .01
   }
