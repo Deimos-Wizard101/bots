@@ -1,0 +1,209 @@
+###deimos_expertmode
+# @name: 4 clients/1 Round AquilaSpellmentsFarm Cronos/Tartarus
+# @zone: Aquila/AQ_Z00_Hub
+# @author: Chris Fire/Stealer Cat
+# @format: expertmode
+# @description: Check the # for instructions
+
+# setvar True= scales everyone except p4
+# setvar False= scales only p1
+# 1 round strategy Adv Party 4 clients
+# Modify your playstyle as you wish, this one kills 1 round.
+# Amulet = Mass feint  
+# Using Pet potent trap for p3
+# p4 275 storm damage
+# Combat= ON 
+### Setvar ###
+setvar scaleall =      #set True Or False inside the blank spot
+# =========================
+# PLAYSTYLE
+# =========================
+block playstyle {
+    loadplaystyle `
+### p1
+amulet | feint @ boss
+### p2
+feint[potent trap] @ boss | amulet | any<blade>[sharp] @ ally(2)
+### p3
+feint[potent trap] @ boss 
+### p4
+bunyips[epic] | any<aoe>[epic] 
+    `
+}
+# =========================
+# WAIT FOR FREE
+# =========================
+block waitforfree {
+    times 3000 {
+        if any loading {
+            break
+        } else {
+            sleep 0.1
+        }
+    }
+    while any loading {
+        sleep 0.1
+    }
+    while not windowvisible ['WorldView', 'windowQuickChat', 'btnRadialQuickChat'] {
+        sleep 0.1
+    }
+    sleep 0.5
+}
+# =========================
+# RECALL
+# =========================
+block recall {
+    while any windowvisible ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton', 'txtGoHomeTimer'] {
+        sleep 1
+    }
+    times 3 {
+        clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+    }
+    call waitforfree
+}
+# =========================
+# AQUILA / SIGIL
+# =========================
+block sigil {
+    if any inzone Aquila/AQ_Z00_Hub {
+        if any manabelow 20% {
+            sameany tp XYZ(8076.120, 5664.401, -1293.089)
+            sleep 0.5
+            times 3 {
+                sameany entitytp mana
+                sleep 0.5
+            }
+        }
+        if any manaabove 10% {
+            sameany minustp XYZ(0, 0, 800)
+            sleep 1 
+            sameany tp XYZ(7843.568, 12878.834, -1659.605)
+            times 50 {
+                if any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground', 'TeamUpButton'] {
+                    break 
+                } else {
+                    sleep 1 
+                }
+            }
+            times 3 {
+                sendkey X, .1
+            }
+            call waitforfree
+        }
+    }
+}
+# =========================
+# SAME PLACE CHECK
+# =========================
+block check {
+    times 100 {
+        if sameplace {
+            break
+        } else {
+            sleep 0.1
+        }
+    }
+    if not sameplace {
+        sameany minustp XYZ(0, 0, 800)
+        sleep 1 
+        call recall
+    }
+}
+# =========================
+# SCALE P1 / EXCEPT SCALE 
+# =========================
+block scalep1 {
+    if any inrange "scaling" {
+        p1 tp XYZ(-2414.450, 8415.614, 1291.705)
+        until p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+            sleep 0.1
+        }
+        if p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+            print begin scale
+            sameany sendkey X
+            until p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton'] {
+                sleep 0.1
+            }
+            while p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton'] {
+                p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
+            }
+        }
+    }
+    sleep 1
+}
+block exceptscale {
+    if any inrange "scaling" {
+        except p4 tp XYZ(-2414.450, 8415.614, 1291.705)
+        until any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+            sleep 0.1
+        }
+        if sameany windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+            print begin scale
+            sameany sendkey X
+            until sameany windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton'] {
+                sleep 0.1
+            }
+            while sameany windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton'] {
+                sameany clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
+            }
+        }
+    }
+    sleep 1
+}
+# =========================
+# INSIDE TARTARUS
+# =========================
+block tartarus {
+    if any inzone Aquila/AQ_Z03_Tartarus  {
+        if not sameany healthabove 80% {
+            if sameany inrange "health" {
+                times 2 {
+                    sameany entitytp health
+                }
+               
+            }
+        }
+        p1 tp XYZ(2684.797, 6205.419, 1763.638)
+        call waitforfree
+        p2:p3:p4 tp XYZ(2684.797, 6205.419, 1763.638)
+        call waitforfree
+    }
+}
+# =========================
+# FIGHT
+# =========================
+block fight { 
+    if inzone Aquila/Interiors/AQ_Z03_CavOfNyx {
+        entitytp "AQ-Immortal-Kronus"
+        times 1000 {
+            if incombat {
+                break
+            } else {
+                sleep 0.01
+            }
+        }
+        if incombat {
+            call playstyle
+            waitforcombat completion
+            waitforfree
+        }
+        if not incombat {
+            call recall
+        }
+    }
+}
+
+# ===============================================================================#
+#                                   BOT SETUP                                    #
+# ===============================================================================#
+call sigil
+call check
+while not p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
+    if scaleall = True {
+        call exceptscale
+    } else {
+        call scalep1
+    }
+}
+call tartarus
+call fight
