@@ -7,7 +7,7 @@
 # @description: Excellent bot for Big Salgio / All Schools Ranks 3-7 Spellements.
 
 #DIALOGUE & COMBAT (ENABLED).
-#START ANYWHERE IN CELESTIA.
+#START ANYWHERE.
 #P1 ONLY.
 #DORM EQUIPPED.
 #ALLOW ENDORSEMENTS (NO).
@@ -280,6 +280,188 @@ loop {
 
 
 #####START HERE#####
+#ONE TIME CHECK
+if not p1 inzone Celestia/CL_Hub {
+ if not p1 inzone Celestia/CL_Z01_Survey_Camp {
+  if not p1 inzone Celestia/CL_Z02_Crab_Realm {
+   if not p1 inzone Celestia/CL_Z03_District_Of_The_Stars {
+    if not p1 inzone Celestia/CL_Z04_Temple_Of_The_Stars {
+     if not p1 inzone Celestia/CL_Z05_The_Floating_Land {
+      if not p1 inzone Celestia/CL_Z06_StormHaven {
+       if not p1 inzone Celestia/CL_Z07_Storm_Lord_Temple {
+        if not p1 inzone Celestia/CL_Z08_Temple_Of_The_Moon/MoonC1 {
+         if not p1 inzone Celestia/CL_Z08_Temple_Of_The_Moon/MoonC2 {
+        if not p1 inzone Celestia/CL_Z09_Science_Center {
+       if not p1 inzone Celestia/CL_Z10_Kingdom_Of_The_Crabs {
+      if not p1 inzone Celestia/CL_Z11_Temple_Of_The_Sun {
+     if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/MoonRoom {
+    if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/StarRoom {
+   if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/SunRoom {
+  if not p1 inzone Celestia/Interiors/CL_SkeleKey_Center_01 {
+ if not p1 inzone Celestia/Interiors/CL_SkeleKey_Center_02 {
+if not p1 inzone Celestia/Interiors/CL_Z01i1_Survey_Camp {
+ if not p1 inzone Celestia/Interiors/CL_Z02_ZippyZapCave {
+  if not p1 inzone Celestia/Interiors/CL_Z02i1_Crab_Realm {
+   if not p1 inzone Celestia/Interiors/CL_Z02i2_Crab_Realm {
+    if not p1 inzone Celestia/Interiors/CL_Z02i3_Crab_Realm {
+     if not p1 inzone Celestia/Interiors/CL_Z02i4_Crab_Realm {
+      if not p1 inzone Celestia/Interiors/CL_Z02i5_Crab_Realm {
+       if not p1 inzone Celestia/Interiors/CL_Z03i1_District_of_the_Stars {
+        if not p1 inzone Celestia/Interiors/CL_Z03i2_District_of_the_Stars {
+         if not p1 inzone Celestia/Interiors/CL_Z03i3_District_of_the_Stars {
+        if not p1 inzone Celestia/Interiors/CL_Z03i4_District_of_the_Stars {
+       if not p1 inzone Celestia/Interiors/CL_Z05i1_FloatingLand {
+      if not p1 inzone Celestia/Interiors/CL_Z05i2_FloatingLand {
+     if not p1 inzone Celestia/Interiors/CL_Z05i3_FloatingLand {
+    if not p1 inzone Celestia/Interiors/CL_Z05i4_FloatingLand {
+   if not p1 inzone Celestia/Interiors/CL_Z05i5_FloatingLand {
+  if not p1 inzone Celestia/Interiors/CL_Z05i6_FloatingLand {
+ if not p1 inzone Celestia/Interiors/CL_Z06i1_StormHaven {
+if not p1 inzone Celestia/Interiors/CL_Z06i2_StormHaven {
+ if not p1 inzone Celestia/Interiors/CL_Z06i3_StormHaven {
+  if not p1 inzone Celestia/Interiors/CL_Z06i_KrakenCave {
+   if not p1 inzone Celestia/Interiors/CL_Z07i1_Storm_Lord_Temple {
+    if not p1 inzone Celestia/Interiors/CL_Z07i2_Storm_Lord_Temple {
+     if not p1 inzone Celestia/Interiors/CL_Z09i1_Science_Center {
+      if not p1 inzone Celestia/Interiors/CL_Z09i2_Science_Center {
+       if not p1 inzone Celestia/Interiors/CL_Z09i3_Science_Center {
+        if not p1 inzone Celestia/Interiors/CL_Z09i4_Science_Center {
+         if not p1 inzone Celestia/Interiors/CL_Z09i5_Science_Center {
+        if not p1 inzone Celestia/Interiors/CL_Z09i6_Science_Center {
+       if not p1 inzone Celestia/Interiors/CL_Z09i7_Science_Center {
+      if not p1 inzone Celestia/Interiors/CL_Z10I12_VicegripsHideout {
+     if not p1 inzone Celestia/Interiors/CL_Z10i10_Kingdom_Of_The_Crabs {
+    if not p1 inzone Celestia/Interiors/CL_Z10i11_Kingdom_Of_The_Crabs {
+   if not p1 inzone Celestia/Interiors/CL_Z10i1_Kingdom_Of_The_Crabs {
+  if not p1 inzone Celestia/Interiors/CL_Z10i2_Kingdom_Of_The_Crabs {
+ if not p1 inzone Celestia/Interiors/CL_Z10i3_Kingdom_Of_The_Crabs {
+if not p1 inzone Celestia/Interiors/CL_Z10i4_Kingdom_Of_The_Crabs {
+ if not p1 inzone Celestia/Interiors/CL_Z10i5_Kingdom_Of_The_Crabs {
+  if not p1 inzone Celestia/Interiors/CL_Z10i6_Kingdom_Of_The_Crabs {
+   if not p1 inzone Celestia/Interiors/CL_Z10i7_Kingdom_Of_The_Crabs {
+    if not p1 inzone Celestia/Interiors/CL_Z10i8_Kingdom_Of_The_Crabs {
+     if not p1 inzone Celestia/Interiors/CL_Z10i9_Kingdom_Of_The_Crabs {
+      if not p1 inzone Celestia/Interiors/CL_Z12i1_Test_Of_The_Spheres {
+       if not p1 inzone Celestia/Interiors/CL_Z12i2_Test_Of_The_Spheres {
+        if not p1 inzone Celestia/Interiors/CS_StormSurgeCaverns {
+         if not p1 inzone Celestia/Interiors/PageEvent/CL_BossRoom {
+          if not p1 inzone Celestia/Interiors/PageEvent/CL_LandingZone {
+           if not p1 inzone Celestia/Interiors/PageEvent/CL_TrashMobs {
+
+until p1 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+       p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+}
+
+until p1 inzone WizardCity/WC_Ravenwood {
+                                          p1 tp XYZ(-203.839, 4.139, 0.000)
+}
+
+until p1 inzone WizardCity/WC_Ravenwood_Teleporter {
+                                                     p1 tp XYZ(18.411, 1933.317, 78.670)
+}
+
+until p1 hasxyz XYZ(3.859, 51.431, 89.213) {
+                                             p1 tp XYZ(3.859, 51.431, 89.213)
+}
+
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "world gate" {
+                                                                                                          sleep .01
+}
+
+until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                           p1 sendkey X, .05
+}
+
+until p1 windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnCelestia'] {
+       p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'rightButton']
+}
+
+until p1 inzone Celestia/CL_Hub {
+       p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnCelestia']
+        p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'teleportButton']
+}
+
+until p1 hasxyz XYZ(67, 67, 67) {
+                                  p1 tp XYZ(67, 67, 67)
+}
+
+} else {
+
+until p1 inzone Celestia/CL_Hub {
+                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+                                                                 }
+                                                                }
+                                                               }
+                                                              }
+                                                             }
+                                                            }
+                                                           }
+                                                          }
+                                                         }
+                                                        }
+                                                       }
+                                                      }
+                                                     }
+                                                    }
+                                                   }
+                                                  }
+                                                 }
+                                                }
+                                               }
+                                              }
+                                             }
+                                            }
+                                           }
+                                          }
+                                         }
+                                        }
+                                       }
+                                      }
+                                     }
+                                    }
+                                   }
+                                  }
+                                 }
+                                }
+                               }
+                              }
+                             }
+                            }
+                           }
+                          }
+                         }
+                        }
+                       }
+                      }
+                     }
+                    }
+                   }
+                  }
+                 }
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
+
+
+
+
+
 loop {
 
  until p1 inzone Celestia/CL_Hub {
