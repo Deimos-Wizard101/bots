@@ -145,6 +145,7 @@ until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRange
 
 while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
                                                                        p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
                                                                        p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
 }
 
@@ -232,6 +233,7 @@ until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRange
 
 while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
                                                                        p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
                                                                        p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
 }
 
@@ -291,7 +293,7 @@ loop {
                         call potion
   } else {
 
-   if p1 healthbelow 76% {
+   if p1 healthbelow 78% {
 
     until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
                                                           p1 tp XYZ(-4401.264, 12444.917, -971.776)
@@ -314,7 +316,7 @@ loop {
     until p1 inzone Celestia/CL_Hub {
                                       p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
     }
-  }
+   }
 
    until not p1 healthbelow 80% {
                                   sleep .01
@@ -330,7 +332,7 @@ loop {
 
 
  if POTIONS = False {
-  if p1 healthbelow 76% {
+  if p1 healthbelow 78% {
 
    until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
                                                          p1 tp XYZ(-4401.264, 12444.917, -971.776)
