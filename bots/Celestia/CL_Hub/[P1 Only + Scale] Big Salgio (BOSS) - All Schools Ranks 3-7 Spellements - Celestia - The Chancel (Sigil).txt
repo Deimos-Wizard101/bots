@@ -378,7 +378,9 @@ until p1 windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optio
 
 until p1 inzone Celestia/CL_Hub {
        p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnCelestia']
-        p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'teleportButton']
+     if p1 windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'selectedWorldCheckMark'] {
+         p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'teleportButton']
+     }
 }
 
 until p1 hasxyz XYZ(67, 67, 67) {
