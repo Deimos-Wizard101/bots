@@ -22,8 +22,18 @@
 
 
 
+
+
+
+
+
 setvar SCALE = True
 setvar POTIONS = False
+
+
+
+
+
 
 
 
@@ -199,6 +209,21 @@ until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'wndTitleBackground'] {
 
 until not p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout'] {
            p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
+}
+
+
+
+#EXIT
+until p1 hasxyz XYZ(7.622, -4970.787, 0.000) {
+                                               p1 tp XYZ(7.622, -4970.787, 0.000)
+}
+
+loop {
+ if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+ } elif p1 inzone Celestia/CL_Hub {
+                                    exitloop
+ }
 }
 
 }
@@ -477,6 +502,10 @@ loop {
                         call potion
   } else {
 
+   until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
+                                                       p1 tp XYZ(729.654, 11130.721, -899.699)
+   }
+
    if p1 healthbelow 78% {
 
     until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
@@ -516,6 +545,10 @@ loop {
 
 
  if POTIONS = False {
+  until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
+                                                      p1 tp XYZ(729.654, 11130.721, -899.699)
+  }
+
   if p1 healthbelow 78% {
 
    until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
