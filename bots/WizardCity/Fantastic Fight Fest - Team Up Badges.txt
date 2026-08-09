@@ -14,11 +14,12 @@
 
 
 block fff {
-    if any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] OR  any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpWindow'] OR any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] OR any windowvisible ['WorldView', 'ClassProjectWindow'] {
+    if any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] OR  any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpWindow'] OR any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] OR any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] OR any windowvisible ['WorldView', 'ClassProjectWindow'] {
         clickwindow ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
         clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
         clickwindow ['WorldView', 'TeamHelpWindow', 'CloseTeamHelpButton']
         clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'CloseClassProjectLaunchButton']
+        clickwindow ['WorldView', 'ClassProjectSeasonPassWindow', 'CloseSeasonPassButton']
         clickwindow ['WorldView', 'ClassProjectWindow', 'CloseClassProjectButton']
     }
     if windowvisible ['WorldView', 'windowHUD', 'windowForTopRowButtons', 'ClassEventButton'] {
