@@ -31,29 +31,30 @@ block fff {
         times 2 {
             if any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton1', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
                 while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
-                           sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton1', 'TextWidget', 'EventLabel']
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton1', 'TextWidget', 'EventLabel']
                 }
+                break
             } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton2', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
                 while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
-                           sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton2', 'TextWidget', 'EventLabel']
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton2', 'TextWidget', 'EventLabel']
                 }
+                break
             } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
                 while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
-                           sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel']
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel']
                 }
-            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "1/2" {
-                until sameany windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "2/2" {
+                break
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "/2" OR any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "/3" {
+                until sameany windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "2/" {
                     sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'rightscroll']
                 }
-            } elif any windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
-                    sameany clickwindow ['WorldView', 'ClassProjectWindow', 'JoinTeamButton']
             } else {
                 log Run during "Special Event: Fantastic Fight Fest"
                 kill
             }
         }
         until not windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
-                   clickwindow ['WorldView', 'ClassProjectWindow', 'JoinTeamButton']
+            clickwindow ['WorldView', 'ClassProjectWindow', 'JoinTeamButton']
         }
         times 10000 {
             if windowvisible ['WorldView', 'TeamUpMainWindow'] {
@@ -77,12 +78,12 @@ block fff {
     times 1000 {
         if windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
             until not windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
-                       clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+                clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
             }
         } elif incombat {
-             break
+            break
         } elif not incombat {
-             tp closestmob
+            tp closestmob
         }
     }
     if incombat {
