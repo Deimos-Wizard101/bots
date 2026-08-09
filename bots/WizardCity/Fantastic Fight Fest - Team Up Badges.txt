@@ -14,7 +14,7 @@
 
 
 block fff {
-    if any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] OR  any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpWindow'] OR any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] OR any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] OR any windowvisible ['WorldView', 'ClassProjectWindow'] {
+    if any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] OR any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpWindow'] OR any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] OR any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] OR any windowvisible ['WorldView', 'ClassProjectWindow'] {
         until not any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] AND not any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] AND not any windowvisible ['WorldView', 'TeamHelpWindow'] AND not any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] AND not any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] AND not any windowvisible ['WorldView', 'ClassProjectWindow'] {
             clickwindow ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
             clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
@@ -41,7 +41,8 @@ block fff {
                        sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel']
             }
         } else {
-            restartbot
+            log Run during "Special Event: Fantastic Fight Fest"
+            kill
         }
         until not windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
                    clickwindow ['WorldView', 'ClassProjectWindow', 'JoinTeamButton']
