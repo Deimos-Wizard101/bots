@@ -99,8 +99,7 @@ block fff {
         waitforcombat completion
     }
     if inrange "bonus" {
-        entitytp mana
-        entitytp health
+        entitytp bonus
     }
 }
 
