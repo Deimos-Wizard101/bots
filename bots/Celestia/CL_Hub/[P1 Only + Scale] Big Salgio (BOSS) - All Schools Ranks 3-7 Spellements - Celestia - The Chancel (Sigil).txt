@@ -1,0 +1,611 @@
+###deimos_expertmode
+# @name: [P1 Only + Scale] Big Salgio (BOSS) - All Schools Ranks 3-7 Spellements - Celestia - The Chancel (Sigil)
+# @zone: Celestia/CL_Hub
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: ==1
+# @description: Excellent bot for Big Salgio / All Schools Ranks 3-7 Spellements.
+
+#DIALOGUE & COMBAT (ENABLED).
+#START ANYWHERE.
+#P1 ONLY.
+#DORM EQUIPPED.
+#ALLOW ENDORSEMENTS (NO).
+#DISABLE ANTI-AFK (DEIMOS SETTING).
+#START WITHOUT ANY ELIXIRS ACTIVE; OR ONLY THE ELIXIR-LV-60 ACTIVE.
+
+#SET "SCALE" TO "False" TO NOT USE THE SCALES OF KNOWLEDGE.
+#SET "POTIONS" TO "False" TO SAVE GOLD. 
+#WHEN POTIONS IS SET TO "True", AND GOLD FALLS BELOW 10%; TRIGGERS A FALLBACK TO NATURAL HEALING (AS IF SET TO "False").
+
+
+
+
+
+
+
+
+
+
+setvar SCALE = True
+setvar POTIONS = False
+
+
+
+
+
+
+
+
+
+
+block potion {
+
+#USE POTION
+if p1 potioncountabove 0 {
+ until not p1 healthbelow 80% AND not p1 manabelow 25% {
+            p1 clickwindow ['WorldView', 'windowHUD', 'btnPotions']
+ }
+}
+
+
+
+#REFILL
+if p1 potioncountbelow 1 {
+
+
+
+ #MARK
+ until p1 windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+        p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+         sleep 2
+ }
+
+ until not p1 windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+            p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+             sleep 2
+ }
+
+
+
+
+
+ #GO TO COMMONS
+ until p1 inzone WizardCity/WC_Hub {
+                                     until p1 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+                                                                                                     p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+                                                                                                   }
+
+ until p1 inzone WizardCity/WC_Ravenwood {
+                                                p1 tp XYZ(-203.839, 4.139, 0.000)
+                                         }
+
+ until p1 inzone WizardCity/WC_Hub {
+                                     p1 tp XYZ(14.533, -2207.150, -156.894)
+                                   }
+ }
+
+
+
+
+ #HILDA BREWER
+ until p1 hasxyz XYZ(-4530.453, 561.836, 229.000) {
+                                                    p1 tp XYZ(-4530.453, 561.836, 229.000)
+                                                  }
+
+ until p1 windowvisible ['WorldView', 'main', 'fillallpotions'] {
+                                                                  p1 sendkey X, .05
+                                                                }
+
+ while p1 windowvisible ['WorldView', 'main', 'fillallpotions'] {
+  #REFILL ALL POTIONS
+  p1 clickwindow ['WorldView', 'main', 'fillallpotions']
+
+  #BUY
+  p1 clickwindow ['WorldView', 'main', 'buyAction']
+
+  #CLOSE
+  p1 clickwindow ['WorldView', 'main', 'exit']
+ }
+
+
+
+ #RECALL
+ if p1 windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+  until not p1 windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+                                                                                                          sleep .01
+  }
+ }
+
+ until p1 windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+        p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton']
+ }
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+block scale {
+#GO TO BASE CAMP
+until p1 inzone Celestia/CL_Hub {
+                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+
+
+
+
+#SCALE SIGIL
+until p1 hasxyz XYZ(-5.229, 15373.599, -1049.699) {
+                                                    p1 tp XYZ(-5.229, 15373.599, -1049.699)
+}
+
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "trial of the spheres" {
+                                                                                                                    sleep .01
+}
+
+while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+}
+
+until p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/StarRoom {
+                                                               sleep .01
+}
+
+
+
+
+
+#SCALE OF KNOWLEDGE
+until p1 windowvisible ['WorldView', 'NPCRangeWin', 'wndTitleBackground'] {
+                                                                            p1 tp XYZ(-264.311, -3893.082, 0.000)
+}
+
+
+
+#TRASH LV60 ELIXIR ONLY (uWu)
+if p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
+
+ until p1 windowvisible ['WorldView', 'DeckConfiguration'] {
+        p1 clickwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+ }
+
+ until p1 windowvisible ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage'] {
+        p1 clickwindow ['WorldView', 'DeckConfiguration', 'Inventory']
+ }
+
+ until p1 windowtext ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'Item_1'] contains "level scaling elixir - 60" {
+        p1 clickwindow ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'ButtonLayout', 'Tab_Elixir']
+ }
+
+ until not p1 windowtext ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'Item_1'] contains "level scaling elixir - 60" {
+            p1 clickwindow ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'windowForBtns', 'Layout', 'Trash_Item']
+             p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+              sleep 1
+ }
+
+ until not p1 windowvisible ['WorldView', 'DeckConfiguration'] {
+            p1 clickwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+ }
+}
+
+
+
+#SCALE TO LV60
+until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'wndTitleBackground'] {
+                                                                                p1 sendkey X, .05
+}
+
+until not p1 windowvisible ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout'] {
+           p1 clickwindow ['WorldView', 'NPCServicesWin', 'ControlSprite', 'optionsLayout', 'NPCServicesOptionWindow', 'OptionButton']
+}
+
+
+
+#EXIT
+until p1 hasxyz XYZ(7.622, -4970.787, 0.000) {
+                                               p1 tp XYZ(7.622, -4970.787, 0.000)
+}
+
+loop {
+ if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+ } elif p1 inzone Celestia/CL_Hub {
+                                    exitloop
+ }
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+block dungeon {
+#GO TO BASE CAMP
+until p1 inzone Celestia/CL_Hub {
+                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+
+
+
+
+#DUNGEON SIGIL
+until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
+                                                    p1 tp XYZ(729.654, 11130.721, -899.699)
+}
+
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "the chancel" {
+                                                                                                           sleep .01
+}
+
+while p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                       p1 sendkey X, .05
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
+                                                                       p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+}
+
+until p1 inzone Celestia/CL_Z11_Temple_Of_The_Sun {
+                                                    sleep .01
+}
+
+
+
+
+
+#BOSS
+until p1 incombat {
+                    p1 tp XYZ(-129.070, 24900.486, -1836.343)
+}
+p1 waitforcombat completion
+
+
+
+
+
+#BACK TO BASE CAMP
+until p1 hasxyz XYZ(-37.308, -8946.305, 795.801) {
+                                                   p1 tp XYZ(-37.308, -8946.305, 795.801)
+}
+
+loop {
+ if p1 windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+     p1 clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+ } elif p1 inzone Celestia/CL_Hub {
+                                    exitloop
+ }
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+#####START HERE#####
+#ONE TIME CHECK
+if not p1 inzone Celestia/CL_Hub {
+ if not p1 inzone Celestia/CL_Z01_Survey_Camp {
+  if not p1 inzone Celestia/CL_Z02_Crab_Realm {
+   if not p1 inzone Celestia/CL_Z03_District_Of_The_Stars {
+    if not p1 inzone Celestia/CL_Z04_Temple_Of_The_Stars {
+     if not p1 inzone Celestia/CL_Z05_The_Floating_Land {
+      if not p1 inzone Celestia/CL_Z06_StormHaven {
+       if not p1 inzone Celestia/CL_Z07_Storm_Lord_Temple {
+        if not p1 inzone Celestia/CL_Z08_Temple_Of_The_Moon/MoonC1 {
+         if not p1 inzone Celestia/CL_Z08_Temple_Of_The_Moon/MoonC2 {
+        if not p1 inzone Celestia/CL_Z09_Science_Center {
+       if not p1 inzone Celestia/CL_Z10_Kingdom_Of_The_Crabs {
+      if not p1 inzone Celestia/CL_Z11_Temple_Of_The_Sun {
+     if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/MoonRoom {
+    if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/StarRoom {
+   if not p1 inzone Celestia/CL_Z12_Test_of_the_Spheres/SunRoom {
+  if not p1 inzone Celestia/Interiors/CL_SkeleKey_Center_01 {
+ if not p1 inzone Celestia/Interiors/CL_SkeleKey_Center_02 {
+if not p1 inzone Celestia/Interiors/CL_Z01i1_Survey_Camp {
+ if not p1 inzone Celestia/Interiors/CL_Z02_ZippyZapCave {
+  if not p1 inzone Celestia/Interiors/CL_Z02i1_Crab_Realm {
+   if not p1 inzone Celestia/Interiors/CL_Z02i2_Crab_Realm {
+    if not p1 inzone Celestia/Interiors/CL_Z02i3_Crab_Realm {
+     if not p1 inzone Celestia/Interiors/CL_Z02i4_Crab_Realm {
+      if not p1 inzone Celestia/Interiors/CL_Z02i5_Crab_Realm {
+       if not p1 inzone Celestia/Interiors/CL_Z03i1_District_of_the_Stars {
+        if not p1 inzone Celestia/Interiors/CL_Z03i2_District_of_the_Stars {
+         if not p1 inzone Celestia/Interiors/CL_Z03i3_District_of_the_Stars {
+        if not p1 inzone Celestia/Interiors/CL_Z03i4_District_of_the_Stars {
+       if not p1 inzone Celestia/Interiors/CL_Z05i1_FloatingLand {
+      if not p1 inzone Celestia/Interiors/CL_Z05i2_FloatingLand {
+     if not p1 inzone Celestia/Interiors/CL_Z05i3_FloatingLand {
+    if not p1 inzone Celestia/Interiors/CL_Z05i4_FloatingLand {
+   if not p1 inzone Celestia/Interiors/CL_Z05i5_FloatingLand {
+  if not p1 inzone Celestia/Interiors/CL_Z05i6_FloatingLand {
+ if not p1 inzone Celestia/Interiors/CL_Z06i1_StormHaven {
+if not p1 inzone Celestia/Interiors/CL_Z06i2_StormHaven {
+ if not p1 inzone Celestia/Interiors/CL_Z06i3_StormHaven {
+  if not p1 inzone Celestia/Interiors/CL_Z06i_KrakenCave {
+   if not p1 inzone Celestia/Interiors/CL_Z07i1_Storm_Lord_Temple {
+    if not p1 inzone Celestia/Interiors/CL_Z07i2_Storm_Lord_Temple {
+     if not p1 inzone Celestia/Interiors/CL_Z09i1_Science_Center {
+      if not p1 inzone Celestia/Interiors/CL_Z09i2_Science_Center {
+       if not p1 inzone Celestia/Interiors/CL_Z09i3_Science_Center {
+        if not p1 inzone Celestia/Interiors/CL_Z09i4_Science_Center {
+         if not p1 inzone Celestia/Interiors/CL_Z09i5_Science_Center {
+        if not p1 inzone Celestia/Interiors/CL_Z09i6_Science_Center {
+       if not p1 inzone Celestia/Interiors/CL_Z09i7_Science_Center {
+      if not p1 inzone Celestia/Interiors/CL_Z10I12_VicegripsHideout {
+     if not p1 inzone Celestia/Interiors/CL_Z10i10_Kingdom_Of_The_Crabs {
+    if not p1 inzone Celestia/Interiors/CL_Z10i11_Kingdom_Of_The_Crabs {
+   if not p1 inzone Celestia/Interiors/CL_Z10i1_Kingdom_Of_The_Crabs {
+  if not p1 inzone Celestia/Interiors/CL_Z10i2_Kingdom_Of_The_Crabs {
+ if not p1 inzone Celestia/Interiors/CL_Z10i3_Kingdom_Of_The_Crabs {
+if not p1 inzone Celestia/Interiors/CL_Z10i4_Kingdom_Of_The_Crabs {
+ if not p1 inzone Celestia/Interiors/CL_Z10i5_Kingdom_Of_The_Crabs {
+  if not p1 inzone Celestia/Interiors/CL_Z10i6_Kingdom_Of_The_Crabs {
+   if not p1 inzone Celestia/Interiors/CL_Z10i7_Kingdom_Of_The_Crabs {
+    if not p1 inzone Celestia/Interiors/CL_Z10i8_Kingdom_Of_The_Crabs {
+     if not p1 inzone Celestia/Interiors/CL_Z10i9_Kingdom_Of_The_Crabs {
+      if not p1 inzone Celestia/Interiors/CL_Z12i1_Test_Of_The_Spheres {
+       if not p1 inzone Celestia/Interiors/CL_Z12i2_Test_Of_The_Spheres {
+        if not p1 inzone Celestia/Interiors/CS_StormSurgeCaverns {
+         if not p1 inzone Celestia/Interiors/PageEvent/CL_BossRoom {
+          if not p1 inzone Celestia/Interiors/PageEvent/CL_LandingZone {
+           if not p1 inzone Celestia/Interiors/PageEvent/CL_TrashMobs {
+
+until p1 inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+       p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+}
+
+until p1 inzone WizardCity/WC_Ravenwood {
+                                          p1 tp XYZ(-203.839, 4.139, 0.000)
+}
+
+until p1 inzone WizardCity/WC_Ravenwood_Teleporter {
+                                                     p1 tp XYZ(18.411, 1933.317, 78.670)
+}
+
+until p1 hasxyz XYZ(3.859, 51.431, 89.213) {
+                                             p1 tp XYZ(3.859, 51.431, 89.213)
+}
+
+until p1 windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "world gate" {
+                                                                                                          sleep .01
+}
+
+until not p1 windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+                                                                           p1 sendkey X, .05
+}
+
+until p1 windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnCelestia'] {
+       p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'rightButton']
+}
+
+until p1 inzone Celestia/CL_Hub {
+       p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnCelestia']
+     if p1 windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'selectedWorldCheckMark'] {
+         p1 clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'teleportButton']
+     }
+}
+
+until p1 hasxyz XYZ(67, 67, 67) {
+                                  p1 tp XYZ(67, 67, 67)
+}
+
+} else {
+
+until p1 inzone Celestia/CL_Hub {
+                                  p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+}
+
+                                                                 }
+                                                                }
+                                                               }
+                                                              }
+                                                             }
+                                                            }
+                                                           }
+                                                          }
+                                                         }
+                                                        }
+                                                       }
+                                                      }
+                                                     }
+                                                    }
+                                                   }
+                                                  }
+                                                 }
+                                                }
+                                               }
+                                              }
+                                             }
+                                            }
+                                           }
+                                          }
+                                         }
+                                        }
+                                       }
+                                      }
+                                     }
+                                    }
+                                   }
+                                  }
+                                 }
+                                }
+                               }
+                              }
+                             }
+                            }
+                           }
+                          }
+                         }
+                        }
+                       }
+                      }
+                     }
+                    }
+                   }
+                  }
+                 }
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
+
+
+
+
+
+loop {
+
+ until p1 inzone Celestia/CL_Hub {
+                                   p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+ }
+
+
+
+ if POTIONS = True {
+  if p1 goldabove 10% {
+                        call potion
+  } else {
+
+   until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
+                                                       p1 tp XYZ(729.654, 11130.721, -899.699)
+   }
+
+   if p1 healthbelow 78% {
+
+    until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
+                                                          p1 tp XYZ(-4401.264, 12444.917, -971.776)
+    }
+
+    until p1 inzone Celestia/CL_Z01_Survey_Camp {
+                                                  sleep .01
+    }
+
+    until p1 hasxyz XYZ(-82.320, 6.649, 0.091) {
+                                                 p1 tp XYZ(-82.320, 6.649, 0.091)
+    }
+
+    until p1 healthabove 99% {
+                               p1 entitytp health
+                               p1 tp XYZ(-82.320, 6.649, 0.091)
+                               p1 entitytp health
+                               p1 tp XYZ(3793.981, -3623.860, 0.000)
+                               p1 entitytp health
+                               p1 tp XYZ(4014.772, 3433.716, 0.000)
+                               p1 entitytp health
+    }
+
+    until p1 inzone Celestia/CL_Hub {
+                                      p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+    }
+   }
+
+   until not p1 healthbelow 80% {
+                                  sleep .01
+   }
+
+   until not p1 manabelow 25% {
+                                p1 entitytp mana
+                                p1 tp XYZ(6.602, 9372.546, -1099.699)
+   }
+  }
+ }
+
+
+
+ if POTIONS = False {
+  until p1 hasxyz XYZ(729.654, 11130.721, -899.699) {
+                                                      p1 tp XYZ(729.654, 11130.721, -899.699)
+  }
+
+  if p1 healthbelow 78% {
+
+   until p1 hasxyz XYZ(-4401.264, 12444.917, -971.776) {
+                                                         p1 tp XYZ(-4401.264, 12444.917, -971.776)
+   }
+
+   until p1 inzone Celestia/CL_Z01_Survey_Camp {
+                                                 sleep .01
+   }
+
+   until p1 hasxyz XYZ(-82.320, 6.649, 0.091) {
+                                                p1 tp XYZ(-82.320, 6.649, 0.091)
+   }
+
+   until p1 healthabove 99% {
+                              p1 entitytp health
+                              p1 tp XYZ(-82.320, 6.649, 0.091)
+                              p1 entitytp health
+                              p1 tp XYZ(3793.981, -3623.860, 0.000)
+                              p1 entitytp health
+                              p1 tp XYZ(4014.772, 3433.716, 0.000)
+                              p1 entitytp health
+   }
+
+   until p1 inzone Celestia/CL_Hub {
+                                     p1 clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+   }
+  }
+
+  until not p1 healthbelow 80% {
+                                 sleep .01
+  }
+
+  until not p1 manabelow 25% {
+                               p1 entitytp mana
+                               p1 tp XYZ(6.602, 9372.546, -1099.699)
+  }
+ }
+
+
+
+ if SCALE = False {
+                    call dungeon
+ }
+
+
+
+ if SCALE = True {
+  if p1 windowvisible ['WorldView', 'windowHUD', 'wndElixirContainer', 'sprtElixir1'] {
+                                                                                        call dungeon
+  } else {
+           call scale
+  }
+ }
+
+}
