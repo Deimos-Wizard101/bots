@@ -56,7 +56,7 @@ def load_valid_zones() -> set[str]:
     if not ZONES_FILE.exists():
         raise SystemExit(f"missing {ZONES_FILE.name}; cannot validate zones")
     # utf-8-sig tolerates a stray BOM if the file was edited on Windows.
-    return set(json.loads(ZONES_FILE.read_text(encoding="utf-8-sig")))
+    return (zones := set(json.loads(ZONES_FILE.read_text(encoding="utf-8-sig")))) | {z.split("/", 1)[0] for z in zones}
 
 
 @dataclass
