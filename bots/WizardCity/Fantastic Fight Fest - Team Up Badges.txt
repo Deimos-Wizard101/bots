@@ -1,0 +1,118 @@
+###deimos_expertmode
+# @name: Fantastic Fight Fest - Team Up Badges.txt
+# @zone: WizardCity
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @description: Special Event: Fantastic Fight Fest for Team Up Badges.
+
+#COMBAT [ENABLED].
+#(Recommended) FOR MULTIPLE CLIENTS, USE MULTIPLE INSTANCES OF DEIMOS.
+#(Recommended1) START AWAY FROM MOBS.
+#THREAD LINK: https://discord.com/channels/912917467792281600/1402448828971483156.
+
+
+
+
+
+block fff {
+    if any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] OR any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpWindow'] OR any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] OR any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] OR any windowvisible ['WorldView', 'ClassProjectWindow'] {
+        until not any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] AND not any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] AND not any windowvisible ['WorldView', 'TeamHelpWindow'] AND not any windowvisible ['WorldView', 'ClassProjectLaunchWindow'] AND not any windowvisible ['WorldView', 'ClassProjectSeasonPassWindow'] AND not any windowvisible ['WorldView', 'ClassProjectWindow'] {
+            clickwindow ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+            clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+            clickwindow ['WorldView', 'TeamHelpWindow', 'CloseTeamHelpButton']
+            clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'CloseClassProjectLaunchButton']
+            clickwindow ['WorldView', 'ClassProjectSeasonPassWindow', 'CloseSeasonPassButton']
+            clickwindow ['WorldView', 'ClassProjectWindow', 'CloseClassProjectButton']
+        }
+    }
+    if windowvisible ['WorldView', 'windowHUD', 'windowForTopRowButtons', 'ClassEventButton'] {
+        until windowvisible ['WorldView', 'ClassProjectLaunchWindow'] {
+               clickwindow ['WorldView', 'windowHUD', 'windowForTopRowButtons', 'ClassEventButton']
+        }
+        times 4 {
+            if any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton1', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
+                while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton1', 'TextWidget', 'EventLabel']
+                }
+                break
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton2', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
+                while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton2', 'TextWidget', 'EventLabel']
+                }
+                break
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel'] contains "fantastic fight fest" {
+                while not sameany windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'EventButton3', 'TextWidget', 'EventLabel']
+                }
+                break
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "1/2" OR any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "1/3" OR any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "1/4" {
+                until sameany windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "2/" {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'rightscroll']
+                }
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "2/3" OR any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "2/4" {
+                until sameany windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "3/" {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'rightscroll']
+                }
+            } elif any windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "3/4" {
+                until sameany windowtext ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'PageNumber'] contains "4/" {
+                    sameany clickwindow ['WorldView', 'ClassProjectLaunchWindow', 'BottomWindow', 'rightscroll']
+                }
+            } else {
+                log Run during "Special Event: Fantastic Fight Fest"
+                kill
+            }
+        }
+        until not windowvisible ['WorldView', 'ClassProjectWindow', 'JoinTeamButton'] {
+            clickwindow ['WorldView', 'ClassProjectWindow', 'JoinTeamButton']
+        }
+        times 10000 {
+            if windowvisible ['WorldView', 'TeamUpMainWindow'] {
+                sleep .01
+            } elif loading {
+                while any loading {
+                    sleep 0.01
+                }
+                break
+            }
+        }
+    }
+    times 1000 {
+        if inrange "Duel Circle" {
+            tp closestmob
+            break
+        } else {
+            tp closestmob
+        }
+    }
+    times 1000 {
+        if windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
+            until not windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
+                clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+            }
+        } elif incombat {
+            break
+        } elif not incombat {
+            tp closestmob
+        }
+    }
+    if incombat {
+        waitforcombat completion
+    }
+    if inrange "bonus" {
+        entitytp bonus
+    }
+}
+
+
+
+
+
+
+
+
+
+
+#####START HERE#####
+loop {
+    call fff
+}
