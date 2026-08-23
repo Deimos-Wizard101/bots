@@ -14,15 +14,13 @@ deimoslang interpreter ignores (``#`` starts a line comment):
     # @format: expertmode        # or "bot"
     # @clients: 1-4
     # @description: Farms the Golem Tower boss for gear.
-    # @sub_zone: WizardCity/WC_Streets, Celestia/CL_Hub
 
-``@zone`` may name a broad, umbrella zone (e.g. ``WizardCity/WC_Streets``
-instead of one of its specific sigil instances) as long as it's a real
-ancestor of a zone in zones.json; the bot still only lives under its own
-``@zone`` folder. ``@sub_zone`` is an optional comma-separated list of
-additional zones (subject to the same umbrella-prefix allowance) the bot
-should *also* be discoverable from — it does not create extra copies of the
-bot file, only extra entries in those zones' generated registry.json.
+``@zone`` can be a single zone or a comma-separated list of zones (e.g.
+``WizardCity/WC_Streets, Celestia/CL_Hub``). The first zone defines the primary
+folder location where the file lives on disk. Any additional zones make the
+bot discoverable from those zones without creating extra copies of the bot file.
+Zones may name broad umbrella prefixes (e.g. ``WizardCity/WC_Streets`` or
+``WizardCity``) as long as they are valid ancestors in zones.json.
 
 Generated artifacts:
     bots/<zone>/registry.json  full per-zone registry (what a client fetches)
@@ -50,7 +48,7 @@ INDEX_JSON = REPO_ROOT / "index.json"
 ZONE_REGISTRY_NAME = "registry.json"  # per-zone file: bots/<zone>/registry.json
 
 REQUIRED_FIELDS = ("name", "zone", "author", "format")
-OPTIONAL_FIELDS = ("clients", "description", "sub_zone")
+OPTIONAL_FIELDS = ("clients", "description")
 VALID_FORMATS = ("bot", "expertmode")
 # Reserved namespace for world-agnostic bots (no real world is named this).
 GENERAL_WORLD = "General"
@@ -65,7 +63,7 @@ def load_valid_zones() -> set[str]:
     """Zone names from zones.json, plus every ancestor prefix of each.
 
     A leaf like "WizardCity/WC_Streets/WC_Golem_Tower" also makes
-    "WizardCity" and "WizardCity/WC_Streets" valid, since @zone/@sub_zone are
+    "WizardCity" and "WizardCity/WC_Streets" valid, since @zone entries are
     allowed to name a broad umbrella zone instead of one specific instance
     (e.g. a bot meant to work throughout all of WC_Streets' sigils).
     """
@@ -102,26 +100,28 @@ class Bot:
         return self.path.parent.relative_to(BOTS_DIR).as_posix()
 
     @property
-    def world(self) -> str:
-        return self.folder_zone.split("/", 1)[0]
+    def zones(self) -> list[str]:
+        """Parsed comma-separated @zone entries: first is primary/folder zone."""
+        raw = self.headers.get("zone", "")
+        return [z.strip() for z in raw.split(",") if z.strip()]
 
     @property
-    def sub_zones(self) -> list[str]:
-        """Parsed @sub_zone header: extra zones this bot should also be
-        discoverable from, without duplicating the bot file itself."""
-        raw = self.headers.get("sub_zone", "")
-        return [z.strip() for z in raw.split(",") if z.strip()]
+    def primary_zone(self) -> str:
+        return self.zones[0] if self.zones else ""
+
+    @property
+    def world(self) -> str:
+        return self.folder_zone.split("/", 1)[0]
 
     def to_entry(self) -> dict:
         return {
             "name": self.headers.get("name", ""),
-            "zone": self.headers.get("zone", ""),
+            "zone": ", ".join(self.zones),
             "world": self.world,
             "author": self.headers.get("author", ""),
             "format": self.headers.get("format", ""),
             "clients": self.headers.get("clients", ""),
             "description": self.headers.get("description", ""),
-            "sub_zone": self.headers.get("sub_zone", ""),
             "path": self.rel,
         }
 
@@ -130,7 +130,7 @@ def parse_bot(path: Path) -> Bot:
     """Read the leading ``#`` comment block and pull out @field headers.
 
     ``@description`` may span multiple lines and contain Markdown: any plain
-    ``#`` comment lines that follow it (until a blank line, another ``@field``,\
+    ``#`` comment lines that follow it (until a blank line, another ``@field``,
     or the first command line) are appended as continuation. A leading
     ``###deimos_expertmode`` marker line is a comment, so it is skipped.
     """
@@ -172,24 +172,21 @@ def validate_bot(bot: Bot, valid_zones: set[str]) -> None:
         if not bot.headers.get(f):
             bot.errors.append(f"missing required header '@{f}'")
 
-    zone = bot.headers.get("zone", "")
-    if zone:
-        if not is_known_zone(zone, valid_zones):
-            bot.errors.append(
-                f"@zone '{zone}' is not a known game zone or umbrella prefix of "
-                f"one (not in zones.json) and is not under the reserved "
-                f"'{GENERAL_WORLD}' namespace"
-            )
-        if zone != bot.folder_zone:
-            bot.errors.append(
-                f"@zone '{zone}' does not match folder location '{bot.folder_zone}'"
-            )
+    zones = bot.zones
+    if not zones:
+        return
 
-    for sub in bot.sub_zones:
-        if not is_known_zone(sub, valid_zones):
+    primary = zones[0]
+    if primary != bot.folder_zone:
+        bot.errors.append(
+            f"@zone primary folder '{primary}' does not match file location '{bot.folder_zone}'"
+        )
+
+    for z in zones:
+        if not is_known_zone(z, valid_zones):
             bot.errors.append(
-                f"@sub_zone '{sub}' is not a known game zone or umbrella prefix "
-                f"of one (not in zones.json) and is not under the reserved "
+                f"@zone '{z}' is not a known game zone or umbrella prefix of "
+                f"one (not in zones.json) and is not under the reserved "
                 f"'{GENERAL_WORLD}' namespace"
             )
 
@@ -279,10 +276,11 @@ def render_zone_json(zone: str, world: str, entries: list[dict]) -> str:
 
 def render_index(entries: list[dict]) -> str:
     """Slim global index for cross-zone search (no descriptions)."""
-    slim_keys = ("name", "zone", "world", "author", "format", "clients", "sub_zone", "path")
+    slim_keys = ("name", "zone", "world", "author", "format", "clients", "path")
     zones: dict[str, int] = {}
     for e in entries:
-        zones[e["zone"]] = zones.get(e["zone"], 0) + 1
+        for z in (s.strip() for s in e["zone"].split(",") if s.strip()):
+            zones[z] = zones.get(z, 0) + 1
     doc = {
         "generated_by": "scripts/registry.py",
         "count": len(entries),
@@ -296,24 +294,22 @@ def render_index(entries: list[dict]) -> str:
 def generate_outputs(entries: list[dict]) -> dict[Path, str]:
     """Map every generated file path to its desired content.
 
-    Each bot's entry is written into its own zone's registry.json, plus a copy
-    of that same entry into every zone listed in its optional @sub_zone header
-    (deduped, and skipped if identical to the bot's own zone). This is how a
-    bot becomes discoverable from extra zones without a second copy of the
-    bot file existing anywhere in the repo.
+    Each bot's entry is written into its primary zone's registry.json, plus
+    a copy into every additional zone listed in its comma-separated @zone header
+    (deduped). This is how a bot becomes discoverable from extra zones without
+    a second copy of the bot file existing anywhere in the repo.
     """
     outputs: dict[Path, str] = {
         INDEX_JSON: render_index(entries),
     }
     by_zone: dict[str, list[dict]] = {}
     for e in entries:
-        by_zone.setdefault(e["zone"], []).append(e)
-        seen = {e["zone"]}
-        for sub in (s.strip() for s in e.get("sub_zone", "").split(",")):
-            if not sub or sub in seen:
+        seen = set()
+        for z in (s.strip() for s in e.get("zone", "").split(",") if s.strip()):
+            if z in seen:
                 continue
-            seen.add(sub)
-            by_zone.setdefault(sub, []).append(e)
+            seen.add(z)
+            by_zone.setdefault(z, []).append(e)
     for zone, zentries in by_zone.items():
         world = zone.split("/", 1)[0]
         path = BOTS_DIR / zone / ZONE_REGISTRY_NAME
@@ -382,7 +378,7 @@ def main() -> int:
         metavar="PATH",
         help="read a newline-delimited list of bot files to validate",
     )
-    b = sub.add_parser("build", help="write registry.json + REGISTRY.md")
+    b = sub.add_parser("build", help="write index.json and per-zone registry files")
     b.add_argument(
         "--check", action="store_true", help="fail if generated files would change"
     )
