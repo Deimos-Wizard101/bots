@@ -111,7 +111,8 @@ class Bot:
 
     @property
     def world(self) -> str:
-        return self.folder_zone.split("/", 1)[0]
+        target_zone = self.primary_zone or self.folder_zone
+        return target_zone.split("/", 1)[0]
 
     def to_entry(self) -> dict:
         return {
@@ -176,12 +177,6 @@ def validate_bot(bot: Bot, valid_zones: set[str]) -> None:
     if not zones:
         return
 
-    primary = zones[0]
-    if primary != bot.folder_zone:
-        bot.errors.append(
-            f"@zone primary folder '{primary}' does not match file location '{bot.folder_zone}'"
-        )
-
     for z in zones:
         if not is_known_zone(z, valid_zones):
             bot.errors.append(
@@ -235,6 +230,42 @@ def resolve_bot_files(raw_paths: list[str]) -> tuple[list[Path], list[str]]:
     return paths, warnings
 
 
+def prune_empty_dirs(root: Path) -> None:
+    """Remove empty directories bottom-up under root."""
+    for d in sorted(root.rglob("*"), key=lambda p: len(p.parts), reverse=True):
+        if d.is_dir() and not any(d.iterdir()):
+            try:
+                d.rmdir()
+            except OSError:
+                pass
+
+
+def relocate_bots(bots: list[Bot], dry_run: bool = False) -> list[str]:
+    """Ensure every bot file is stored in its primary zone folder.
+
+    When an edit changes a bot's primary @zone, the file is automatically moved
+    to the new primary zone folder on build and any old empty folder is pruned.
+    """
+    drift: list[str] = []
+    for bot in bots:
+        if not bot.primary_zone or bot.folder_zone == bot.primary_zone:
+            continue
+        dest_dir = BOTS_DIR / bot.primary_zone
+        dest_path = dest_dir / bot.path.name
+        if dest_path.exists() and dest_path.resolve() != bot.path.resolve():
+            continue
+        if dry_run:
+            drift.append(f"{bot.rel} (needs relocation to bots/{bot.primary_zone}/{bot.path.name})")
+        else:
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            old_path = bot.path
+            old_path.rename(dest_path)
+            bot.path = dest_path
+    if not dry_run:
+        prune_empty_dirs(BOTS_DIR)
+    return drift
+
+
 def cmd_validate(only: list[Path] | None = None) -> int:
     valid_zones = load_valid_zones()
     bots = [parse_bot(p) for p in only] if only is not None else collect_bots()
@@ -250,22 +281,21 @@ def cmd_validate(only: list[Path] | None = None) -> int:
     return 1 if failed else 0
 
 
-def build_registry() -> list[dict]:
+def build_registry(dry_run: bool = False) -> tuple[list[dict], list[str]]:
     valid_zones = load_valid_zones()
     bots = collect_bots()
     errors = 0
-    entries = []
     for bot in bots:
         validate_bot(bot, valid_zones)
         if bot.errors:
             errors += 1
             print(f"FAIL {bot.rel}: {'; '.join(bot.errors)}", file=sys.stderr)
-            continue
-        entries.append(bot.to_entry())
     if errors:
         raise SystemExit(f"refusing to build registry: {errors} invalid bot(s)")
+    drift = relocate_bots(bots, dry_run=dry_run)
+    entries = [bot.to_entry() for bot in bots]
     entries.sort(key=lambda e: (e["world"], e["zone"], e["name"].lower()))
-    return entries
+    return entries, drift
 
 
 def render_zone_json(zone: str, world: str, entries: list[dict]) -> str:
@@ -328,12 +358,12 @@ def stale_files(outputs: dict[Path, str]) -> set[Path]:
 
 
 def cmd_build(check: bool) -> int:
-    entries = build_registry()
+    entries, relocation_drift = build_registry(dry_run=check)
     outputs = generate_outputs(entries)
     stale = stale_files(outputs)
 
     if check:
-        drift = []
+        drift = list(relocation_drift)
         for path, content in outputs.items():
             if not path.exists() or path.read_text(encoding="utf-8") != content:
                 drift.append(path.relative_to(REPO_ROOT).as_posix())
@@ -352,6 +382,7 @@ def cmd_build(check: bool) -> int:
     for path, content in outputs.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
+    prune_empty_dirs(BOTS_DIR)
     zone_files = sum(1 for p in outputs if p.name == ZONE_REGISTRY_NAME)
     print(
         f"Wrote index.json and {zone_files} per-zone "
