@@ -15,6 +15,13 @@ deimoslang interpreter ignores (``#`` starts a line comment):
     # @clients: 1-4
     # @description: Farms the Golem Tower boss for gear.
 
+``@zone`` can be a single zone or a comma-separated list of zones (e.g.
+``WizardCity/WC_Streets, Celestia/CL_Hub``). The first zone defines the primary
+folder location where the file lives on disk. Any additional zones make the
+bot discoverable from those zones without creating extra copies of the bot file.
+Zones may name broad umbrella prefixes (e.g. ``WizardCity/WC_Streets`` or
+``WizardCity``) as long as they are valid ancestors in zones.json.
+
 Generated artifacts:
     bots/<zone>/registry.json  full per-zone registry (what a client fetches)
     index.json                 slim global index for cross-zone search
@@ -53,10 +60,28 @@ CLIENTS_RE = re.compile(r"^(==|!=|>=|<=|>|<)\s*\d+$")
 
 
 def load_valid_zones() -> set[str]:
+    """Zone names from zones.json, plus every ancestor prefix of each.
+
+    A leaf like "WizardCity/WC_Streets/WC_Golem_Tower" also makes
+    "WizardCity" and "WizardCity/WC_Streets" valid, since @zone entries are
+    allowed to name a broad umbrella zone instead of one specific instance
+    (e.g. a bot meant to work throughout all of WC_Streets' sigils).
+    """
     if not ZONES_FILE.exists():
         raise SystemExit(f"missing {ZONES_FILE.name}; cannot validate zones")
     # utf-8-sig tolerates a stray BOM if the file was edited on Windows.
-    return set(json.loads(ZONES_FILE.read_text(encoding="utf-8-sig")))
+    zones = set(json.loads(ZONES_FILE.read_text(encoding="utf-8-sig")))
+    prefixes: set[str] = set()
+    for z in zones:
+        parts = z.split("/")
+        for i in range(1, len(parts)):
+            prefixes.add("/".join(parts[:i]))
+    return zones | prefixes
+
+
+def is_known_zone(zone: str, valid_zones: set[str]) -> bool:
+    """True if `zone` is a real (or umbrella-prefix) game zone, or under General."""
+    return zone == GENERAL_WORLD or zone.startswith(GENERAL_WORLD + "/") or zone in valid_zones
 
 
 @dataclass
@@ -75,19 +100,37 @@ class Bot:
         return self.path.parent.relative_to(BOTS_DIR).as_posix()
 
     @property
+    def zones(self) -> list[str]:
+        """Parsed comma-separated @zone entries: first is primary/folder zone."""
+        raw = self.headers.get("zone", "")
+        return [z.strip() for z in raw.split(",") if z.strip()]
+
+    @property
+    def primary_zone(self) -> str:
+        return self.zones[0] if self.zones else ""
+
+    @property
+    def target_rel(self) -> str:
+        """Repo-relative path the bot belongs at post-relocation."""
+        if self.primary_zone:
+            return f"bots/{self.primary_zone}/{self.path.name}"
+        return self.rel
+
+    @property
     def world(self) -> str:
-        return self.folder_zone.split("/", 1)[0]
+        target_zone = self.primary_zone or self.folder_zone
+        return target_zone.split("/", 1)[0]
 
     def to_entry(self) -> dict:
         return {
             "name": self.headers.get("name", ""),
-            "zone": self.headers.get("zone", ""),
+            "zone": ", ".join(self.zones),
             "world": self.world,
             "author": self.headers.get("author", ""),
             "format": self.headers.get("format", ""),
             "clients": self.headers.get("clients", ""),
             "description": self.headers.get("description", ""),
-            "path": self.rel,
+            "path": self.target_rel,
         }
 
 
@@ -137,17 +180,16 @@ def validate_bot(bot: Bot, valid_zones: set[str]) -> None:
         if not bot.headers.get(f):
             bot.errors.append(f"missing required header '@{f}'")
 
-    zone = bot.headers.get("zone", "")
-    if zone:
-        is_general = zone == GENERAL_WORLD or zone.startswith(GENERAL_WORLD + "/")
-        if not is_general and zone not in valid_zones:
+    zones = bot.zones
+    if not zones:
+        return
+
+    for z in zones:
+        if not is_known_zone(z, valid_zones):
             bot.errors.append(
-                f"@zone '{zone}' is not a known game zone (not in zones.json) "
-                f"and is not under the reserved '{GENERAL_WORLD}' namespace"
-            )
-        if zone != bot.folder_zone:
-            bot.errors.append(
-                f"@zone '{zone}' does not match folder location '{bot.folder_zone}'"
+                f"@zone '{z}' is not a known game zone or umbrella prefix of "
+                f"one (not in zones.json) and is not under the reserved "
+                f"'{GENERAL_WORLD}' namespace"
             )
 
     fmt = bot.headers.get("format", "")
@@ -162,6 +204,14 @@ def validate_bot(bot: Bot, valid_zones: set[str]) -> None:
             f"@clients '{clients}' must be an equality/comparison statement, "
             "e.g. '== 4', '>= 1', '<= 4'"
         )
+
+    # Pre-merge validation: fail if relocating would collide with an existing file
+    if bot.primary_zone and bot.folder_zone != bot.primary_zone:
+        dest_path = BOTS_DIR / bot.primary_zone / bot.path.name
+        if dest_path.exists() and dest_path.resolve() != bot.path.resolve():
+            bot.errors.append(
+                f"cannot relocate to primary zone: destination 'bots/{bot.primary_zone}/{bot.path.name}' already exists"
+            )
 
 
 def collect_bots() -> list[Bot]:
@@ -195,6 +245,42 @@ def resolve_bot_files(raw_paths: list[str]) -> tuple[list[Path], list[str]]:
     return paths, warnings
 
 
+def prune_empty_dirs(root: Path) -> None:
+    """Remove empty directories bottom-up under root."""
+    for d in sorted(root.rglob("*"), key=lambda p: len(p.parts), reverse=True):
+        if d.is_dir() and not any(d.iterdir()):
+            try:
+                d.rmdir()
+            except OSError:
+                pass
+
+
+def relocate_bots(bots: list[Bot], dry_run: bool = False) -> list[str]:
+    """Ensure every bot file is stored in its primary zone folder.
+
+    When an edit changes a bot's primary @zone, the file is automatically moved
+    to the new primary zone folder on build and any old empty folder is pruned.
+    """
+    drift: list[str] = []
+    for bot in bots:
+        if not bot.primary_zone or bot.folder_zone == bot.primary_zone:
+            continue
+        dest_dir = BOTS_DIR / bot.primary_zone
+        dest_path = dest_dir / bot.path.name
+        if dest_path.exists() and dest_path.resolve() != bot.path.resolve():
+            continue
+        if dry_run:
+            drift.append(f"{bot.rel} (needs relocation to {bot.target_rel})")
+        else:
+            dest_dir.mkdir(parents=True, exist_ok=True)
+            old_path = bot.path
+            old_path.rename(dest_path)
+            bot.path = dest_path
+    if not dry_run:
+        prune_empty_dirs(BOTS_DIR)
+    return drift
+
+
 def cmd_validate(only: list[Path] | None = None) -> int:
     valid_zones = load_valid_zones()
     bots = [parse_bot(p) for p in only] if only is not None else collect_bots()
@@ -210,22 +296,21 @@ def cmd_validate(only: list[Path] | None = None) -> int:
     return 1 if failed else 0
 
 
-def build_registry() -> list[dict]:
+def build_registry(dry_run: bool = False) -> tuple[list[dict], list[str]]:
     valid_zones = load_valid_zones()
     bots = collect_bots()
     errors = 0
-    entries = []
     for bot in bots:
         validate_bot(bot, valid_zones)
         if bot.errors:
             errors += 1
             print(f"FAIL {bot.rel}: {'; '.join(bot.errors)}", file=sys.stderr)
-            continue
-        entries.append(bot.to_entry())
     if errors:
         raise SystemExit(f"refusing to build registry: {errors} invalid bot(s)")
+    drift = relocate_bots(bots, dry_run=dry_run)
+    entries = [bot.to_entry() for bot in bots]
     entries.sort(key=lambda e: (e["world"], e["zone"], e["name"].lower()))
-    return entries
+    return entries, drift
 
 
 def render_zone_json(zone: str, world: str, entries: list[dict]) -> str:
@@ -239,7 +324,8 @@ def render_index(entries: list[dict]) -> str:
     slim_keys = ("name", "zone", "world", "author", "format", "clients", "path")
     zones: dict[str, int] = {}
     for e in entries:
-        zones[e["zone"]] = zones.get(e["zone"], 0) + 1
+        for z in (s.strip() for s in e["zone"].split(",") if s.strip()):
+            zones[z] = zones.get(z, 0) + 1
     doc = {
         "generated_by": "scripts/registry.py",
         "count": len(entries),
@@ -251,16 +337,28 @@ def render_index(entries: list[dict]) -> str:
 
 
 def generate_outputs(entries: list[dict]) -> dict[Path, str]:
-    """Map every generated file path to its desired content."""
+    """Map every generated file path to its desired content.
+
+    Each bot's entry is written into its primary zone's registry.json, plus
+    a copy into every additional zone listed in its comma-separated @zone header
+    (deduped). This is how a bot becomes discoverable from extra zones without
+    a second copy of the bot file existing anywhere in the repo.
+    """
     outputs: dict[Path, str] = {
         INDEX_JSON: render_index(entries),
     }
     by_zone: dict[str, list[dict]] = {}
     for e in entries:
-        by_zone.setdefault(e["zone"], []).append(e)
+        seen = set()
+        for z in (s.strip() for s in e.get("zone", "").split(",") if s.strip()):
+            if z in seen:
+                continue
+            seen.add(z)
+            by_zone.setdefault(z, []).append(e)
     for zone, zentries in by_zone.items():
+        world = zone.split("/", 1)[0]
         path = BOTS_DIR / zone / ZONE_REGISTRY_NAME
-        outputs[path] = render_zone_json(zone, zentries[0]["world"], zentries)
+        outputs[path] = render_zone_json(zone, world, zentries)
     return outputs
 
 
@@ -275,12 +373,12 @@ def stale_files(outputs: dict[Path, str]) -> set[Path]:
 
 
 def cmd_build(check: bool) -> int:
-    entries = build_registry()
+    entries, relocation_drift = build_registry(dry_run=check)
     outputs = generate_outputs(entries)
     stale = stale_files(outputs)
 
     if check:
-        drift = []
+        drift = list(relocation_drift)
         for path, content in outputs.items():
             if not path.exists() or path.read_text(encoding="utf-8") != content:
                 drift.append(path.relative_to(REPO_ROOT).as_posix())
@@ -297,7 +395,9 @@ def cmd_build(check: bool) -> int:
     for path in sorted(stale):
         path.unlink()
     for path, content in outputs.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
+    prune_empty_dirs(BOTS_DIR)
     zone_files = sum(1 for p in outputs if p.name == ZONE_REGISTRY_NAME)
     print(
         f"Wrote index.json and {zone_files} per-zone "
@@ -324,7 +424,7 @@ def main() -> int:
         metavar="PATH",
         help="read a newline-delimited list of bot files to validate",
     )
-    b = sub.add_parser("build", help="write registry.json + REGISTRY.md")
+    b = sub.add_parser("build", help="write index.json and per-zone registry files")
     b.add_argument(
         "--check", action="store_true", help="fail if generated files would change"
     )
