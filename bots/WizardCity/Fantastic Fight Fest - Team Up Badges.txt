@@ -1,14 +1,14 @@
 ###deimos_expertmode
 # @name: Fantastic Fight Fest - Team Up Badges.txt
-# @zone: WizardCity
+# @zone: General
 # @author: Discord: homeyo / Github: zerosenses
 # @format: expertmode
+# @clients: ==1
 # @description: Special Event: Fantastic Fight Fest for Team Up Badges.
 
 #COMBAT [ENABLED].
-#(Recommended) FOR MULTIPLE CLIENTS, USE MULTIPLE INSTANCES OF DEIMOS.
-#(Recommended1) START AWAY FROM MOBS.
-#THREAD LINK: https://discord.com/channels/912917467792281600/1402448828971483156.
+#FOR MULTIPLE CLIENTS, USE MULTIPLE INSTANCES OF DEIMOS [Unbind "Kill Tool" Hotkey].
+#START AWAY FROM MOBS.
 
 
 
@@ -85,8 +85,9 @@ block fff {
         }
     }
     times 1000 {
-        if windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
-            until not windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
+        if any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] OR any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] {
+            until not any windowvisible ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] AND not any windowvisible ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG'] {
+                clickwindow ['WorldView', 'TeamHelpFailWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
                 clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
             }
         } elif incombat {
