@@ -110,6 +110,13 @@ class Bot:
         return self.zones[0] if self.zones else ""
 
     @property
+    def target_rel(self) -> str:
+        """Repo-relative path the bot belongs at post-relocation."""
+        if self.primary_zone:
+            return f"bots/{self.primary_zone}/{self.path.name}"
+        return self.rel
+
+    @property
     def world(self) -> str:
         target_zone = self.primary_zone or self.folder_zone
         return target_zone.split("/", 1)[0]
@@ -123,7 +130,7 @@ class Bot:
             "format": self.headers.get("format", ""),
             "clients": self.headers.get("clients", ""),
             "description": self.headers.get("description", ""),
-            "path": self.rel,
+            "path": self.target_rel,
         }
 
 
@@ -198,6 +205,14 @@ def validate_bot(bot: Bot, valid_zones: set[str]) -> None:
             "e.g. '== 4', '>= 1', '<= 4'"
         )
 
+    # Pre-merge validation: fail if relocating would collide with an existing file
+    if bot.primary_zone and bot.folder_zone != bot.primary_zone:
+        dest_path = BOTS_DIR / bot.primary_zone / bot.path.name
+        if dest_path.exists() and dest_path.resolve() != bot.path.resolve():
+            bot.errors.append(
+                f"cannot relocate to primary zone: destination 'bots/{bot.primary_zone}/{bot.path.name}' already exists"
+            )
+
 
 def collect_bots() -> list[Bot]:
     return [parse_bot(p) for p in sorted(BOTS_DIR.rglob("*.txt"))]
@@ -255,7 +270,7 @@ def relocate_bots(bots: list[Bot], dry_run: bool = False) -> list[str]:
         if dest_path.exists() and dest_path.resolve() != bot.path.resolve():
             continue
         if dry_run:
-            drift.append(f"{bot.rel} (needs relocation to bots/{bot.primary_zone}/{bot.path.name})")
+            drift.append(f"{bot.rel} (needs relocation to {bot.target_rel})")
         else:
             dest_dir.mkdir(parents=True, exist_ok=True)
             old_path = bot.path
