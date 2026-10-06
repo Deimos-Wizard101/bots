@@ -1,11 +1,10 @@
+###deimos_expertmode
 # @name: FrostedFlax Reagent Farm
 # @zone: WizardCity/WC_Streets/WC_OldeTown
 # @author: jayzee9
 # @format: expertmode
 # @clients: == 1
 # @description: Automatically searches multiple locations and collects FrostedFlax. Must not have Baldur Goldpaws quest.
-
-###deimos_expertmode
 
 block collectflax {
     p1 entitytp FrostedFlax_01
