@@ -1,0 +1,101 @@
+###deimos_expertmode
+# @name: [Multi-Client] Harvest - Couch Potatoes.txt
+# @zone: Housing
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @description:
+#START IN RANGE OF YOUR COUCH POTATOES.
+#(Recommended) START AWAY FROM ANY INTERACTABLE.
+#(Suggested) CAN REPLACE ALL "CouchPotatoes" WITH ANY PROPER SEED ENTITY NAME.
+
+
+
+
+
+
+
+
+
+
+if any windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "world gate" {
+    until not sameany windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "world gate" {
+        sameany plustp xyz(0, 6767, 0)
+    }
+}
+
+loop {
+    if any inrange CouchPotatoes {
+        sameany entitytp CouchPotatoes
+        sameany sendkey X
+    } else {
+        log "OMG READ 1"
+        log "OMG READ 2"
+        log "OMG READ 3"
+        log "OMG READ 4"
+        log "OMG READ 5"
+        log "OMG READ 6"
+        log "OMG READ 7"
+        log "OMG READ 8"
+        log "OMG READ 9"
+        log "OMG READ 10"
+        log "OMG READ 11"
+        log "OMG READ 12"
+        log "OMG READ 13"
+        log "OMG READ 14"
+        log "OMG READ 15"
+        log "OMG READ 16"
+        log "OMG READ 17"
+        log "OMG READ 18"
+        log "OMG READ 19"
+        log "OMG READ 20"
+        log "OMG READ 21"
+        log "OMG READ 22"
+        log "OMG READ 23"
+        log "OMG READ 24"
+        log "OMG READ 25"
+        log "OMG READ 26"
+        log "OMG READ 27"
+        log "OMG READ 28"
+        log "OMG READ 29"
+        log "OMG READ 30"
+        log "OMG READ 31"
+        log "OMG READ 32"
+        log "OMG READ 33"
+        log "OMG READ 34"
+        log "OMG READ 35"
+        log "OMG READ 36"
+        log "OMG READ 37"
+        log "OMG READ 38"
+        log "OMG READ 39"
+        log "OMG READ 40"
+        log "OMG READ 41"
+        log "OMG READ 42"
+        log "OMG READ 43"
+        log "OMG READ 44"
+        log "OMG READ 45"
+        log "OMG READ 46"
+        log "OMG READ 47"
+        log "OMG READ 48"
+        log "OMG READ 49"
+        log "OMG READ 50"
+        log "OMG READ 51"
+        log "OMG READ 52"
+        log "OMG READ 53"
+        log "OMG READ 54"
+        log "OMG READ 55"
+        log "OMG READ 56"
+        log "OMG READ 57"
+        log "OMG READ 58"
+        log "OMG READ 59"
+        log "OMG READ 60"
+        log "OMG READ 61"
+        log "OMG READ 62"
+        log "OMG READ 63"
+        log "OMG READ 64"
+        log "OMG READ 65"
+        log "OMG READ 66"
+        log "OMG READ 67"
+        log "67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67"
+        kill
+    }
+}

@@ -39,13 +39,15 @@ jobs:
           git fetch --no-tags --depth=1 origin \
             "pull/${{ github.event.pull_request.number }}/head"
           head="$(git rev-parse FETCH_HEAD)"
-          git diff --name-only --diff-filter=A "$base" "$head" -- '*.txt' \
+          git -c core.quotepath=false diff --name-only --diff-filter=A "$base" "$head" -- '*.txt' \
             | grep -E '^bots/' > added_bots.txt || true
           if [ -s added_bots.txt ]; then
             echo "has_new=true" >> "$GITHUB_OUTPUT"
             echo "New bot files in this PR:"; cat added_bots.txt
             # Bring ONLY these .txt data files into the tree (never PR scripts).
-            xargs -a added_bots.txt -d '\n' git checkout "$head" --
+            # Prefix with :(literal) so Git treats square brackets and globs literally.
+            sed -e 's/\r$//' -e 's/^/:(literal)/' added_bots.txt \
+              | xargs -d '\n' --no-run-if-empty git checkout "$head" --
           else
             echo "has_new=false" >> "$GITHUB_OUTPUT"
             echo "This PR adds no new bot files; nothing to gate."
