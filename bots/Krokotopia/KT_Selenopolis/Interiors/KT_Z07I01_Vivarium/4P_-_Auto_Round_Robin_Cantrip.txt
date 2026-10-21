@@ -1,0 +1,631 @@
+###deimos_expertmode
+
+# KT Chest-Ritual-002: Nine-location four-player cantrip farm
+# Each chest needs three different Magic Touch casters.
+# 1: P1 + P2 + P4 (P3 rests)
+# 2: P2 + P3 + P4 (P1 rests)
+# 3: P1 + P3 + P4 (P2 rests)
+# When P4 cannot cast: P1 + P2 + P3.
+# Check energy BEFORE attempting each chest and substitute eligible casters.
+# No separate safe spot or zone ID was given. The current chest's scouting
+# location (target_loc) is used as a retreat coordinate after each handoff.
+# PLEASE VERIFY your scan coordinates are safe for retreating.
+
+block Check_Screen_Resolution {
+    print "Verifying screen resolution for all clients (1280x720)..."
+    until p1 windowvisible ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions'] {
+        p1 sendkey ESC, .1
+    }
+    sleep 1
+    p1 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions']
+    sleep .5
+    if NOT p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+        print "P1: Adjusting resolution to 1280x720..."
+        times 20 {
+            p1 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionButtonLeft']
+            sleep 0.1
+            if p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                print "P1: Resolution set."
+                exitloop
+            }
+        }
+        if NOT p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+            print "FATAL: P1 could not set resolution to 1280x720. Killing bot."
+            kill
+        }
+    }
+    if NOT p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {  
+        print "P1: Disabling fullscreen..."
+        times 15 {
+            p1 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionButtonLeft']
+            sleep 0.1
+            if p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                print "P1: Fullscreen disabled."
+                exitloop
+            }
+        }
+        if NOT p1 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+            print "FATAL: P1 could not disable fullscreen. Killing bot."
+            kill
+        }
+    }
+    sleep 1
+    p1 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'OkButton']
+    if playercount > 1 {
+        until p2 windowvisible ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions'] {
+            p2 sendkey ESC, .1
+        }
+        sleep 1
+        p2 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions']
+        sleep .5
+        if NOT p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+            print "P2: Adjusting resolution to 1280x720..."
+            times 20 {
+                p2 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                    print "P2: Resolution set."
+                    exitloop
+                }
+            }
+            if NOT p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                print "FATAL: P2 could not set resolution to 1280x720. Killing bot."
+                kill
+            }
+        }
+        if NOT p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {  
+            print "P2: Disabling fullscreen..."
+            times 15 {
+                p2 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                    print "P2: Fullscreen disabled."
+                    exitloop
+                }
+            }
+            if NOT p2 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                print "FATAL: P2 could not disable fullscreen. Killing bot."
+                kill
+            }
+        }
+        sleep 1
+        p2 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'OkButton']
+    }
+    if playercount > 2 {
+        until p3 windowvisible ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions'] {
+            p3 sendkey ESC, .1
+        }
+        sleep 1
+        p3 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions']
+        sleep .5
+        if NOT p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+            print "P3: Adjusting resolution to 1280x720..."
+            times 20 {
+                p3 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                    print "P3: Resolution set."
+                    exitloop
+                }
+            }
+            if NOT p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                print "FATAL: P3 could not set resolution to 1280x720. Killing bot."
+                kill
+            }
+        }
+        if NOT p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {  
+            print "P3: Disabling fullscreen..."
+            times 15 {
+                p3 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                    print "P3: Fullscreen disabled."
+                    exitloop
+                }
+            }
+            if NOT p3 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                print "FATAL: P3 could not disable fullscreen. Killing bot."
+                kill
+            }
+        }
+        sleep 1
+        p3 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'OkButton']
+    }
+    if playercount > 3 {
+        until p4 windowvisible ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions'] {
+            p4 sendkey ESC, .1
+        }
+        sleep 1
+        p4 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions']
+        sleep .5
+        if NOT p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+            print "P4: Adjusting resolution to 1280x720..."
+            times 20 {
+                p4 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                    print "P4: Resolution set."
+                    exitloop
+                }
+            }
+            if NOT p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionResolution', 'OptionControl', 'OptionValue'] '<center>1280x720' {
+                print "FATAL: P4 could not set resolution to 1280x720. Killing bot."
+                kill
+            }
+        }
+        if NOT p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {  
+            print "P4: Disabling fullscreen..."
+            times 15 {
+                p4 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionButtonLeft']
+                sleep 0.1
+                if p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                    print "P4: Fullscreen disabled."
+                    exitloop
+                }
+            }
+            if NOT p4 windowtext ['WorldView', 'DeckConfiguration', 'SettingPage', 'VideoOptions', 'OptionFullscreen', 'OptionControl', 'OptionValue'] '<center>off' {
+                print "FATAL: P4 could not disable fullscreen. Killing bot."
+                kill
+            }
+        }
+        sleep 1
+        p4 clickwindow ['WorldView', 'DeckConfiguration', 'SettingPage', 'OkButton']
+    }
+    print "All client resolutions verified (1280x720)."
+}
+
+block P1_Cast_Magic_Touch {
+    until p1 windowvisible [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ] {
+        p1 clickwindow [ 'WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'OpenCantripsButton' ]
+    }
+    sleep 0.5
+    p1 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ]
+    sleep 0.5
+    p1 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'BottomFrame', 'Icon1' ]
+    times 10 {
+        if NOT p1 windowvisible [ 'WorldView', 'CantripTargetWindow', 'CloseCantripTargetButton' ] {
+            sleep 0.5
+        } else {
+            break
+        }
+    }
+    times 3 {
+        p1 click 639 429
+        sleep 0.3
+    }
+    sleep 5.5
+    print "P1 Cast Complete."
+}
+
+block P2_Cast_Magic_Touch {
+    until p2 windowvisible [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ] {
+        p2 clickwindow [ 'WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'OpenCantripsButton' ]
+    }
+    sleep 0.5
+    p2 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ]
+    sleep 0.5
+    p2 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'BottomFrame', 'Icon1' ]
+    times 10 {
+        if NOT p2 windowvisible [ 'WorldView', 'CantripTargetWindow', 'CloseCantripTargetButton' ] {
+            sleep 0.5
+        } else {
+            break
+        }
+    }
+    times 3 {
+        p2 click 639 429
+        sleep 0.3
+    }
+    sleep 5.5
+    print "P2 Cast Complete."
+}
+
+block P3_Cast_Magic_Touch {
+    until p3 windowvisible [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ] {
+        p3 clickwindow [ 'WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'OpenCantripsButton' ]
+    }
+    sleep 0.5
+    p3 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ]
+    sleep 0.5
+    p3 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'BottomFrame', 'Icon1' ]
+    times 10 {
+        if NOT p3 windowvisible [ 'WorldView', 'CantripTargetWindow', 'CloseCantripTargetButton' ] {
+            sleep 0.5
+        } else {
+            break
+        }
+    }
+    times 3 {
+        p3 click 639 429
+        sleep 0.3
+    }
+    sleep 5.5
+    print "P3 Cast Complete."
+}
+
+block P4_Cast_Magic_Touch {
+    until p4 windowvisible [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ] {
+        p4 clickwindow [ 'WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'OpenCantripsButton' ]
+    }
+    sleep 0.5
+    p4 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'Tab_Favorites' ]
+    sleep 0.5
+    p4 clickwindow [ 'WorldView', 'CantripsWindow', 'CantripsSubWindow', 'BottomFrame', 'Icon1' ]
+    times 10 {
+        if NOT p4 windowvisible [ 'WorldView', 'CantripTargetWindow', 'CloseCantripTargetButton' ] {
+            sleep 0.5
+        } else {
+            break
+        }
+    }
+    times 3 {
+        p4 click 639 429
+        sleep 0.3
+    }
+    sleep 5.5
+    print "P4 Cast Complete."
+}
+
+# Magic Touch requires 5 energy. The HUD text check excludes 0-4.
+block Read_Energy_Flags {
+    setvar can_p1 = 1
+    if p1 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>0</center>' {
+        setvar can_p1 = 0
+    }
+    if p1 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>1</center>' {
+        setvar can_p1 = 0
+    }
+    if p1 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>2</center>' {
+        setvar can_p1 = 0
+    }
+    if p1 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>3</center>' {
+        setvar can_p1 = 0
+    }
+    if p1 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>4</center>' {
+        setvar can_p1 = 0
+    }
+    setvar can_p2 = 1
+    if p2 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>0</center>' {
+        setvar can_p2 = 0
+    }
+    if p2 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>1</center>' {
+        setvar can_p2 = 0
+    }
+    if p2 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>2</center>' {
+        setvar can_p2 = 0
+    }
+    if p2 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>3</center>' {
+        setvar can_p2 = 0
+    }
+    if p2 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>4</center>' {
+        setvar can_p2 = 0
+    }
+    setvar can_p3 = 1
+    if p3 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>0</center>' {
+        setvar can_p3 = 0
+    }
+    if p3 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>1</center>' {
+        setvar can_p3 = 0
+    }
+    if p3 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>2</center>' {
+        setvar can_p3 = 0
+    }
+    if p3 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>3</center>' {
+        setvar can_p3 = 0
+    }
+    if p3 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>4</center>' {
+        setvar can_p3 = 0
+    }
+    setvar can_p4 = 1
+    if p4 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>0</center>' {
+        setvar can_p4 = 0
+    }
+    if p4 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>1</center>' {
+        setvar can_p4 = 0
+    }
+    if p4 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>2</center>' {
+        setvar can_p4 = 0
+    }
+    if p4 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>3</center>' {
+        setvar can_p4 = 0
+    }
+    if p4 windowtext [ 'WorldView', 'windowHUD', 'spriteEnergyBkg', 'EnergyGlobeRect', 'textEnergy' ] '<center>4</center>' {
+        setvar can_p4 = 0
+    }
+}
+
+# Priority is P4 plus two alternating players from P1-P3.
+# If a scheduled player is low on energy, try the resting player instead.
+# plan 1 = P1 P2 P4; plan 2 = P2 P3 P4
+# plan 3 = P1 P3 P4; plan 4 = P1 P2 P3; plan 0 = stop.
+block Pick_Casters {
+    setvar use_p1 = 0
+    setvar use_p2 = 0
+    setvar use_p3 = 0
+    setvar use_p4 = 0
+    setvar cast_plan = 0
+
+    if can_p4 == 1 {
+        setvar use_p4 = 1
+        if rotation == 1 {
+            if can_p1 == 1 {
+                setvar use_p1 = 1
+            }
+            if can_p2 == 1 {
+                setvar use_p2 = 1
+            }
+            if use_p1 == 0 {
+                if can_p3 == 1 {
+                    setvar use_p3 = 1
+                }
+            }
+            if use_p2 == 0 {
+                if can_p3 == 1 {
+                    setvar use_p3 = 1
+                }
+            }
+        }
+        if rotation == 2 {
+            if can_p2 == 1 {
+                setvar use_p2 = 1
+            }
+            if can_p3 == 1 {
+                setvar use_p3 = 1
+            }
+            if use_p2 == 0 {
+                if can_p1 == 1 {
+                    setvar use_p1 = 1
+                }
+            }
+            if use_p3 == 0 {
+                if can_p1 == 1 {
+                    setvar use_p1 = 1
+                }
+            }
+        }
+        if rotation == 3 {
+            if can_p1 == 1 {
+                setvar use_p1 = 1
+            }
+            if can_p3 == 1 {
+                setvar use_p3 = 1
+            }
+            if use_p1 == 0 {
+                if can_p2 == 1 {
+                    setvar use_p2 = 1
+                }
+            }
+            if use_p3 == 0 {
+                if can_p2 == 1 {
+                    setvar use_p2 = 1
+                }
+            }
+        }
+
+        if use_p1 == 1 {
+            if use_p2 == 1 {
+                setvar cast_plan = 1
+            }
+            if use_p3 == 1 {
+                setvar cast_plan = 3
+            }
+        } else {
+            if use_p2 == 1 {
+                if use_p3 == 1 {
+                    setvar cast_plan = 2
+                }
+            }
+        }
+    } else {
+        if can_p1 == 1 {
+            if can_p2 == 1 {
+                if can_p3 == 1 {
+                    setvar cast_plan = 4
+                }
+            }
+        }
+    }
+    if cast_plan == 0 {
+        print "Not enough energy for three different casters. Stopping."
+        kill
+    }
+}
+
+block Advance_Cast_Rotation {
+    if rotation == 1 {
+        setvar rotation = 2
+    } else {
+        if rotation == 2 {
+            setvar rotation = 3
+        } else {
+            setvar rotation = 1
+        }
+    }
+}
+
+# Anchor new player to the preceding player before that player retreats.
+# This is deliberately based on target_loc, not an invented safe-spot XYZ.
+block P2_From_P1 {
+    print "P2 anchoring to P1"
+    p2 tp p1
+    p2 waitforfree
+    sleep 1
+    p1 tp target_loc
+    p1 waitforfree
+    p2 entitytp KT-Chest-Ritual-002
+    p2 waitforfree
+    sleep 1
+}
+
+block P3_From_P1 {
+    print "P3 anchoring to P1"
+    p3 tp p1
+    p3 waitforfree
+    sleep 1
+    p1 tp target_loc
+    p1 waitforfree
+    p3 entitytp KT-Chest-Ritual-002
+    p3 waitforfree
+    sleep 1
+}
+
+block P3_From_P2 {
+    print "P3 anchoring to P2"
+    p3 tp p2
+    p3 waitforfree
+    sleep 1
+    p2 tp target_loc
+    p2 waitforfree
+    p3 entitytp KT-Chest-Ritual-002
+    p3 waitforfree
+    sleep 1
+}
+
+block P4_From_P2 {
+    print "P4 anchoring to P2"
+    p4 tp p2
+    p4 waitforfree
+    sleep 1
+    p2 tp target_loc
+    p2 waitforfree
+    p4 entitytp KT-Chest-Ritual-002
+    p4 waitforfree
+    sleep 1
+}
+
+block P4_From_P3 {
+    print "P4 anchoring to P3"
+    p4 tp p3
+    p4 waitforfree
+    sleep 1
+    p3 tp target_loc
+    p3 waitforfree
+    p4 entitytp KT-Chest-Ritual-002
+    p4 waitforfree
+    sleep 1
+}
+
+block Handle_Chest_Found {
+    call Read_Energy_Flags
+    call Pick_Casters
+    print "P1 scouting and anchoring KT chest"
+    p1 entitytp KT-Chest-Ritual-002
+    p1 waitforfree
+    sleep 1
+
+    if cast_plan == 1 {
+        print "Round Robin: P1 + P2 + P4 (P3 rests)"
+        call P1_Cast_Magic_Touch
+        p1 waitforfree
+        call P2_From_P1
+        call P2_Cast_Magic_Touch
+        p2 waitforfree
+        call P4_From_P2
+        call P4_Cast_Magic_Touch
+        p4 waitforfree
+    }
+    if cast_plan == 2 {
+        print "Round Robin: P2 + P3 + P4 (P1 rests)"
+        call P2_From_P1
+        call P2_Cast_Magic_Touch
+        p2 waitforfree
+        call P3_From_P2
+        call P3_Cast_Magic_Touch
+        p3 waitforfree
+        call P4_From_P3
+        call P4_Cast_Magic_Touch
+        p4 waitforfree
+    }
+    if cast_plan == 3 {
+        print "Round Robin: P1 + P3 + P4 (P2 rests)"
+        call P1_Cast_Magic_Touch
+        p1 waitforfree
+        call P3_From_P1
+        call P3_Cast_Magic_Touch
+        p3 waitforfree
+        call P4_From_P3
+        call P4_Cast_Magic_Touch
+        p4 waitforfree
+    }
+    if cast_plan == 4 {
+        print "P4 low on energy: P1 + P2 + P3"
+        call P1_Cast_Magic_Touch
+        p1 waitforfree
+        call P2_From_P1
+        call P2_Cast_Magic_Touch
+        p2 waitforfree
+        call P3_From_P2
+        call P3_Cast_Magic_Touch
+        p3 waitforfree
+    }
+
+    # Only successful (attempted) chests advance rotation.
+    call Advance_Cast_Rotation
+    print "Allowing chest to despawn..."
+    sleep 6
+    # Group stays at the scanning coordinate; next scan moves P1 onward.
+    mass tp target_loc
+    mass waitforfree
+}
+
+block Process_Location {
+    # P1 is the scout for all nine chest spawn locations.
+    until p1 hasxyz target_loc {
+        p1 tp target_loc
+    }
+    p1 waitforfree
+    times 3 {
+        if p1 inrange "KT-Chest-Ritual-002" {
+            print "KT chest found"
+            call Handle_Chest_Found
+            break
+        } else {
+            sleep 1
+        }
+    }
+}
+
+if playercount < 4 {
+    print "FATAL: Four clients required (P1-P4)."
+    kill
+}
+if playercount > 4 {
+    print "FATAL: Exactly four clients required."
+    kill
+}
+
+# Zone string not supplied; all four players must already be in the same zone.
+setvar rotation = 1
+call Check_Screen_Resolution
+print "Ready. Make sure all players are in the KT chest area."
+
+loop {
+    print "Checking KT location 1..."
+    setvar target_loc = XYZ(17315.4375, -5498.0361328125, 0.01947021484375)
+    call Process_Location
+    print "Checking KT location 2..."
+    setvar target_loc = XYZ(5829.6630859375, 804.6976928710938, 0.0196533203125)
+    call Process_Location
+    print "Checking KT location 3..."
+    setvar target_loc = XYZ(1461.1883544921875, -1568.1390380859375, 0.0198974609375)
+    call Process_Location
+    print "Checking KT location 4..."
+    setvar target_loc = XYZ(10518.2490234375, -4834.8076171875, 100.0196533203125)
+    call Process_Location
+    print "Checking KT location 5..."
+    setvar target_loc = XYZ(21171.248046875, 784.6448364257812, 0.01953125)
+    call Process_Location
+    print "Checking KT location 6..."
+    setvar target_loc = XYZ(10884.33984375, -13095.7939453125, 0.01983642578125)
+    call Process_Location
+    print "Checking KT location 7..."
+    setvar target_loc = XYZ(5912.541015625, -4694.73193359375, 100.0196533203125)
+    call Process_Location
+    print "Checking KT location 8..."
+    setvar target_loc = XYZ(30523.134765625, -6194.810546875, 0.0198974609375)
+    call Process_Location
+    print "Checking KT location 9..."
+    setvar target_loc = XYZ(30165.779296875, 1111.38623046875, 0.01934814453125)
+    call Process_Location
+    print "Nine-location scan complete. Repeating."
+}
