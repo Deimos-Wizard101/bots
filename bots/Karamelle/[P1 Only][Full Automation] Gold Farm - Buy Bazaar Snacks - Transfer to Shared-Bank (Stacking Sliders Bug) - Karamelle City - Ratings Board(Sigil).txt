@@ -455,9 +455,10 @@ block ratings_board {
 		until hasxyz XYZ(56.818, -234.048, 1.515) {
 				tp XYZ(56.818, -234.048, 1.515)
 		}
-		until hasdialogue {
-				log sleep
-		}
+
+		#DIALOGUE (FAIL SAFE) [Quest's initial trigger before combat (Quest = 18,150 Gold)]
+		sleep .5
+
 		until incombat {
 				tp XYZ(30.284, 1202.778, 1.463)
 		}
@@ -467,9 +468,10 @@ block ratings_board {
 		until hasxyz XYZ(37.809, 3063.223, 1.516) {
 				tp XYZ(37.809, 3063.223, 1.516)
 		}
-		until hasdialogue {
-				log sleep
-		}
+
+		#DIALOGUE1 (FAIL SAFE) [Wizard here is invulnerable after combat for 5 seconds]
+		sleep 1
+
 		until incombat {
 				tp XYZ(320.631, 4710.718, 1.465)
 		}
@@ -484,9 +486,10 @@ block ratings_board {
 		until hasxyz XYZ(-19.423, 6653.224, 1.516) {
 				tp XYZ(-19.423, 6653.224, 1.516)
 		}
-		until hasdialogue {
-				log sleep
-		}
+
+		#DIALOGUE2 (FAIL SAFE) [Wizard here is invulnerable after combat for 5 seconds]
+		sleep 1
+
 		until incombat {
 				tp XYZ(76.373, 8627.385, 1.466) 
 		}
