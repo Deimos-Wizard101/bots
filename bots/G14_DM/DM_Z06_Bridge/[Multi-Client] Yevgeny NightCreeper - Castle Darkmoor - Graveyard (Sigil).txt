@@ -1,0 +1,53 @@
+###deimos_expertmode
+# @name: [Multi-Client] Yevgeny NightCreeper - Castle Darkmoor - Graveyard (Sigil)
+# @zone: G14_DM/DM_Z06_Bridge
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: <=4
+# @description: Read bot instructions below:
+
+#COMBAT [ENABLED].
+#START AT SIGIL.
+#1-4 CLIENT FRIENDLY.
+#HEALS BELOW 67% AND REGENS MANA BELOW 15% [WISPS].
+
+loop {
+    until hasxyz xyz(-32.304, 2486.728, 0.699) {
+        tp xyz(-32.304, 2486.728, 0.699)
+    }
+    if any manabelow 15% {
+        times 3 {
+            sameany entitytp mana
+        }
+    }
+    until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "graveyard" {
+        tp xyz(-32.304, 2486.728, 0.699)
+    }
+    while any windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+        sendkey X
+        clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
+        clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+    }
+    until inzone G14_DM/DM_Z07_Graveyard {
+        sleep .01
+    }
+    until hasxyz xyz(-106.298, 14.503, 0.519) {
+        tp xyz(-106.298, 14.503, 0.519)
+    }
+    waitforcombat completion
+    if any healthbelow 67% {
+        times 3 {
+            sameany entitytp health
+        }
+    }
+    until hasxyz xyz(-2.598, -3297.796, 0.519) {
+        tp xyz(-2.598, -3297.796, 0.519)
+    }
+    loop {
+        if any windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton'] {
+            clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+        } elif inzone G14_DM/DM_Z06_Bridge {
+            break
+        }
+    }
+}

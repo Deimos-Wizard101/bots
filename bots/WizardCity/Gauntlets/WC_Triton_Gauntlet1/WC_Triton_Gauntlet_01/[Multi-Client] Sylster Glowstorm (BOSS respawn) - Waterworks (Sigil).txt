@@ -1,0 +1,41 @@
+###deimos_expertmode
+# @name: [Multi-Client] Sylster Glowstorm (BOSS respawn) - Waterworks (Sigil)
+# @zone: WizardCity/Gauntlets/WC_Triton_Gauntlet1/WC_Triton_Gauntlet_01
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: <=4
+# @description: Read bot instructions below:
+
+#USE SIGIL GROUP.
+#MANUALLY FILL POTIONS [Uses a potion at below 5% mana].
+#START AT BOSS [Respawn requires 4 wizards regardless of local clients].
+
+loop {
+    if any inrange angler {
+        until incombat {
+            entitytp angler
+            tp xyz(846.987, -1086.360, -2.145)
+        }
+        waitforcombat completion
+    }
+    until hasxyz xyz(846.987, -1086.360, -2.145) {
+        tp xyz(846.987, -1086.360, -2.145)
+    }
+    if any manabelow 5% {
+        until not sameany manabelow 5% {
+            sameany clickwindow ['WorldView', 'windowHUD', 'btnPotions']
+        }
+    }
+    until p1 hasxyz xyz(-1600.769, 1878.628, -2.144) {
+        p1 tp xyz(-1600.769, 1878.628, -2.144)
+    }
+    until p1 inzone WizardCity/Gauntlets/WC_Triton_Gauntlet1/WC_Triton_Gauntlet_05 {
+        sleep .01
+    }
+    until p1 hasxyz xyz(1528.629, 25.840, 24.374) {
+        p1 tp xyz(1528.629, 25.840, 24.374)
+    }
+    until p1 inzone WizardCity/Gauntlets/WC_Triton_Gauntlet1/WC_Triton_Gauntlet_01 {
+        sleep .01
+    }
+}

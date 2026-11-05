@@ -1,0 +1,522 @@
+###deimos_expertmode
+# @name: Ratings Board (Sigil)
+# @zone: Karamelle
+# @author: Discord: homeyo / Github: zerosenses
+# @format: expertmode
+# @clients: == 1
+# @description: The dungeon is locked behind a sequence of side quests.
+#DIALOGUE + COMBAT + NO DROPS (ON).
+#ALLOW ENDORSEMENTS (NO).
+#DORM EQUIPPED.
+#START ANYWHERE.
+#SUPPORTS P1 ONLY.
+#FOR MULTIPLE CLIENTS, USE MULTIPLE INSTANCES OF DEIMOS [Unbind "Kill Tool" Hotkey].
+
+#SELL THE TRASH DROPS (Block is called "quick_sell"). CTRL+F TO CHANGE TRIGGER POINT IN SELLING; DEFAULT SELLS AT > "240" BAG COUNT.
+#BUYS SNACKS FROM BAZAAR AFTER REACHING 506700+ GOLD, THEN SELLS ITEMS REPEATEDLY UNTIL GOLD IS UNDER 1000, BEFORE IT RETURNS TO FARMING.
+#[Utilizes Bank's Slider Stacking Bug] TRANSFERS PET SNACKS TO SHARED BANK AFTER PURCHASING FROM BAZAAR (Block is called "transfer_snacks").
+
+#[Suggestion] CTRL+H TO REPLACE_ALL "log sleep" WITH "sleep .01" IF YOUR CONSOLE IS EXPLODING/SLOWER: DISABLES LOGS, WHILST LOSING UPTO 10MS IN SPEED.
+
+#DECK: [Epic(x2) - Stormblade - Stormtrap - Sharpened - Sirens - Bunyip].
+#STORM WIZARD: [275% DMG, 37 PIERCE].
+
+#MUST LOCK ALL VALUABLE ITEMS IN BACKPACK.
+#MUST PLACE A BAZAAR'S TAPESTRY AT YOUR DORM'S EXIT (LINE #120).
+#MUST PICK YOUR SETTINGS PREFERENCE, IN THE BAZAAR'S BACKPACK BUDDY'S OPTIONS LAYOUT, BEFORE ENABLING VARIABLE: "BUY".
+#MUST ALLOCATE 999 OF A REAGENT, THAT SITS ON TOP IN COLUMN #1 INSIDE YOUR SHARED BANK'S REAGENT TAB. YOUR BACKPACK'S TAB MUST HAVE 0 OF THIS EXACT REAGENT. FOR VARIABLE: "TRANSFER" TO WORK EFFICIENTLY.
+
+#VARIABLE "BUY" ALLOWS YOU TO BUY PET SNACKS FROM BAZAAR.
+#VARIABLE "SELL" ALLOWS YOU TO QUICK SELL TRASH DROPS DURING THE FARM.
+#VARIABLE "TRANSFER" ALLOWS YOU TO TRANSFER PET SNACKS TO SHARED BANK (Requires Sliders Bug to be unpatched).
+#VARIABLE "PLAYSTYLES" ALLOWS YOU TO LOAD INTEGRATED PLAYSTYLES: REQUIRED STATS AND DECK OF CARDS FOR STORM, ARE MENTIONED ABOVE.
+
+#TO DISABLE ANY VARIABLE, SIMPLY REMOVE "ON" FROM THAT LINE.
+
+
+
+
+
+#FOR USERS' ITEMS SAFETY: NONE OF THE VARIABLES ARE ACTIVE AT DEFAULT. SIMPLY ADD "ON" INSIDE THE QUOTES, LIKESO. EACH VARIABLE IS EXPLAINED ABOVE IN THE INSTRUCTIONS OF THIS BOT.
+var BUY = ""
+var SELL = ""
+var TRANSFER = ""
+var PLAYSTYLES = ""
+
+
+
+
+
+
+
+
+
+
+block world_karamelle {
+		if not inzone Karamelle/KM_Z00_HUB AND not inzone Karamelle/Interiors/Dungeon_Rematch_KM_Paradox AND not inzone Karamelle/Interiors/Dungeon_Rematch_KM_Paradox_STRD AND not inzone Karamelle/Interiors/KM_Z00_CavityDining AND not inzone Karamelle/Interiors/KM_Z00_CavityPassage AND not inzone Karamelle/Interiors/KM_Z00_CountingCrypt AND not inzone Karamelle/Interiors/KM_Z00_GingerbreadRoom AND not inzone Karamelle/Interiors/KM_Z00_Glockenspiel_01 AND not inzone Karamelle/Interiors/KM_Z00_NanasHQ AND not inzone Karamelle/Interiors/KM_Z00_ProductionJunction AND not inzone Karamelle/Interiors/KM_Z00_RatingsBoard AND not inzone Karamelle/Interiors/KM_Z00_TheCavity AND not inzone Karamelle/Interiors/KM_Z00_TheCavity_Adv AND not inzone Karamelle/Interiors/KM_Z00_TheLobby AND not inzone Karamelle/Interiors/KM_Z01_VonTrapLodge AND not inzone Karamelle/Interiors/KM_Z01_VonTrapLodge_02 AND not inzone Karamelle/Interiors/KM_Z03_HangryGobblerCave_01 AND not inzone Karamelle/Interiors/KM_Z03_I02_PipelineCave AND not inzone Karamelle/Interiors/KM_Z03_I03_TreemuggerHideout AND not inzone Karamelle/Interiors/KM_Z04_BonBon AND not inzone Karamelle/Interiors/KM_Z04_GummyPlant AND not inzone Karamelle/Interiors/KM_Z04_IceCreamParlor AND not inzone Karamelle/Interiors/KM_Z04_Jamburglar AND not inzone Karamelle/Interiors/KM_Z04_Playhouse AND not inzone Karamelle/Interiors/KM_Z04_PowerRoom AND not inzone Karamelle/Interiors/KM_Z04_UwesWorkshop AND not inzone Karamelle/Interiors/KM_Z05_ChocShoppe AND not inzone Karamelle/Interiors/KM_Z05_OrsonOffice AND not inzone Karamelle/Interiors/KM_Z05_PipeJunction AND not inzone Karamelle/Interiors/KM_Z05_PumpRoom AND not inzone Karamelle/Interiors/KM_Z05_ToffeeHouse AND not inzone Karamelle/Interiors/KM_Z05_TreacleFoundry AND not inzone Karamelle/Interiors/KM_Z06_CrumblingMineshaft AND not inzone Karamelle/Interiors/KM_Z06_MiningTunnel_A AND not inzone Karamelle/Interiors/KM_Z06_MiningTunnel_B AND not inzone Karamelle/Interiors/KM_Z06_MiningTunnel_C AND not inzone Karamelle/Interiors/KM_Z06_SkelKey AND not inzone Karamelle/Interiors/KM_Z06_SkelKey_Boss AND not inzone Karamelle/Interiors/KM_Z06_WitchTunnel AND not inzone Karamelle/Interiors/KM_Z07_CandyBar AND not inzone Karamelle/Interiors/KM_Z07_CupcakeFactory AND not inzone Karamelle/Interiors/KM_Z07_GutenShoppe AND not inzone Karamelle/Interiors/KM_Z07_HeidisHideout AND not inzone Karamelle/Interiors/KM_Z07_RegionalOffice AND not inzone Karamelle/Interiors/KM_Z07_Station AND not inzone Karamelle/Interiors/KM_Z07_VanasVarieties AND not inzone Karamelle/Interiors/KM_Z08_BlackLicoriceCave AND not inzone Karamelle/Interiors/KM_Z08_CinnamonTrollCave AND not inzone Karamelle/Interiors/KM_Z08_ColaLake AND not inzone Karamelle/Interiors/KM_Z08_LoggingCampWahehouse AND not inzone Karamelle/Interiors/KM_Z08_RosinasHouse AND not inzone Karamelle/Interiors/KM_Z08_RosinasHouse_Adv AND not inzone Karamelle/Interiors/KM_Z08_WitchsTreehouse AND not inzone Karamelle/Interiors/KM_Z09_Barn AND not inzone Karamelle/Interiors/KM_Z09_ChocolateMooitaurCave AND not inzone Karamelle/Interiors/KM_Z09_FactoryFarm AND not inzone Karamelle/Interiors/KM_Z09_FarmersHouse AND not inzone Karamelle/Interiors/KM_Z09_HotHouse AND not inzone Karamelle/Interiors/KM_Z09_Silo AND not inzone Karamelle/Interiors/KM_Z10_GobblertonFactory AND not inzone Karamelle/Interiors/KM_Z10_GobblertonLibrary AND not inzone Karamelle/Interiors/KM_Z10_Gym AND not inzone Karamelle/Interiors/KM_Z10_RosinasLab AND not inzone Karamelle/Interiors/KM_Z10_Store AND not inzone Karamelle/Interiors/KM_Z10_ThroneRoom_A AND not inzone Karamelle/Interiors/KM_Z10_ThroneRoom_B AND not inzone Karamelle/Interiors/KM_Z10_ThroneRoom_B_Adv AND not inzone Karamelle/Interiors/KM_Z10_UnderwaterGrotto AND not inzone Karamelle/KM_Z01_VonTrapEstate AND not inzone Karamelle/KM_Z02_CandyMountains AND not inzone Karamelle/KM_Z03_GumdropForest AND not inzone Karamelle/KM_Z04_Sweetzburg AND not inzone Karamelle/KM_Z05_Nibbleheim AND not inzone Karamelle/KM_Z06_Mines AND not inzone Karamelle/KM_Z07_Gutenstadt AND not inzone Karamelle/KM_Z08_LicoriceForest AND not inzone Karamelle/KM_Z09_CandyCornFarm AND not inzone Karamelle/KM_Z10_Gobblerton {
+				until inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+						clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+				}
+				until inzone WizardCity/WC_Ravenwood {
+						tp XYZ(-203.839, 4.139, 0.000)
+				}
+				until inzone WizardCity/WC_Ravenwood_Teleporter {
+						tp XYZ(18.411, 1933.317, 78.670)
+				}
+				until hasxyz XYZ(3.859, 51.431, 89.213) {
+						tp XYZ(3.859, 51.431, 89.213)
+				}
+				until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "world gate" {
+						log sleep
+				}
+				until not windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+						sendkey X, .01
+				}
+				until windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnKaramelle'] {
+						clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'rightButton']
+				}
+				until inzone Karamelle/KM_Z00_HUB {
+						clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'wbtnKaramelle']
+						if windowvisible ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'optionWindow', 'selectedWorldCheckMark'] {
+								clickwindow ['WorldView', '', 'messageBoxBG', 'ControlSprite', 'teleportButton']
+						}
+				}
+				until hasxyz XYZ(67, 67, 67) {
+						tp XYZ(67, 67, 67)
+				}
+		} else {
+				until inzone Karamelle/KM_Z00_HUB {
+						clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GoHomeButton']
+				}
+		}
+}
+
+
+
+
+
+
+
+
+
+
+block bazaar {
+		#TP GUARANTEES CORRECT GOLD READ.
+		until hasxyz XYZ(3391.679, -1740.887, -6.566) {
+				tp XYZ(3391.679, -1740.887, -6.566)
+		}
+		if gold > 506700 {
+				until windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+						clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+						sleep 2
+				}
+				until not windowdisabled ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton'] {
+						clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'MarkButton']
+						sleep 2
+				}
+				until inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+						clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+				}
+				#MUST HAVE BAZAAR'S TAPESTRY ON YOUR DORM ROOM'S EXIT-DOOR.
+				until hasxyz XYZ(-3.439, 4.139, 10.187) {
+						tp XYZ(-3.439, 4.139, 10.187)
+				}
+				until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "tapestry to bazaar" {
+                				log sleep
+				}
+				while windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+						sendkey X, .01
+				}
+				until inzone WizardCity/WC_Streets/Interiors/WC_OldeTown_AuctionHouse {
+						sleep .01
+				}
+				block buy_snacks {
+						until hasxyz XYZ(10.073, -59.749, 2.179) {
+								tp XYZ(10.073, -59.749, 2.179)
+						}
+						until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "elik silverfist" {
+                				log sleep
+						}
+						while windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+								sendkey X, .01
+						}
+						until windowvisible ['WorldView', 'BazaarMainWindow', 'BuyLayout', 'BuyReagentButton'] {
+								log sleep
+						}
+						until windowvisible ['WorldView', 'shopGUI', 'ReagentsLayout', 'ShopCategory_PetSnack'] {
+								clickwindow ['WorldView', 'BazaarMainWindow', 'BuyLayout', 'BuyReagentButton']
+						}
+						times 3 {
+								clickwindow ['WorldView', 'shopGUI', 'ReagentsLayout', 'ShopCategory_PetSnack']
+						}
+						loop {
+								if not gold < 1000 {
+										times 2 {
+												clickwindow ['WorldView', 'shopGUI', 'interactionWindow', 'buyWindow', 'header1']
+										}
+										until windowvisible ['WorldView', 'BuyReagentQuantity', 'ValueSlider'] {
+												clickwindow ['WorldView', 'shopGUI', 'interactionWindow', 'buyWindow', 'buyMoreAction']
+										}
+										until windowtext ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', '', 'TitleText'] contains "shopping" {
+												clickwindow ['WorldView', 'BuyReagentQuantity', 'ValueSlider']
+												clickwindow ['WorldView', 'BuyReagentQuantity', 'btnBuy']
+										}
+										until not windowtext ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', '', 'TitleText'] contains "shopping" {
+												clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+										}
+								} else {
+										break
+								}
+						}
+				}
+				call buy_snacks
+				block backpack_buddy {
+						#BACKPACK BUDDY SETTINGS MUST BE PRESET BEFOREHAND OF THE GAME PATH IN USE.
+						until windowvisible ['WorldView', 'BazaarMainWindow', 'BackpackBuddyButton'] {
+								clickwindow ['WorldView', 'shopGUI', 'interactionWindow', 'buyWindow', 'BazaarBackButton']
+						}
+						until windowvisible ['WorldView', 'BackpackBuddyWindow', 'BackpackBuddyStartButton'] {
+								clickwindow ['WorldView', 'BazaarMainWindow', 'BackpackBuddyButton']
+						}
+						until windowvisible ['WorldView', 'BackpackBuddyWindow', 'BackpackBuddySellButton'] OR windowtext ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', '', 'TitleText'] contains "backpack buddy" {
+								clickwindow ['WorldView', 'BackpackBuddyWindow', 'BackpackBuddyStartButton']
+						}
+						if windowtext ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', '', 'TitleText'] contains "backpack buddy" {
+								until not windowtext ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', '', 'TitleText'] contains "backpack buddy" AND not windowvisible ['WorldView', 'BackpackBuddyWindow', 'CloseBackpackBuddyButton'] {
+										clickwindow ['WorldView', 'MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'rightButton']
+										clickwindow ['WorldView', 'BackpackBuddyWindow', 'CloseBackpackBuddyButton']
+								}
+								block transfer_snacks {
+										#WORKS ONLY WITH SLIDER STACKING BUG.
+										until inzone WizardCity/Interiors/WC_Housing_Dorm_Interior {
+												clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'GotoDormButton']
+										}
+										until hasxyz XYZ(35.913, -57.009, 10.187) {
+												tp XYZ(35.913, -57.009, 10.187)
+										}
+										until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "bank" {
+                										log sleep
+										}
+										while windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+												sendkey X, .01
+										}
+										until windowtext ['WorldView', 'shopGUI', 'BankingSubWindow', 'Move2', 'SpaceLeftText'] contains "/150" OR windowtext ['WorldView', 'shopGUI', 'BankingSubWindow', 'Move2', 'SpaceLeftText'] contains "/200" OR windowtext ['WorldView', 'shopGUI', 'BankingSubWindow', 'Move2', 'SpaceLeftText'] contains "/250" {
+												clickwindow ['WorldView', 'shopGUI', 'sharedBankTab']
+										}
+										until windowvisible ['WorldView', 'shopGUI', 'ReagentLayout', 'ShopCategory_Reagent'] {
+												clickwindow ['WorldView', 'shopGUI', 'ShopCategory_HousingStuff']
+										}
+										while not windowvisible ['WorldView', 'shopGUI', 'BankingMoveMultipleItems'] {
+												times 30 {
+														clickwindow ['WorldView', 'shopGUI', 'BankingSubWindow', 'Move2', 'MoveButton2']
+												}
+										}
+
+										#BACKPACK TAB
+										until windowvisible ['WorldView', 'shopGUI', 'BankingSubWindow', 'ItemActionsLayout', 'Equip_Item'] {
+												clickwindow ['WorldView', 'shopGUI', 'inventoryTab']
+										}
+
+										#CATEGORY LAYOUT
+										until windowvisible ['WorldView', 'shopGUI', 'ReagentLayout', 'ShopCategory_Reagent'] {
+												clickwindow ['WorldView', 'shopGUI', 'ShopCategory_HousingStuff']
+										}
+
+										#PET SNACKS
+										times 3 {
+												clickwindow ['WorldView', 'shopGUI', 'ReagentLayout', 'ShopCategory_PetSnack']
+										}
+
+										#TRANSFER TO SHARED BANK
+										until not windowvisible ['WorldView', 'shopGUI', 'BankingMoveMultipleItems'] {
+												clickwindow ['WorldView', 'shopGUI', 'BankingMoveMultipleItems', 'ValueSlider']
+												clickwindow ['WorldView', 'shopGUI', 'BankingMoveMultipleItems', 'MoveButton']
+										}
+										until not windowvisible ['WorldView', 'shopGUI', 'BankingSubWindow'] {
+												clickwindow ['WorldView', 'shopGUI', 'BankingSubWindow', 'exit']
+										}
+								}
+								if TRANSFER = "ON" {
+										call transfer_snacks
+								}
+								until inzone Karamelle/KM_Z00_HUB {
+										clickwindow ['WorldView', 'windowHUD', 'compassAndTeleporterButtons', 'RecallButton']
+								}
+								until hasxyz XYZ(3391.679, -1740.887, -6.566) {
+										tp XYZ(3391.679, -1740.887, -6.566)
+								}
+								return
+						}
+						until windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
+								clickwindow ['WorldView', 'BackpackBuddyWindow', 'BackpackBuddySellButton']
+						}
+						until not windowvisible ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout'] {
+								clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'centerButton']
+						}
+						until windowvisible ['WorldView', 'BackpackBuddyWindow', 'QuickSellWaitingWindow'] {
+								log sleep
+						}
+						until not windowvisible ['WorldView', 'BackpackBuddyWindow', 'QuickSellWaitingWindow'] OR any gold > 467000 {
+								if not windowvisible ['WorldView', 'DeckConfiguration', '', 'ControlSprite', 'GoldMax'] {
+										sendkey C, .01
+								}
+								sleep .01
+						}
+						while any windowvisible ['WorldView', 'DeckConfiguration', 'Close_Button'] OR any windowvisible ['WorldView', 'BackpackBuddyWindow', 'CloseBackpackBuddyButton'] {
+								clickwindow ['WorldView', 'DeckConfiguration', 'Close_Button']
+								clickwindow ['WorldView', 'BackpackBuddyWindow', 'CloseBackpackBuddyButton']
+						}
+				}
+				call backpack_buddy
+				if gold > 1000 {
+						call buy_snacks
+						call backpack_buddy
+				}
+		}
+}
+
+
+
+
+
+
+
+
+
+
+block quick_sell {
+		#Open Bag
+		sendkey B, .01
+		waitforpath ['WorldView', 'windowHUD', 'btnSpellbook']
+
+		#Click Quicksell
+		waitforpath ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+		clickwindow ['WorldView', 'DeckConfiguration', 'InventorySpellbookPage', 'QuickSell_Item']
+
+		#Housing Tab
+		waitforpath ['WorldView', 'shopGUI', 'BackpackStuff', 'NextCategory_HousingStuff']
+		clickwindow ['WorldView', 'shopGUI', 'BackpackStuff', 'NextCategory_HousingStuff']
+
+		#Plant Life
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_PlantLife']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_PlantLife']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Wall Hangings
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_WallHangings']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_WallHangings']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Outdoor
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Outdoor']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Outdoor']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Decoration
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Decoration']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Decoration']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Music Scrolls
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_MusicScroll']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_MusicScroll']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Seeds (DROPS EVIL MAGMA PEAS)
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Seed']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'ShopCategory_Seed']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+
+		#Jewels
+		waitforpath ['WorldView', 'shopGUI', 'HousingStuff', 'NextCategory_JewelStuff']
+		clickwindow ['WorldView', 'shopGUI', 'HousingStuff', 'NextCategory_JewelStuff']
+
+		#Triangle (DISABLED LINES WITH "#" BC THIS SPOT DROPS THE EPIC TRIANGLE JEWEL)
+		#waitforpath ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_TriangleJewel']
+		#clickwindow ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_TriangleJewel']
+		#waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		#clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Circle (DISABLED FOR MORE GOLD)
+		#waitforpath ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_CircleJewel']
+		#clickwindow ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_CircleJewel']
+		#waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		#clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Tear
+		waitforpath ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_TearJewel']
+		clickwindow ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_TearJewel']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Star
+		waitforpath ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_PetJewel']
+		clickwindow ['WorldView', 'shopGUI', 'JewelStuff', 'ShopCategory_PetJewel']
+		waitforpath ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'AllAction']
+
+		#Click Sell
+		clickwindow ['WorldView', 'shopGUI', 'buyWindow', 'sellAction']
+
+		#Confirm Sell
+		waitforpath ['WorldView', 'shopGUI', 'QuickSellConfirmationWindow', 'SellButton']
+		clickwindow ['WorldView', 'shopGUI', 'QuickSellConfirmationWindow', 'SellButton']
+
+		#MAX Gold
+		times 5 {
+				clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+		}
+
+		#Close Bag
+		waitforpath ['WorldView', 'windowHUD', 'btnSpellbook']
+		clickwindow ['WorldView', 'windowHUD', 'btnSpellbook']
+}
+
+
+
+
+
+
+
+
+
+
+block ratings_board {
+		if PLAYSTYLES = "ON" {
+				loadplaystyle `
+						Epic @ spell(Bunyip) & Bunyip | Epic @ spell(Sirens) & Sirens
+				`
+		}
+		if BUY = "ON" {
+				call bazaar
+		}
+
+		until hasxyz XYZ(3391.679, -1740.887, -6.566) {
+				tp XYZ(3391.679, -1740.887, -6.566)
+		}
+
+		#REGEN
+		if mana < 67 {
+				until mana > 267 {
+						entitytp mana
+				}
+		}
+		if healthbelow 75% {
+				until hasxyz XYZ(-7108.789, -7730.480, -338.016) {
+						tp XYZ(-7108.789, -7730.480, -338.016)
+				}
+				until inzone Karamelle/KM_Z02_CandyMountains {
+						sleep .01
+				}
+				until hasxyz XYZ(-6755.120, 9686.807, 682.641) {
+						tp XYZ(-6755.120, 9686.807, 682.641)
+				}
+				until healthabove 99% {
+						entitytp health
+						tp XYZ(-6755.120, 9686.807, 682.641)
+				}
+				until hasxyz XYZ(4039.513, -551.279, 214.771) {
+						tp XYZ(4039.513, -551.279, 214.771)
+				}
+				until inzone Karamelle/KM_Z00_HUB {
+						sleep .01
+				}
+		}
+
+		#SIGIL
+		until hasxyz XYZ(3391.679, -1740.887, -6.566) {
+				tp XYZ(3391.679, -1740.887, -6.566)
+		}
+		if SELL = "ON" {
+				if bagcount > 240 {
+						call quick_sell
+				}
+		}
+		until windowtext ['WorldView', 'NPCRangeWin', 'wndTitleBackground', 'NPCRangeTxtTitle'] "ratings board" {
+				log sleep
+		}
+		while windowvisible ['WorldView', 'NPCRangeWin', 'imgBackground'] {
+				sendkey X, .01
+				clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'ignoreCheckBox']
+				clickwindow ['MessageBoxModalWindow', 'messageBoxBG', 'messageBoxLayout', 'AdjustmentWindow', 'Layout', 'leftButton']
+		}
+		until inzone Karamelle/Interiors/KM_Z00_RatingsBoard {
+				sleep .01
+		}
+
+		#MOB-1
+		until hasxyz XYZ(56.818, -234.048, 1.515) {
+				tp XYZ(56.818, -234.048, 1.515)
+		}
+
+		#DIALOGUE (FAIL SAFE) [Quest's initial trigger before combat (Quest = 18,150 Gold)]
+		sleep .5
+
+		until incombat {
+				tp XYZ(30.284, 1202.778, 1.463)
+		}
+		waitforcombat completion
+
+		#MOB-2
+		until hasxyz XYZ(37.809, 3063.223, 1.516) {
+				tp XYZ(37.809, 3063.223, 1.516)
+		}
+
+		#DIALOGUE1 (FAIL SAFE) [Wizard here is invulnerable after combat for 5 seconds]
+		sleep 1
+
+		until incombat {
+				tp XYZ(320.631, 4710.718, 1.465)
+		}
+		waitforcombat completion
+
+		#BOSS
+		if PLAYSTYLES = "ON" {
+				loadplaystyle `
+						Sharp @ spell(Stormblade) & Stormblade @ self | Potent @ spell(any<trap>) & any<trap> @ Ambassador | Epic @ spell(Sirens) & Sirens | Epic @ spell(Bunyip) & Bunyip
+				`
+		}
+		until hasxyz XYZ(-19.423, 6653.224, 1.516) {
+				tp XYZ(-19.423, 6653.224, 1.516)
+		}
+
+		#DIALOGUE2 (FAIL SAFE) [Wizard here is invulnerable after combat for 5 seconds]
+		sleep 1
+
+		until incombat {
+				tp XYZ(76.373, 8627.385, 1.466) 
+		}
+		waitforcombat completion
+
+		#EXIT
+		until hasxyz XYZ(28.785, -488.784, 1.516) {
+				tp XYZ(28.785, -488.784, 1.516)
+		}
+		until inzone Karamelle/KM_Z00_HUB {
+				sleep .01
+		}
+}
+
+
+
+
+
+
+
+
+
+
+#####START HERE#####
+#ONE TIME CHECK
+call world_karamelle
+
+loop {
+		call ratings_board
+}
